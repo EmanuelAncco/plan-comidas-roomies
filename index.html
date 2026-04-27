@@ -264,6 +264,54 @@
   .modal-tips b{color:var(--mut)}
   .meal{cursor:pointer}
   .meal:hover{box-shadow:0 4px 12px rgba(251,113,133,.25)}
+  .meal.cocinada{opacity:.65;position:relative}
+  .meal.cocinada::after{
+    content:"PREPARADO";position:absolute;top:8px;right:8px;
+    background:var(--emerald);color:#fff;font-size:.6rem;font-weight:700;
+    padding:3px 8px;border-radius:10px;letter-spacing:.5px;z-index:1
+  }
+
+  .ing-list{list-style:none;margin-left:0!important}
+  .ing-list li{
+    display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;
+    margin-bottom:3px;font-size:.88rem
+  }
+  .ing-list li.tienes{background:#d1fae5;color:#065f46}
+  .ing-list li.falta{background:#fee2e2;color:#991b1b}
+  .ing-list li::before{
+    font-weight:700;width:18px;display:inline-flex;justify-content:center;
+    border-radius:50%;font-size:.7rem
+  }
+  .ing-list li.tienes::before{content:"✓";background:var(--emerald);color:#fff;height:18px}
+  .ing-list li.falta::before{content:"!";background:#dc2626;color:#fff;height:18px}
+  .ing-list .stock-tag{
+    margin-left:auto;font-size:.7rem;background:rgba(255,255,255,.6);
+    padding:1px 8px;border-radius:8px;font-weight:600
+  }
+
+  .modal-actions{
+    padding:14px 20px;background:var(--bg);border-top:1px solid var(--bg2);
+    display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap
+  }
+  .modal-actions .estado{font-size:.85rem;color:var(--mut);font-weight:600}
+  .btn-prep{
+    background:linear-gradient(135deg,var(--emerald),#059669);
+    color:#fff;border:0;padding:10px 18px;border-radius:10px;
+    cursor:pointer;font-size:.9rem;font-weight:700;
+    box-shadow:0 4px 12px rgba(52,211,153,.4)
+  }
+  .btn-prep:hover{transform:translateY(-1px)}
+  .btn-prep.deshacer{background:linear-gradient(135deg,#9ca3af,#6b7280)}
+
+  .stock-bar{
+    width:100%;height:4px;background:#e5e7eb;border-radius:2px;
+    margin-top:5px;overflow:hidden
+  }
+  .stock-bar-fill{height:100%;background:linear-gradient(90deg,var(--emerald),var(--lime));transition:width .3s}
+  .stock-bar-fill.med{background:linear-gradient(90deg,var(--amber),var(--orange))}
+  .stock-bar-fill.bajo{background:linear-gradient(90deg,var(--rose),#dc2626)}
+  .inv-item.agotado{opacity:.4;filter:grayscale(.7)}
+  .stock-num{font-size:.7rem;color:var(--mut);font-weight:700}
 
   /* Selector cocinero menu */
   .chef-menu{
@@ -362,11 +410,14 @@
     <div class="stat"><div class="stat-label">Personas en casa</div><div class="stat-val">4</div><div class="stat-sub">Emanuel · William · Geordano · Diego</div></div>
     <div class="stat"><div class="stat-label">Comidas planificadas</div><div class="stat-val">84</div><div class="stat-sub">28 días × 3 (turnos rotativos)</div></div>
     <div class="stat"><div class="stat-label">Turnos por persona</div><div class="stat-val">~21</div><div class="stat-sub">distribuidos en el mes</div></div>
-    <div class="stat"><div class="stat-label">Perecederos urgentes</div><div class="stat-val" style="color:#dc2626">7</div><div class="stat-sub">usar en 5 días</div></div>
+    <div class="stat"><div class="stat-label">Comidas preparadas</div><div class="stat-val" id="s-prep" style="color:#059669">0</div><div class="stat-sub">marcadas como cocinadas</div></div>
   </div>
 
   <div class="info">
-    <b>Cómo está pensado:</b> Las primeras 2 semanas usan tu inventario actual (verduras frescas y bonito primero). Semanas 3 y 4 dependen de las compras complementarias. <b>Click en cualquier comida</b> para abrir la receta completa (ingredientes, pasos, tips). <b>Click sobre el texto</b> para editar la comida. <b>Click sobre la etiqueta del cocinero</b> para reasignar a otra persona.
+    <b>Cómo está pensado:</b> 4 personas, 28 días, 84 comidas, turnos rotativos.<br>
+    <b>Click en cualquier comida</b> → abre la receta (ingredientes con check de disponibilidad, pasos, tips).<br>
+    <b>Botón "Marcar como preparado"</b> → descuenta automáticamente los ingredientes del inventario.<br>
+    <b>Click sobre el texto</b> → edita el plato. <b>Click sobre el cocinero</b> → reasigna.
   </div>
 
   <div class="strat">
@@ -488,6 +539,7 @@
     </div>
     <div class="modal-meta" id="modal-meta"></div>
     <div class="modal-body" id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
   </div>
 </div>
 
@@ -601,84 +653,126 @@ function pickImg(text){
 }
 
 // =================== INVENTARIO ===================
-const inventario = {
+// Cada item: id (clave única), keywords (para matching), stock (porciones disponibles), max (stock inicial)
+const inventarioBase = {
   "Frutas":{cls:"fruta",items:[
-    {n:"Palta",v:"4-6 días",b:"urgent",img:IMG.palta},
-    {n:"Piña",v:"4-5 días",b:"soon",img:IMG.pina},
-    {n:"Naranja",v:"2 sem",b:"ok",img:IMG.mandarina},
-    {n:"Mandarina",v:"1-2 sem",b:"ok",img:IMG.mandarina},
-    {n:"Papaya",v:"3-4 días",b:"urgent",img:IMG.papaya},
-    {n:"Granada",v:"2 sem",b:"ok",img:IMG.fruta},
-    {n:"Plátano freír",v:"5-7 días",b:"soon",img:IMG.platano},
-    {n:"Plátano consumo",v:"3-5 días",b:"urgent",img:IMG.platano},
-    {n:"Melón",v:"3-5 días",b:"urgent",img:IMG.melon}
+    {id:"palta",n:"Palta",v:"4-6 días",b:"urgent",img:IMG.palta,kw:["palta"],max:6},
+    {id:"pina",n:"Piña",v:"4-5 días",b:"soon",img:IMG.pina,kw:["piña","pina"],max:8},
+    {id:"naranja",n:"Naranja",v:"2 sem",b:"ok",img:IMG.mandarina,kw:["naranja"],max:8},
+    {id:"mandarina",n:"Mandarina",v:"1-2 sem",b:"ok",img:IMG.mandarina,kw:["mandarina"],max:10},
+    {id:"papaya",n:"Papaya",v:"3-4 días",b:"urgent",img:IMG.papaya,kw:["papaya"],max:6},
+    {id:"granada",n:"Granada",v:"2 sem",b:"ok",img:IMG.fruta,kw:["granada"],max:1},
+    {id:"plat_freir",n:"Plátano freír",v:"5-7 días",b:"soon",img:IMG.platano,kw:["plátano freír","platano freir"],max:6},
+    {id:"plat_cons",n:"Plátano consumo",v:"3-5 días",b:"urgent",img:IMG.platano,kw:["plátano","platano"],max:8},
+    {id:"melon",n:"Melón",v:"3-5 días",b:"urgent",img:IMG.melon,kw:["melón","melon"],max:6}
   ]},
   "Verduras":{cls:"verdura",items:[
-    {n:"Papa amarilla",v:"2-3 sem",b:"ok",img:IMG.papa},
-    {n:"Choclo",v:"3-5 días",b:"soon",img:IMG.papa},
-    {n:"Camote",v:"2-3 sem",b:"ok",img:IMG.camote},
-    {n:"Coliflor",v:"5-7 días",b:"soon",img:IMG.brocoli},
-    {n:"Tomate",v:"5-7 días",b:"urgent",img:IMG.tomate},
-    {n:"Zanahoria",v:"2-3 sem",b:"ok",img:IMG.crema_zanahoria},
-    {n:"Lechuga",v:"5-7 días",b:"urgent",img:IMG.lechuga},
-    {n:"Albahaca",v:"3-5 días",b:"urgent",img:IMG.pesto},
-    {n:"Kion",v:"3 sem",b:"ok",img:IMG.fruta},
-    {n:"Rocoto",v:"2 sem",b:"ok",img:IMG.tomate},
-    {n:"Brócoli",v:"5-7 días",b:"soon",img:IMG.brocoli}
+    {id:"papa",n:"Papa amarilla",v:"2-3 sem",b:"ok",img:IMG.papa,kw:["papa","papas"],max:14},
+    {id:"choclo",n:"Choclo",v:"3-5 días",b:"soon",img:IMG.papa,kw:["choclo"],max:4},
+    {id:"camote",n:"Camote",v:"2-3 sem",b:"ok",img:IMG.camote,kw:["camote"],max:8},
+    {id:"coliflor",n:"Coliflor",v:"5-7 días",b:"soon",img:IMG.brocoli,kw:["coliflor"],max:4},
+    {id:"tomate",n:"Tomate",v:"5-7 días",b:"urgent",img:IMG.tomate,kw:["tomate"],max:8},
+    {id:"zanahoria",n:"Zanahoria",v:"2-3 sem",b:"ok",img:IMG.crema_zanahoria,kw:["zanahoria"],max:8},
+    {id:"lechuga",n:"Lechuga",v:"5-7 días",b:"urgent",img:IMG.lechuga,kw:["lechuga"],max:6},
+    {id:"albahaca",n:"Albahaca",v:"3-5 días",b:"urgent",img:IMG.pesto,kw:["albahaca","pesto"],max:2},
+    {id:"kion",n:"Kion",v:"3 sem",b:"ok",img:IMG.fruta,kw:["kion","jengibre"],max:10},
+    {id:"rocoto",n:"Rocoto",v:"2 sem",b:"ok",img:IMG.tomate,kw:["rocoto","ají"],max:6},
+    {id:"brocoli",n:"Brócoli",v:"5-7 días",b:"soon",img:IMG.brocoli,kw:["brócoli","brocoli"],max:4}
   ]},
   "Proteínas":{cls:"proteina",items:[
-    {n:"Bonito 1 kg",v:"1-2 días refri",b:"urgent",img:IMG.bonito},
-    {n:"Atún (lata)",v:"meses",b:"ok",img:IMG.atun},
-    {n:"Chorizo",v:"1-2 sem",b:"soon",img:IMG.pollo},
-    {n:"Huevo",v:"3 sem",b:"ok",img:IMG.huevo}
+    {id:"bonito",n:"Bonito 1 kg",v:"1-2 días refri",b:"urgent",img:IMG.bonito,kw:["bonito","pescado"],max:4},
+    {id:"atun",n:"Atún (lata)",v:"meses",b:"ok",img:IMG.atun,kw:["atún","atun"],max:6},
+    {id:"chorizo",n:"Chorizo",v:"1-2 sem",b:"soon",img:IMG.pollo,kw:["chorizo","salchicha"],max:4},
+    {id:"huevo",n:"Huevo",v:"3 sem",b:"ok",img:IMG.huevo,kw:["huevo","huevos"],max:24}
   ]},
   "Lácteos":{cls:"lacteo",items:[
-    {n:"Mantequilla",v:"3-4 sem",b:"ok",img:IMG.queso},
-    {n:"Queso",v:"1-2 sem",b:"soon",img:IMG.queso},
-    {n:"Leche",v:"según envase",b:"ok",img:IMG.leche}
+    {id:"mantequilla",n:"Mantequilla",v:"3-4 sem",b:"ok",img:IMG.queso,kw:["mantequilla"],max:12},
+    {id:"queso",n:"Queso",v:"1-2 sem",b:"soon",img:IMG.queso,kw:["queso"],max:8},
+    {id:"leche",n:"Leche",v:"según envase",b:"ok",img:IMG.leche,kw:["leche"],max:10}
   ]},
   "Granos y carbohidratos":{cls:"carb",items:[
-    {n:"Arroz (4 sobres)",v:"meses",b:"ok",img:IMG.arroz},
-    {n:"Arroz (bolsa)",v:"meses",b:"ok",img:IMG.arroz},
-    {n:"Quinua",v:"meses",b:"ok",img:IMG.quinua},
-    {n:"Lenteja",v:"meses",b:"ok",img:IMG.lenteja},
-    {n:"Maíz/Canchita",v:"meses",b:"ok",img:IMG.fruta},
-    {n:"Fideos (4 sobres)",v:"meses",b:"ok",img:IMG.fideos},
-    {n:"Tallarines",v:"meses",b:"ok",img:IMG.tallarin},
-    {n:"Papita (sobre)",v:"meses",b:"ok",img:IMG.papa},
-    {n:"Wantán (sobre)",v:"meses",b:"ok",img:IMG.wantan_frito},
-    {n:"Gelatina",v:"meses",b:"ok",img:IMG.fruta}
+    {id:"arroz",n:"Arroz",v:"meses",b:"ok",img:IMG.arroz,kw:["arroz"],max:30},
+    {id:"quinua",n:"Quinua",v:"meses",b:"ok",img:IMG.quinua,kw:["quinua","quinoa"],max:6},
+    {id:"lenteja",n:"Lenteja",v:"meses",b:"ok",img:IMG.lenteja,kw:["lenteja","menestra"],max:6},
+    {id:"canchita",n:"Maíz/Canchita",v:"meses",b:"ok",img:IMG.fruta,kw:["canchita","maíz"],max:8},
+    {id:"fideos",n:"Fideos",v:"meses",b:"ok",img:IMG.fideos,kw:["fideos"],max:8},
+    {id:"tallarines",n:"Tallarines",v:"meses",b:"ok",img:IMG.tallarin,kw:["tallarín","tallarines"],max:6},
+    {id:"papita",n:"Papita (sobre)",v:"meses",b:"ok",img:IMG.papa,kw:["papita"],max:1},
+    {id:"wantan",n:"Wantán",v:"meses",b:"ok",img:IMG.wantan_frito,kw:["wantán","wantan"],max:2},
+    {id:"gelatina",n:"Gelatina",v:"meses",b:"ok",img:IMG.fruta,kw:["gelatina"],max:4}
   ]},
   "Otros":{cls:"otro",items:[
-    {n:"Aceite",v:"meses",b:"ok",img:IMG.fruta},
-    {n:"Café",v:"meses",b:"ok",img:IMG.cafe},
-    {n:"Sachets",v:"meses",b:"ok",img:IMG.fruta}
+    {id:"aceite",n:"Aceite",v:"meses",b:"ok",img:IMG.fruta,kw:["aceite"],max:30},
+    {id:"cafe",n:"Café",v:"meses",b:"ok",img:IMG.cafe,kw:["café","cafe"],max:30},
+    {id:"sachets",n:"Sachets",v:"meses",b:"ok",img:IMG.fruta,kw:["sachet","mayonesa","mostaza","kétchup"],max:10}
   ]}
 };
 
-const cats = document.getElementById('cats');
-let totalItems = 0;
-for(const [k,v] of Object.entries(inventario)){
-  const div = document.createElement('div');
-  div.className = 'cat ' + v.cls;
-  let html = `<h3>${k} <span class="count">${v.items.length}</span></h3><div class="inv-grid">`;
-  v.items.forEach(it=>{
-    totalItems++;
-    const lbl = it.b==='urgent'?'usar ya':it.b==='soon'?'pronto':'estable';
-    html += `<div class="inv-item">
-      <img src="${it.img}" alt="${it.n}" loading="lazy">
-      <div class="inv-info">
-        <div class="inv-name">${it.n}</div>
-        <div class="inv-life">${it.v}</div>
-        <span class="badge ${it.b}">${lbl}</span>
-      </div>
-    </div>`;
-  });
-  html += '</div>';
-  div.innerHTML = html;
-  cats.appendChild(div);
+// Stock state: { itemId: numeroDeUsosRestantes }
+function loadStock(){
+  const saved = localStorage.getItem('planstock_v1');
+  if(saved) return JSON.parse(saved);
+  const s = {};
+  for(const cat of Object.values(inventarioBase))
+    for(const it of cat.items) s[it.id] = it.max;
+  return s;
 }
-document.getElementById('s-items').textContent = totalItems;
+function saveStock(s){ localStorage.setItem('planstock_v1', JSON.stringify(s)); }
+let stock = loadStock();
+
+// Comidas marcadas como preparadas: { "idx_slot": true }
+function loadPrep(){
+  const saved = localStorage.getItem('planpreparadas_v1');
+  return saved ? JSON.parse(saved) : {};
+}
+function savePrep(p){ localStorage.setItem('planpreparadas_v1', JSON.stringify(p)); }
+let preparadas = loadPrep();
+
+// Encuentra item de inventario que matchea con un texto de ingrediente
+function matchInventario(textoIngrediente){
+  const t = textoIngrediente.toLowerCase();
+  for(const cat of Object.values(inventarioBase)){
+    for(const it of cat.items){
+      for(const k of it.kw){
+        if(t.includes(k.toLowerCase())) return it;
+      }
+    }
+  }
+  return null;
+}
+
+function renderInventario(){
+  const cats = document.getElementById('cats');
+  cats.innerHTML = '';
+  let totalItems = 0;
+  for(const [k,v] of Object.entries(inventarioBase)){
+    const div = document.createElement('div');
+    div.className = 'cat ' + v.cls;
+    let html = `<h3>${k} <span class="count">${v.items.length}</span></h3><div class="inv-grid">`;
+    v.items.forEach(it=>{
+      totalItems++;
+      const lbl = it.b==='urgent'?'usar ya':it.b==='soon'?'pronto':'estable';
+      const cur = stock[it.id] ?? it.max;
+      const pct = Math.max(0, Math.min(100, (cur/it.max)*100));
+      const barCls = pct < 25 ? 'bajo' : pct < 60 ? 'med' : '';
+      const agotado = cur <= 0 ? ' agotado' : '';
+      html += `<div class="inv-item${agotado}" data-id="${it.id}">
+        <img src="${it.img}" alt="${it.n}" loading="lazy">
+        <div class="inv-info">
+          <div class="inv-name">${it.n}</div>
+          <div class="inv-life">${it.v} · <span class="stock-num">${cur}/${it.max}</span></div>
+          <div class="stock-bar"><div class="stock-bar-fill ${barCls}" style="width:${pct}%"></div></div>
+          <span class="badge ${cur<=0?'urgent':it.b}">${cur<=0?'agotado':lbl}</span>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+    div.innerHTML = html;
+    cats.appendChild(div);
+  }
+  document.getElementById('s-items').textContent = totalItems;
+}
+renderInventario();
 
 // =================== CALENDARIO 4 SEMANAS ===================
 const planOriginal = [
@@ -771,9 +865,12 @@ function renderCal(){
       const dayEl = document.createElement('div');
       dayEl.className = 'day';
       const tD = turnos[idx].D, tA = turnos[idx].A, tC = turnos[idx].C;
+      const pD = preparadas[`${idx}_D`] ? ' cocinada' : '';
+      const pA = preparadas[`${idx}_A`] ? ' cocinada' : '';
+      const pC = preparadas[`${idx}_C`] ? ' cocinada' : '';
       dayEl.innerHTML = `
         <div class="day-h">${day.d}</div>
-        <div class="meal" data-idx="${idx}" data-slot="D" title="Click para ver la receta">
+        <div class="meal${pD}" data-idx="${idx}" data-slot="D" title="Click para ver la receta">
           <img class="meal-img" src="${pickImg(day.D)}" alt="" loading="lazy">
           <div class="meal-body">
             <div class="meal-l des"><span class="dot"></span>Desayuno</div>
@@ -781,7 +878,7 @@ function renderCal(){
             <span class="chef ${tD}" data-idx="${idx}" data-k="D">${NOMBRES[tD]}</span>
           </div>
         </div>
-        <div class="meal" data-idx="${idx}" data-slot="A" title="Click para ver la receta">
+        <div class="meal${pA}" data-idx="${idx}" data-slot="A" title="Click para ver la receta">
           <img class="meal-img" src="${pickImg(day.A)}" alt="" loading="lazy">
           <div class="meal-body">
             <div class="meal-l alm"><span class="dot"></span>Almuerzo</div>
@@ -789,7 +886,7 @@ function renderCal(){
             <span class="chef ${tA}" data-idx="${idx}" data-k="A">${NOMBRES[tA]}</span>
           </div>
         </div>
-        <div class="meal" data-idx="${idx}" data-slot="C" title="Click para ver la receta">
+        <div class="meal${pC}" data-idx="${idx}" data-slot="C" title="Click para ver la receta">
           <img class="meal-img" src="${pickImg(day.C)}" alt="" loading="lazy">
           <div class="meal-body">
             <div class="meal-l cen"><span class="dot"></span>Cena</div>
@@ -889,11 +986,18 @@ function renderTablaTurnos(){
   }
 }
 function resetCal(){
-  if(confirm('¿Restaurar el plan original (comidas + turnos)? Perderás tus ediciones.')){
+  if(confirm('¿Restaurar TODO (comidas + turnos + stock + comidas preparadas)? Perderás tus ediciones.')){
     plan = JSON.parse(JSON.stringify(planOriginal));
     turnos = generarTurnos();
+    preparadas = {};
+    stock = {};
+    for(const cat of Object.values(inventarioBase))
+      for(const it of cat.items) stock[it.id] = it.max;
     savePlan(plan);
     saveTurnos(turnos);
+    savePrep(preparadas);
+    saveStock(stock);
+    renderInventario();
     renderCal();
   }
 }
@@ -1193,12 +1297,18 @@ function buscarReceta(text){
   return null;
 }
 
+let recetaActual = null;
+
 function abrirReceta(idx, slot){
   const day = plan[idx];
   const comida = day[slot];
   const turno = turnos[idx][slot];
   const receta = buscarReceta(comida);
   const slotName = {D:'Desayuno',A:'Almuerzo',C:'Cena'}[slot];
+  const prepKey = `${idx}_${slot}`;
+  const yaPreparada = !!preparadas[prepKey];
+
+  recetaActual = { idx, slot, comida, receta, prepKey };
 
   document.getElementById('modal-hero').style.backgroundImage = `url('${pickImg(comida)}')`;
   document.getElementById('modal-title').textContent = comida;
@@ -1210,30 +1320,115 @@ function abrirReceta(idx, slot){
   `;
 
   let body = '';
+  let usados = []; // [{id, n, qty:1}]
   if(receta){
+    // Generar lista de ingredientes con marca de disponibilidad
+    const ingHTML = receta.ing.map(ing=>{
+      const item = matchInventario(ing);
+      if(item){
+        const cur = stock[item.id] ?? 0;
+        const tienes = cur > 0;
+        if(tienes && !usados.find(u=>u.id===item.id)) usados.push({id:item.id, n:item.n});
+        return `<li class="${tienes?'tienes':'falta'}">${ing}<span class="stock-tag">${tienes?`tienes (${cur})`:'comprar'}</span></li>`;
+      } else {
+        return `<li class="falta">${ing}<span class="stock-tag">comprar</span></li>`;
+      }
+    }).join('');
+
     body = `
       <h3>Ingredientes</h3>
-      <ul>${receta.ing.map(i=>`<li>${i}</li>`).join('')}</ul>
+      <ul class="ing-list">${ingHTML}</ul>
       <h3>Preparación</h3>
       <ol>${receta.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>
       <div class="modal-tips"><b>Tip del chef:</b> ${receta.tips}</div>
     `;
   } else {
+    // Sin receta: aún así detectar ingredientes en el texto de la comida
+    const palabras = comida.split(/[\s,+]+/);
+    const matches = [];
+    palabras.forEach(p=>{
+      const it = matchInventario(p);
+      if(it && !matches.find(m=>m.id===it.id)) matches.push(it);
+    });
+    matches.forEach(m=>{
+      if((stock[m.id]??0) > 0) usados.push({id:m.id, n:m.n});
+    });
+
+    const ingHTML = matches.length ? matches.map(m=>{
+      const cur = stock[m.id] ?? 0;
+      return `<li class="${cur>0?'tienes':'falta'}">${m.n}<span class="stock-tag">${cur>0?`tienes (${cur})`:'agotado'}</span></li>`;
+    }).join('') : '<li class="falta">No se detectaron ingredientes específicos</li>';
+
     body = `
+      <h3>Ingredientes detectados en el inventario</h3>
+      <ul class="ing-list">${ingHTML}</ul>
       <h3>Sin receta detallada</h3>
-      <p style="font-size:.92rem;color:var(--mut)">Esta comida no tiene una receta específica en el banco — es probablemente una preparación simple o una combinación de ingredientes que no requiere instrucciones. Puedes editar la comida en el calendario para ajustarla a algo más concreto.</p>
-      <h3>Sugerencia</h3>
-      <p style="font-size:.92rem">Si quieres convertir "${comida}" en algo más elaborado, prueba con:</p>
-      <ul>
-        <li>Agregar una proteína (huevo, atún, queso)</li>
-        <li>Acompañar con arroz, pan o ensalada</li>
-        <li>Sumar una guarnición de verdura salteada</li>
-      </ul>
+      <p style="font-size:.92rem;color:var(--mut)">Esta comida es una preparación simple o combinación de ingredientes. Puedes editar el plato en el calendario para detallarlo y obtener pasos.</p>
     `;
   }
   document.getElementById('modal-body').innerHTML = body;
+
+  // Footer con botón "marcar preparado"
+  const acciones = document.getElementById('modal-actions');
+  if(yaPreparada){
+    acciones.innerHTML = `
+      <span class="estado" style="color:var(--emerald)">✓ Esta comida ya fue preparada</span>
+      <button class="btn-prep deshacer" onclick="desmarcarPreparado()">Deshacer</button>
+    `;
+  } else {
+    const cuantos = usados.length;
+    acciones.innerHTML = `
+      <span class="estado">Al marcar como preparado, se descontarán <b>${cuantos}</b> ingrediente${cuantos!==1?'s':''} del inventario.</span>
+      <button class="btn-prep" onclick='marcarPreparado(${JSON.stringify(usados).replace(/'/g,"&#39;")})'>✓ Marcar como preparado</button>
+    `;
+  }
+
   document.getElementById('modal-bg').classList.add('show');
 }
+
+function marcarPreparado(usados){
+  if(!recetaActual) return;
+  // Descontar 1 unidad por cada ingrediente usado
+  usados.forEach(u=>{
+    if(stock[u.id] > 0) stock[u.id] = stock[u.id] - 1;
+  });
+  preparadas[recetaActual.prepKey] = { fecha: new Date().toISOString(), usados };
+  saveStock(stock);
+  savePrep(preparadas);
+  renderInventario();
+  // Actualizar visual de la comida en el calendario
+  marcarMealVisual(recetaActual.idx, recetaActual.slot, true);
+  // Reabrir modal con estado actualizado
+  abrirReceta(recetaActual.idx, recetaActual.slot);
+}
+
+function desmarcarPreparado(){
+  if(!recetaActual) return;
+  const reg = preparadas[recetaActual.prepKey];
+  if(reg && Array.isArray(reg.usados)){
+    reg.usados.forEach(u=>{
+      stock[u.id] = (stock[u.id] ?? 0) + 1;
+    });
+  }
+  delete preparadas[recetaActual.prepKey];
+  saveStock(stock);
+  savePrep(preparadas);
+  renderInventario();
+  marcarMealVisual(recetaActual.idx, recetaActual.slot, false);
+  abrirReceta(recetaActual.idx, recetaActual.slot);
+}
+
+function marcarMealVisual(idx, slot, prep){
+  document.querySelectorAll(`.meal[data-idx="${idx}"][data-slot="${slot}"]`).forEach(el=>{
+    el.classList.toggle('cocinada', prep);
+  });
+  actualizarContadorPrep();
+}
+function actualizarContadorPrep(){
+  const el = document.getElementById('s-prep');
+  if(el) el.textContent = Object.keys(preparadas).length;
+}
+actualizarContadorPrep();
 function cerrarReceta(){
   document.getElementById('modal-bg').classList.remove('show');
 }

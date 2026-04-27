@@ -1189,192 +1189,966 @@ for(const [k,arr] of Object.entries(compras)){
 const RECETAS = {
   ceviche: {
     nombre:"Ceviche de pescado",
-    tiempo:"20 min",porciones:"4 personas",
-    ing:["1 kg pescado fresco (perico, lenguado o bonito)","12 limones","2 cebollas rojas en pluma","1 ají limo picado","Culantro","Sal y pimienta","Camote sancochado","Choclo desgranado","Lechuga"],
-    pasos:["Cortar el pescado en cubos de 2 cm.","Sazonar con sal, pimienta y ají limo.","Exprimir los limones y agregar sobre el pescado.","Incorporar la cebolla en pluma y culantro picado.","Mezclar suavemente y dejar reposar 3-5 min.","Servir con camote, choclo y lechuga."],
-    tips:"El pescado debe estar muy fresco. La 'leche de tigre' (jugo) se sirve aparte como cortesía."
+    tiempo:"25 min",porciones:"4 personas",
+    ing:[
+      "1.2 kg pescado fresco sin piel ni espinas (perico, lenguado, mero o bonito muy fresco)",
+      "12-15 limones medianos (rinde ~1½ taza de jugo)",
+      "2 cebollas rojas grandes en pluma fina",
+      "1-2 ajíes limo picado finísimo (sin venas para menos picor)",
+      "1 atado de culantro picado fino",
+      "1½ cdita sal · pimienta al gusto",
+      "1 cdita ají amarillo en pasta (opcional, da color)",
+      "2 camotes morados sancochados en rodajas",
+      "2 choclos sancochados (desgranados o en rodajas)",
+      "1 lechuga grande para la cama",
+      "Cancha tostada (canchita) para acompañar"
+    ],
+    pasos:[
+      "Cortar el pescado en cubos uniformes de 2 cm sobre tabla muy fría. Mantener refrigerado hasta el último momento.",
+      "Cortar la cebolla en pluma muy fina. Sumergirla 5 min en agua con sal y un poco de hielo, escurrir bien (esto suaviza el sabor crudo).",
+      "Exprimir los limones SIN apretar la cáscara (sale amargo). Colar el jugo.",
+      "En un bowl frío, sazonar el pescado con sal, pimienta y ají limo. Mezclar 30 segundos.",
+      "Verter el jugo de limón sobre el pescado, agregar la pasta de ají amarillo y mezclar suave 1 min.",
+      "Incorporar la cebolla escurrida y el culantro picado.",
+      "Reposar 3-5 min máximo (ni más ni menos: poco = crudo, mucho = duro y blanco).",
+      "Servir en plato hondo sobre cama de lechuga, con camote, choclo y canchita al lado."
+    ],
+    tips:"FRESCURA: el pescado debe oler a mar, no a pescado. · LIMÓN: usa solo el jugo, nunca apretar cáscara. · TIEMPO: máx 5 min de marinado, sino el pescado queda gomoso. · Sirve la 'leche de tigre' aparte en vasos pequeños como cortesía."
   },
   arroz_pollo: {
-    nombre:"Arroz con pollo",
-    tiempo:"45 min",porciones:"4 personas",
-    ing:["4 piezas de pollo","2 tazas de arroz","1 atado de culantro licuado","1 cebolla picada","3 dientes de ajo","1 ají amarillo","½ taza arvejas + zanahoria","1 cerveza pequeña (opcional)","2½ tazas caldo de pollo","Aceite, sal, comino"],
-    pasos:["Sellar el pollo en aceite caliente, retirar.","En la misma olla, sofreír cebolla, ajo y ají amarillo.","Agregar el culantro licuado y cocinar 2 min.","Incorporar arroz, dorar ligeramente.","Agregar caldo, cerveza, arvejas y zanahoria.","Colocar el pollo encima, tapar y cocinar 18-20 min a fuego bajo."],
-    tips:"El secreto está en el culantro licuado: usa abundante. Acompañar con salsa criolla."
+    nombre:"Arroz con pollo a la peruana",
+    tiempo:"55 min",porciones:"4 personas",
+    ing:[
+      "6 piezas de pollo (mezcla de muslos y encuentros, con piel)",
+      "3 tazas de arroz",
+      "2 atados grandes de culantro fresco (solo hojas)",
+      "½ taza espinaca (intensifica el verde)",
+      "1 cebolla grande picada finísima",
+      "5 dientes de ajo molidos",
+      "3 cdas pasta de ají amarillo",
+      "1 ají amarillo fresco picado (opcional)",
+      "¾ taza arvejas + 1 zanahoria en cubos pequeños + ½ taza choclo desgranado",
+      "1 botella pequeña cerveza negra o pilsen (350 ml)",
+      "3½ tazas caldo de pollo (o agua + cubo)",
+      "4 cdas aceite · sal · pimienta · 1 cdita comino"
+    ],
+    pasos:[
+      "Sazonar el pollo con sal, pimienta, comino y un poco de ajo molido. Reposar 10 min.",
+      "Licuar el culantro y la espinaca con la cerveza hasta verde intenso. Reservar.",
+      "Calentar 4 cdas de aceite en olla pesada a fuego alto. Sellar el pollo por todos lados hasta dorar (5 min). Retirar.",
+      "En la misma olla, sofreír cebolla 4 min, agregar ajo, ají amarillo en pasta y ají fresco. Cocinar 3 min más hasta que tome color.",
+      "Verter la mezcla licuada de culantro y cocinar a fuego medio 5 min hasta que oscurezca.",
+      "Incorporar el arroz, dorar 1 min (suelta aroma).",
+      "Agregar el caldo caliente, las arvejas, zanahoria y choclo. Probar de sal.",
+      "Acomodar el pollo encima sin que toque el arroz. Tapar.",
+      "Cocinar a fuego bajo 22 min sin destapar. Apagar y reposar 5 min con tapa.",
+      "Servir con salsa criolla (cebolla, limón, ají, culantro)."
+    ],
+    tips:"CULANTRO ABUNDANTE = color y sabor — no escatimes. · CERVEZA: si no quieres alcohol, usa más caldo + 1 cda de pisco al final. · NO destapes durante los 22 min — el vapor cocina el arroz. · Salsa criolla obligatoria al lado."
   },
   lomo: {
     nombre:"Lomo saltado",
-    tiempo:"25 min",porciones:"4 personas",
-    ing:["600 g lomo de res en tiras","2 cebollas rojas en gajos","2 tomates en gajos","1 ají amarillo en tiras","2 cdas sillao","2 cdas vinagre tinto","Culantro picado","Papas fritas en bastón","Arroz blanco","Aceite, sal, pimienta, comino"],
-    pasos:["Cortar la carne en tiras finas y sazonar con sal, pimienta, comino.","Calentar wok o sartén grande a fuego muy alto.","Saltear la carne 1-2 min, retirar.","En el mismo wok, saltear cebolla y ají 1 min.","Volver la carne, agregar tomate, sillao y vinagre.","Mezclar 30 seg, espolvorear culantro.","Servir con papas fritas y arroz blanco."],
-    tips:"Fuego ALTO siempre — sin esto pierde el sabor a sartén caliente. No tapar nunca."
+    tiempo:"30 min",porciones:"4 personas",
+    ing:[
+      "800 g lomo de res (lomo fino o asado de res) en tiras de 1 cm × 5 cm",
+      "3 cebollas rojas grandes en gajos gruesos",
+      "3 tomates maduros en gajos sin pepas",
+      "2 ajíes amarillos en tiras finas (sin venas)",
+      "4 dientes de ajo molidos",
+      "1 trozo de kion del tamaño del pulgar rallado",
+      "4 cdas sillao (salsa de soya)",
+      "3 cdas vinagre tinto",
+      "1 cda salsa de ostión (opcional pero muy bueno)",
+      "1 atado de culantro picado",
+      "1 cdita pisco (opcional, para flamear)",
+      "1 kg papas blancas en bastones para freír",
+      "4 tazas arroz blanco graneado para acompañar",
+      "Aceite (vegetal, no de oliva) · sal · pimienta · ½ cdita comino"
+    ],
+    pasos:[
+      "Cortar la carne contra la fibra en tiras finas. Sazonar con sal, pimienta, comino y reposar 10 min.",
+      "Pelar y cortar las papas en bastones. Freír en aceite a 170°C hasta dorar y crujientes. Escurrir en papel.",
+      "Calentar un wok o sartén grande a FUEGO MUY ALTO con 2 cdas de aceite. Debe humear.",
+      "Echar la carne en una sola tanda. NO mover los primeros 30 segundos para que selle.",
+      "Saltear 1-2 min máximo, retirar y reservar (la carne queda jugosa, no cocida del todo).",
+      "En el mismo wok caliente, agregar 1 cda más de aceite. Saltear ajo y kion 15 segundos.",
+      "Agregar cebolla y ají amarillo. Saltear 1 min, NO debe ablandarse.",
+      "Volver la carne, agregar tomate, sillao, vinagre, ostión y pisco. Saltear 30-40 segundos en total.",
+      "Apagar el fuego, espolvorear culantro picado.",
+      "Servir inmediatamente con papas fritas mezcladas y arroz blanco al lado."
+    ],
+    tips:"FUEGO ALTO al máximo: si no tiene 'humo de wok' (aroma a fuego), no es lomo saltado. · NUNCA TAPAR — pierde el sabor de saltado. · La carne debe quedar rosada por dentro. · Las papas deben mantenerse crocantes — agregar al final, no antes. · El plato se hace en 2 minutos al final, todo el resto es prep."
   },
   aji_gallina: {
     nombre:"Ají de gallina",
-    tiempo:"50 min",porciones:"4 personas",
-    ing:["1 pechuga de pollo cocida y deshilachada","6 ajíes amarillos sin venas","1 taza pan remojado en leche","1 cebolla picada","3 dientes de ajo","½ taza nueces o pecanas","½ taza queso parmesano","1 taza caldo de pollo","Aceite, sal","Papas y huevos sancochados, aceitunas"],
-    pasos:["Licuar los ajíes amarillos blanqueados.","Sofreír cebolla y ajo, agregar el ají licuado y cocinar 5 min.","Agregar el pan remojado y nueces, mezclar.","Incorporar el pollo deshilachado.","Agregar caldo poco a poco hasta cremoso.","Finalizar con queso parmesano.","Servir con papa y huevo sancochado, aceitunas."],
-    tips:"Si está muy picante, agrega más pan o leche evaporada. La textura debe ser cremosa."
+    tiempo:"60 min",porciones:"4 personas",
+    ing:[
+      "1 pechuga grande de pollo (o 4 muslos sin piel) ~700 g",
+      "8 ajíes amarillos frescos sin venas ni pepas",
+      "1½ tazas pan francés del día anterior remojado en 1 taza de leche evaporada",
+      "1 cebolla grande picada en cubos pequeños",
+      "5 dientes de ajo molidos",
+      "½ taza nueces o pecanas tostadas y molidas",
+      "¾ taza queso parmesano rallado",
+      "2 tazas caldo de pollo (del cocido)",
+      "4 cdas aceite · sal · pimienta · ½ cdita pimienta blanca",
+      "Para servir: 4 papas amarillas sancochadas en rodajas, 4 huevos duros en cuartos, aceitunas botija, perejil picado, arroz blanco"
+    ],
+    pasos:[
+      "Cocinar el pollo en agua con sal, ¼ cebolla, 1 zanahoria y apio durante 25 min. Reservar el caldo.",
+      "Deshilachar el pollo con las manos en hilos finos. NO cortar con cuchillo.",
+      "Quitar venas y pepas a los ajíes. Hervirlos 3 veces en agua nueva (3 min cada vez) — esto baja el picor.",
+      "Licuar los ajíes blanqueados con un poco de caldo hasta puré liso. Pasar por colador si quieres textura más fina.",
+      "En olla, calentar 4 cdas de aceite. Sofreír cebolla a fuego medio 6 min hasta translúcida.",
+      "Agregar ajo y cocinar 1 min más.",
+      "Incorporar la pasta de ají amarillo licuada y cocinar 8-10 min revolviendo (debe oscurecer y soltar aceite).",
+      "Agregar el pan remojado deshecho con tenedor, mezclar bien hasta integrar.",
+      "Sumar las nueces molidas, salpimentar.",
+      "Incorporar el pollo deshilachado y mezclar.",
+      "Agregar caldo poco a poco hasta lograr textura cremosa pero no líquida (debe caer pesado de la cuchara).",
+      "Bajar el fuego, agregar el queso parmesano y mezclar hasta integrar.",
+      "Servir sobre papa amarilla en rodajas, decorar con huevo duro, aceitunas y perejil. Arroz al lado."
+    ],
+    tips:"AJÍ: hervir 3 veces es CRÍTICO para no quedar picante. · TEXTURA: cremosa pero no aguada — si queda líquido agrega más pan, si está espeso agrega más leche evaporada. · DESHILACHAR a mano: el pollo cortado con cuchillo cambia la textura del plato. · Los huevos y aceitunas no son opcionales — definen el plato."
   },
   pesto: {
     nombre:"Tallarines al pesto a la peruana",
-    tiempo:"25 min",porciones:"4 personas",
-    ing:["500 g tallarines","2 atados de albahaca","½ taza espinaca (opcional)","½ taza queso fresco","½ taza queso parmesano","2 dientes de ajo","½ taza aceite","1 taza leche evaporada","Bistec o huevo frito (opcional)"],
-    pasos:["Cocinar el tallarín al dente en agua con sal.","Licuar albahaca, espinaca, ajo, quesos, aceite y leche.","Calentar la salsa en olla 2-3 min sin que hierva.","Mezclar con el tallarín escurrido.","Servir con bistec apanado o huevo frito encima."],
-    tips:"Reserva ½ taza del agua del tallarín por si la salsa queda espesa."
+    tiempo:"30 min",porciones:"4 personas",
+    ing:[
+      "600 g tallarines (espagueti o fettuccine)",
+      "3 atados de albahaca fresca (~80 g hojas, sin tallos gruesos)",
+      "1 taza espinaca tierna (intensifica color, suaviza)",
+      "¾ taza queso fresco peruano",
+      "¾ taza queso parmesano rallado",
+      "3 dientes de ajo grandes",
+      "½ taza aceite vegetal (no oliva — sabor demasiado fuerte)",
+      "1¼ tazas leche evaporada",
+      "Sal · pimienta",
+      "Para acompañar: 4 bistecs de res apanados o 4 huevos fritos, papas fritas en bastones"
+    ],
+    pasos:[
+      "Hervir 4 L de agua con 2 cdas de sal. Cuando hierva fuerte, echar los tallarines.",
+      "Cocinar al dente (lee el paquete y resta 1 min). Reservar 1 taza del agua de cocción antes de escurrir.",
+      "Lavar la albahaca y secar con papel. Las hojas mojadas amargan el pesto.",
+      "Licuar albahaca, espinaca, ajos, ambos quesos, aceite y leche evaporada hasta verde uniforme. Empieza con poco líquido y agrega de a pocos.",
+      "Calentar la salsa en olla a fuego MUY BAJO 3-4 min. Nunca debe hervir, sino corta la leche.",
+      "Probar de sal y pimienta. Si está espeso agrega un chorro del agua del tallarín.",
+      "Incorporar los tallarines escurridos, mezclar bien. Si se ve seco, agregar más agua reservada.",
+      "Servir con bistec apanado encima o huevo frito y papas fritas al costado."
+    ],
+    tips:"ACEITE VEGETAL > oliva: el oliva amarga el pesto al calentarse. · HOJAS SECAS, sino amarga. · NO HERVIR la salsa, solo calentar. · El agua del tallarín tiene almidón — es oro líquido para ajustar la salsa. · Acompañar SIEMPRE con bistec o huevo: el plato pide proteína."
   },
   causa: {
     nombre:"Causa limeña con atún",
-    tiempo:"40 min",porciones:"4 personas",
-    ing:["1 kg papa amarilla","3 cdas pasta de ají amarillo","Jugo de 3 limones","½ taza aceite","2 latas de atún","½ taza mayonesa","½ cebolla picada","1 palta","Lechuga, aceitunas, huevo duro"],
-    pasos:["Sancochar y prensar la papa amarilla.","Mezclar la papa con ají amarillo, limón, aceite, sal.","Mezclar atún con mayonesa y cebolla.","Armar capas: papa, atún, palta, papa.","Refrigerar 30 min para compactar.","Decorar con huevo, aceitunas y lechuga."],
-    tips:"La masa de papa debe estar fría antes de armar. Ajusta el ají al gusto."
+    tiempo:"50 min + 30 min refri",porciones:"4 personas",
+    ing:[
+      "1.5 kg papa amarilla (NO sirve papa blanca)",
+      "4 cdas pasta de ají amarillo",
+      "Jugo de 4 limones",
+      "⅔ taza aceite vegetal",
+      "1½ cdita sal · pimienta blanca",
+      "Relleno: 3 latas de atún en aceite escurrido + ¾ taza mayonesa + 1 cebolla picada finísima + 2 cdas perejil + sal/pimienta",
+      "2 paltas grandes maduras en láminas",
+      "Para decorar: lechuga, 4 huevos duros en rodajas, aceitunas botija, perejil, mayonesa para piping"
+    ],
+    pasos:[
+      "Sancochar las papas amarillas con piel en agua con sal por 25-30 min hasta tiernas. Probar con cuchillo.",
+      "Pelar las papas en caliente (con guantes o tenedor) y prensarlas o pasarlas por prensapuré. Dejar enfriar a temperatura ambiente — es CRÍTICO.",
+      "Una vez fría, amasar la papa con ají amarillo, jugo de limón, aceite, sal y pimienta. Debe quedar suave y con sabor balanceado (debe picar levemente).",
+      "Preparar el relleno: mezclar atún escurrido, mayonesa, cebolla picada finísima, perejil. Sazonar.",
+      "Cortar la palta en láminas finas y rociar con limón para no oxidar.",
+      "Forrar un molde rectangular con plástico film. Armar capas: 1ª de papa (1 cm grueso), 2ª de relleno de atún (½ cm), 3ª de palta, 4ª de papa. Presionar entre cada capa.",
+      "Refrigerar 30 min para que tome forma.",
+      "Desmoldar sobre cama de lechuga, decorar con huevo duro en rodajas, aceitunas, perejil y rosas de mayonesa con piping."
+    ],
+    tips:"PAPA AMARILLA: irreemplazable — la blanca queda gomosa. · MASA FRÍA antes de aderezar, sino se vuelve aguada. · AJÍ amarillo va al gusto: prueba antes de armar. · PALTA con limón = no se oxida. · PRESIONA cada capa para que no se desarme al cortar."
   },
   chaufa: {
-    nombre:"Arroz chaufa",
-    tiempo:"20 min",porciones:"4 personas",
-    ing:["4 tazas arroz cocido del día anterior","2 huevos","200 g pollo o carne en cubos","½ taza kion picado fino","Cebollita china picada","3 cdas sillao","1 cda aceite de ajonjolí","2 dientes de ajo","Aceite, sal"],
-    pasos:["Hacer una tortilla con los huevos batidos, picar en tiras.","Saltear el pollo a fuego alto hasta dorar.","Agregar ajo y kion, saltear 30 seg.","Incorporar el arroz frío, mezclar bien.","Agregar sillao, aceite de ajonjolí, cebollita china.","Incorporar la tortilla, saltear 1 min más."],
-    tips:"Usa arroz del día anterior, frío. Si está caliente queda apelmazado."
+    nombre:"Arroz chaufa de pollo",
+    tiempo:"25 min",porciones:"4 personas",
+    ing:[
+      "5 tazas arroz cocido del día anterior (FRÍO, esto es no-negociable)",
+      "300 g pollo (pechuga o muslo) en cubos de 1.5 cm",
+      "3 huevos batidos con pizca de sal",
+      "1 trozo grande de kion rallado (4 cm)",
+      "4 dientes de ajo molidos",
+      "1 atado de cebollita china picada (separar parte blanca y verde)",
+      "1 pimiento rojo en cubitos (opcional)",
+      "5 cdas sillao",
+      "1½ cdas aceite de ajonjolí",
+      "1 cda salsa de ostión",
+      "Aceite vegetal · sal · pimienta",
+      "Para acompañar: ½ taza canchita o crocantes wantán fritos"
+    ],
+    pasos:[
+      "MUY IMPORTANTE: el arroz debe estar del día anterior y refrigerado. Soltarlo con tenedor antes de usar.",
+      "Sazonar el pollo con sal, pimienta y 1 cda de sillao. Reposar 5 min.",
+      "Calentar 1 cda de aceite en wok grande a fuego alto. Hacer una tortilla delgada con los huevos batidos, voltear, retirar y picar en tiras finas.",
+      "En el mismo wok, agregar 2 cdas de aceite. Saltear el pollo a fuego MUY ALTO hasta dorar (3 min). Retirar.",
+      "Agregar 1 cda más de aceite si falta. Saltear el ajo, kion y la parte blanca de la cebollita china durante 30 seg (huele intenso).",
+      "Agregar el pimiento (si usas) y saltear 1 min.",
+      "Incorporar el arroz frío. Saltear 2-3 min separando los granos con espátula plana, mezclando todo el tiempo.",
+      "Devolver el pollo, la tortilla picada y la parte verde de la cebollita china.",
+      "Agregar sillao, aceite de ajonjolí y salsa de ostión. Saltear 1 min final mezclando.",
+      "Servir caliente, con canchita o wantán crocantes encima."
+    ],
+    tips:"ARROZ FRÍO Y SECO. Caliente o húmedo = chaufa apelmazado. · WOK MUY CALIENTE: el sonido del aceite debe ser intenso. · EL HUMO DEL WOK es parte del sabor. · Si tienes salsa de ostión, úsala — eleva el plato 200%. · Tortilla picada se mezcla AL FINAL, sino se rompe."
   },
   lentejas: {
-    nombre:"Lentejas con arroz",
-    tiempo:"60 min",porciones:"4 personas",
-    ing:["2 tazas lentejas","1 cebolla picada","3 dientes de ajo","2 cdas pasta de tomate o 1 tomate","1 zanahoria en cubos","1 hoja de laurel","Comino, sal, pimienta","Arroz blanco para acompañar","Chorizo o salchicha (opcional)"],
-    pasos:["Remojar lentejas 1 hora si es posible.","Sofreír cebolla, ajo y comino.","Agregar pasta de tomate, cocinar 2 min.","Incorporar lentejas, zanahoria, laurel y agua (3 tazas).","Cocinar 35-40 min hasta tiernas.","Si usas chorizo, freírlo aparte y agregar al final.","Servir sobre arroz blanco."],
-    tips:"Sazona la sal al final — si la pones al inicio las lentejas no ablandan."
+    nombre:"Lentejas con arroz y chorizo",
+    tiempo:"75 min (+1h remojo opcional)",porciones:"4 personas",
+    ing:[
+      "2½ tazas lentejas",
+      "1 cebolla grande picada finita",
+      "5 dientes de ajo molidos",
+      "1 cdita comino",
+      "3 cdas pasta de tomate (o 2 tomates rallados)",
+      "1 zanahoria en cubos pequeños",
+      "1 papa en cubos (opcional, espesa)",
+      "2 hojas de laurel",
+      "1 cdita orégano seco",
+      "Sal · pimienta · pizca de azúcar",
+      "300 g chorizo o salchicha en rodajas",
+      "Arroz blanco para acompañar (4 tazas cocidas)",
+      "Plátano frito en tajadas (opcional, balance)"
+    ],
+    pasos:[
+      "Si tienes tiempo, remojar las lentejas 1 hora en agua fría. Si no, lavarlas bien y arrancar.",
+      "En olla, calentar 3 cdas de aceite. Sofreír cebolla 5 min hasta dorar.",
+      "Agregar ajo y comino, cocinar 1 min más.",
+      "Incorporar pasta de tomate y cocinar 3 min revolviendo (oscurece).",
+      "Agregar zanahoria, papa y mezclar.",
+      "Sumar las lentejas escurridas, laurel, orégano y pizca de azúcar.",
+      "Cubrir con 5 tazas de agua hirviendo (3 dedos sobre las lentejas).",
+      "Hervir, bajar a fuego medio-bajo y cocinar 35-45 min hasta que las lentejas estén tiernas pero no deshechas. Agregar agua si se seca.",
+      "MUY IMPORTANTE: salar al final, cuando ya están tiernas (sino no ablandan).",
+      "Aparte, freír el chorizo en su propio aceite hasta dorar.",
+      "Servir las lentejas en plato hondo con arroz blanco al costado, chorizo encima y plátano frito.",
+      "Decorar con culantro picado o cebolla china."
+    ],
+    tips:"SAL AL FINAL — si la pones al inicio las lentejas no ablandan nunca. · El chorizo se cocina aparte para no grasar las lentejas. · Una pizca de azúcar contrarresta la acidez del tomate. · Si las hervidas quedan duras: agua dura — agrega ¼ cdita de bicarbonato. · Recalentadas al día siguiente quedan aún mejor."
   },
   sopa_pollo: {
     nombre:"Sopa de pollo casera",
-    tiempo:"45 min",porciones:"4 personas",
-    ing:["4 piezas de pollo (alas o muslos)","1 zanahoria en rodajas","½ taza fideos cabello de ángel","1 papa en cubos","½ taza apio picado","1 poro picado","Culantro, sal, pimienta","2 L de agua"],
-    pasos:["Hervir el pollo en 2 L de agua con sal 25 min.","Retirar espuma con cuchara.","Agregar zanahoria, papa, apio, poro.","Cocinar 10 min más.","Agregar fideos y cocinar 4 min.","Espolvorear culantro al servir."],
-    tips:"Si tienes huesos de pollo guardados en el freezer, úsalos para más sabor."
+    tiempo:"55 min",porciones:"4 personas",
+    ing:[
+      "6 piezas de pollo (alas, encuentros o muslos con hueso)",
+      "1 cebolla cortada en 2",
+      "1 poro grande picado",
+      "2 zanahorias en rodajas gruesas",
+      "2 papas medianas en cubos",
+      "1 ramita de apio picado (con hojas)",
+      "1 trozo de kion machacado (3 cm)",
+      "¾ taza fideos cabello de ángel (o estrellitas)",
+      "1 huevo (opcional, batido al final)",
+      "1 atado de culantro y perejil picados",
+      "Sal · pimienta · 1 cdita orégano",
+      "2.5 L agua",
+      "Limón en cuartos para servir"
+    ],
+    pasos:[
+      "En olla grande, hervir 2.5 L de agua con sal, ½ cebolla y kion machacado.",
+      "Agregar el pollo y cocinar a fuego medio 25-30 min. Retirar la espuma con cuchara constantemente — esto da caldo limpio.",
+      "Incorporar la zanahoria, papa, poro y apio. Cocinar 12 min hasta tiernos.",
+      "Probar de sal y agregar pimienta y orégano.",
+      "Sumar los fideos cabello de ángel y cocinar exactamente 4 min (no más, sino se pasan).",
+      "Si quieres más cremosidad, batir un huevo y echarlo al caldo hirviendo en hilo, revolviendo (queda como fideos de huevo).",
+      "Apagar y espolvorear culantro y perejil picados.",
+      "Servir bien caliente con limón al lado."
+    ],
+    tips:"ESPUMA: retirarla constantemente al inicio = caldo cristalino. · Pollo CON HUESO da más sabor que sin hueso. · Si tienes huesos guardados en el freezer, agrégalos para más sabor. · Limón al servir es OBLIGATORIO. · Recalentar suave, no hervir, para no pasar los fideos."
   },
   tortilla: {
-    nombre:"Tortilla de papa o verduras",
-    tiempo:"25 min",porciones:"4 personas",
-    ing:["4 papas medianas","6 huevos","1 cebolla picada","Verduras al gusto (espinaca, brócoli, zapallito)","Aceite, sal, pimienta"],
-    pasos:["Pelar y cortar las papas en láminas finas.","Freír las papas en abundante aceite 10 min, escurrir.","Sofreír cebolla y verduras hasta blandas.","Batir los huevos con sal y pimienta.","Mezclar huevos con papa y verduras.","Cocinar en sartén 5 min por lado a fuego medio."],
-    tips:"Para voltear sin romper, usa un plato grande encima del sartén."
+    nombre:"Tortilla de papa con verduras",
+    tiempo:"35 min",porciones:"4 personas",
+    ing:[
+      "5 papas blancas medianas (~800 g)",
+      "8 huevos grandes",
+      "1 cebolla grande picada finísima",
+      "1 taza espinaca picada o ½ brócoli o ½ zapallito italiano",
+      "½ taza queso fresco desmenuzado (opcional)",
+      "Aceite abundante para freír las papas",
+      "Sal · pimienta · perejil picado",
+      "Para servir: ensalada de tomate y lechuga, salsa criolla"
+    ],
+    pasos:[
+      "Pelar y cortar las papas en láminas finas (3 mm) o cubos pequeños.",
+      "Calentar abundante aceite en sartén grande. Freír las papas a fuego medio 12-15 min hasta tiernas y doradas. Salar y escurrir.",
+      "En otro sartén, sofreír la cebolla en 1 cda de aceite hasta translúcida (5 min).",
+      "Agregar las verduras (espinaca, brócoli o zapallito) y cocinar 4 min hasta blandas.",
+      "Batir los huevos en bowl grande con sal, pimienta y perejil picado.",
+      "Mezclar los huevos batidos con las papas escurridas, la cebolla y verduras (y queso si usas). Reposar 5 min para que la papa absorba.",
+      "Calentar 2 cdas de aceite en sartén antiadherente de 24 cm. Verter la mezcla, bajar a fuego medio-bajo.",
+      "Cocinar 6-7 min hasta que el borde se vea firme.",
+      "Para voltear: tapar con un plato grande, dar la vuelta de un golpe, deslizar la tortilla de vuelta al sartén.",
+      "Cocinar el otro lado 5 min más. Centro debe quedar jugoso, no seco.",
+      "Reposar 5 min antes de cortar. Servir con ensalada y salsa criolla."
+    ],
+    tips:"PAPA BIEN COCIDA antes de mezclar con huevo, sino queda cruda dentro. · REPOSAR la mezcla 5 min antes de cocinar — la papa absorbe el huevo y queda más esponjosa. · VOLTEAR con plato es la técnica clásica. · Centro JUGOSO (no seco) es la marca de una buena tortilla."
   },
   pollo_horno: {
-    nombre:"Pollo al horno con papas",
-    tiempo:"75 min",porciones:"4 personas",
-    ing:["1 pollo entero o presas","4 papas grandes en cuartos","1 limón","4 dientes de ajo","Romero o tomillo","Mostaza, sillao, aceite","Sal, pimienta, comino"],
-    pasos:["Marinar el pollo con ajo licuado, mostaza, sillao, limón, comino, sal (mínimo 30 min).","Precalentar horno a 200°C.","Colocar pollo en bandeja con papas alrededor.","Rociar con aceite, sal, romero.","Hornear 60-70 min volteando a la mitad.","Si tienes camote, hornearlo junto."],
-    tips:"Si la piel no dora, sube a 220°C los últimos 10 min. Reposar 5 min antes de cortar."
+    nombre:"Pollo al horno con papas y camote",
+    tiempo:"90 min (+30 min marinado)",porciones:"4 personas",
+    ing:[
+      "1 pollo entero (~1.8 kg) o 8 piezas grandes",
+      "8 papas blancas medianas en cuartos",
+      "2 camotes grandes en rodajas gruesas",
+      "Marinado: 6 dientes de ajo molidos · 3 cdas mostaza · 3 cdas sillao · jugo de 2 limones · 2 cdas pasta de ají panca · 2 cdas aceite · 1 cdita comino · 1 cda romero seco · 1 cdita pimienta · sal",
+      "Para la bandeja: 1 cebolla en aros, 1 taza vino blanco o cerveza (opcional), aceite extra, hierbas frescas (romero/tomillo)",
+      "Para servir: salsa criolla, ají molido"
+    ],
+    pasos:[
+      "Mezclar todos los ingredientes del marinado en bowl. Probar y ajustar de sal.",
+      "Untar el pollo con el marinado por dentro y por fuera, masajeando bajo la piel del pecho.",
+      "Refrigerar mínimo 30 min, ideal 2-4 horas.",
+      "Precalentar horno a 200°C.",
+      "Sancochar las papas 8 min en agua con sal, escurrir (se doran mejor así).",
+      "En bandeja grande, hacer cama con cebolla en aros. Acomodar el pollo en el centro.",
+      "Distribuir las papas y camote alrededor. Rociar con aceite y vino.",
+      "Tapar con foil y hornear 40 min.",
+      "Destapar, voltear papas, rociar con los jugos del fondo. Hornear 30 min más sin tapa.",
+      "Subir a 220°C los últimos 10 min para dorar la piel.",
+      "Verificar cocción: insertar cuchillo en el muslo — el jugo debe salir transparente.",
+      "Reposar tapado 10 min antes de cortar.",
+      "Trinchar y servir con las papas, camote y salsa criolla."
+    ],
+    tips:"MARINAR es CRÍTICO — mínimo 30 min, mejor 2-4 horas. · BAJO LA PIEL es donde más entra el sabor. · TAPAR con foil al inicio = jugoso por dentro. · DESTAPAR al final = piel crocante. · REPOSAR 10 min antes de cortar — sino los jugos se escapan."
   },
   crema_zanahoria: {
     nombre:"Crema de zanahoria",
-    tiempo:"30 min",porciones:"4 personas",
-    ing:["6 zanahorias grandes","1 papa","1 cebolla","2 dientes de ajo","2 cdas mantequilla","½ taza leche evaporada","Caldo de pollo o agua","Pan tostado en cubos","Sal, pimienta, nuez moscada"],
-    pasos:["Sofreír cebolla y ajo en mantequilla.","Agregar zanahoria y papa en cubos.","Cubrir con caldo y cocinar 20 min.","Licuar todo hasta cremoso.","Volver a olla, agregar leche evaporada y nuez moscada.","Servir con cubos de pan tostado."],
-    tips:"Una pizca de azúcar realza el sabor de la zanahoria."
+    tiempo:"40 min",porciones:"4 personas",
+    ing:[
+      "8 zanahorias grandes peladas y en rodajas",
+      "2 papas medianas en cubos (espesan naturalmente)",
+      "1 cebolla picada",
+      "3 dientes de ajo",
+      "3 cdas mantequilla",
+      "1 taza leche evaporada",
+      "5 tazas caldo de pollo o verduras",
+      "1 hoja de laurel",
+      "1 cdita azúcar (realza el sabor de la zanahoria)",
+      "Sal · pimienta · pizca de nuez moscada · pizca de jengibre en polvo",
+      "Para servir: cubos de pan tostado en mantequilla, perejil picado, un hilo de leche evaporada o crema"
+    ],
+    pasos:[
+      "Derretir mantequilla en olla a fuego medio. Sofreír cebolla 5 min hasta translúcida.",
+      "Agregar ajo y cocinar 30 seg.",
+      "Incorporar zanahoria, papa, laurel y azúcar. Sofreír 3 min para que tomen sabor.",
+      "Cubrir con caldo y hervir 22-25 min hasta que la zanahoria esté muy tierna (debe deshacerse al pinchar).",
+      "Retirar la hoja de laurel.",
+      "Licuar todo hasta cremoso. Si está muy espeso, agrega más caldo. Si está líquido, sube fuego para evaporar.",
+      "Volver a la olla. Agregar leche evaporada, nuez moscada, jengibre, sal y pimienta.",
+      "Calentar 3 min sin que hierva.",
+      "Mientras, tostar cubos de pan en mantequilla hasta dorados.",
+      "Servir en bowls con cubos de pan tostado encima, hilo de crema y perejil."
+    ],
+    tips:"AZÚCAR no la hace dulce, RESALTA el sabor de la zanahoria. · PAPA en lugar de harina = espesado natural sin grumos. · LICUAR muy bien = cremosidad sedosa. · El TOQUE DE JENGIBRE le da personalidad. · Pan tostado en mantequilla > pan tostado seco."
   },
   wantan_frito: {
     nombre:"Wantán frito con tamarindo",
-    tiempo:"25 min",porciones:"4 personas",
-    ing:["1 paquete masa de wantán","250 g carne molida o pollo","1 cebolla china","Kion rallado","Sillao","Aceite para freír","Salsa de tamarindo (compra hecha)","Ensalada de col"],
-    pasos:["Mezclar carne molida con cebolla china, kion, sillao.","Colocar 1 cdita en cada masa de wantán.","Doblar en triángulo y sellar bordes con agua.","Freír en aceite a 180°C hasta dorar (2-3 min).","Servir con salsa de tamarindo y ensalada de col."],
-    tips:"No sobrellenes — explotan al freír. Sella bien con dedo mojado."
+    tiempo:"35 min",porciones:"4 personas",
+    ing:[
+      "30-35 masas de wantán (1 paquete)",
+      "400 g carne molida de cerdo o pollo (cerdo es tradicional)",
+      "1 atado cebollita china picada finita",
+      "2 cdas kion rallado",
+      "3 cdas sillao",
+      "1 cda aceite de ajonjolí",
+      "1 cda salsa de ostión (opcional)",
+      "1 cdita azúcar",
+      "1 huevo batido (sellador)",
+      "Aceite abundante para freír (preferible aceite vegetal)",
+      "Salsa de tamarindo (compra hecha o casera)",
+      "Para acompañar: ensalada de col blanca rallada con limón, vinagre y un poco de aceite + salsa de soya"
+    ],
+    pasos:[
+      "Mezclar la carne molida con cebollita china (parte blanca), kion rallado, sillao, aceite de ajonjolí, ostión, azúcar y pizca de sal/pimienta. Reposar 10 min.",
+      "Preparar una taza con agua y otra con huevo batido para sellar.",
+      "Colocar 1 cdita escasa del relleno en el centro de cada masa de wantán.",
+      "Mojar 2 bordes de la masa con huevo batido. Doblar en triángulo presionando bien para sacar el aire.",
+      "Doblar las 2 puntas hacia adentro y unir con un toque de huevo (forma de monedero).",
+      "Repetir hasta acabar. Tapar los wantanes terminados con paño húmedo para que no sequen.",
+      "Calentar abundante aceite a 180°C en olla profunda (un trozo de masa debe burbujear al echarlo).",
+      "Freír los wantanes en tandas de 5-6 (sin amontonar). Aprox 2-3 min hasta dorar uniforme. Voltear si es necesario.",
+      "Escurrir en papel absorbente.",
+      "Servir caliente con salsa de tamarindo y ensalada de col al lado."
+    ],
+    tips:"NO SOBRELLENES: 1 cdita escasa por wantán. Más = explotan al freír. · SACA EL AIRE al doblar, sino se rompen en el aceite. · TEMP DEL ACEITE: 180°C — más frío = absorben aceite y quedan grasosos. · Si la masa está seca, humedécela con agua antes de doblar. · Hacer EN TANDAS para que el aceite no baje de temperatura."
   },
   estofado: {
-    nombre:"Estofado de pollo",
-    tiempo:"50 min",porciones:"4 personas",
-    ing:["4 piezas de pollo","2 zanahorias en cubos","2 papas en cubos","1 taza arvejas","1 cebolla picada","3 dientes de ajo","2 tomates rallados","½ taza vino tinto (opcional)","Laurel, comino, sal, pimienta"],
-    pasos:["Sellar el pollo, retirar.","Sofreír cebolla, ajo, tomate.","Volver el pollo, agregar vino, laurel, comino.","Incorporar zanahoria y papa.","Cubrir con agua, cocinar 30 min tapado.","Agregar arvejas los últimos 5 min."],
-    tips:"Acompañar con arroz blanco y rocoto picado."
+    nombre:"Estofado de pollo con verduras",
+    tiempo:"60 min",porciones:"4 personas",
+    ing:[
+      "6 piezas grandes de pollo (con hueso, mejor sabor)",
+      "3 zanahorias en cubos grandes",
+      "4 papas grandes en cubos",
+      "1 taza arvejas frescas o congeladas",
+      "1 cebolla grande picada",
+      "5 dientes de ajo molidos",
+      "3 tomates grandes rallados (sin piel)",
+      "1 cdita pasta de ají panca",
+      "½ taza vino tinto (opcional pero recomendado)",
+      "2 hojas de laurel · 1 cdita comino · 1 cdita orégano",
+      "Sal · pimienta · 1 cda azúcar",
+      "1 cubo de caldo de pollo",
+      "Aceite",
+      "Arroz blanco · rocoto picado · perejil"
+    ],
+    pasos:[
+      "Sazonar el pollo con sal, pimienta y comino. Reposar 10 min.",
+      "Calentar 3 cdas de aceite en olla pesada a fuego alto. Sellar el pollo por todos lados hasta dorar (5 min). Retirar.",
+      "En la misma olla, sofreír cebolla 5 min, agregar ajo y cocinar 1 min.",
+      "Incorporar el ají panca y el tomate rallado. Cocinar 8 min hasta que oscurezca y suelte aceite.",
+      "Volver el pollo a la olla. Agregar vino, laurel, orégano y comino.",
+      "Cubrir con 2 tazas de agua + cubo de caldo desmenuzado.",
+      "Tapar y cocinar a fuego bajo 25 min.",
+      "Agregar zanahoria y papa. Probar de sal, agregar azúcar.",
+      "Cocinar 15 min más con tapa.",
+      "Sumar las arvejas y cocinar 5 min finales sin tapa para que reduzca la salsa.",
+      "Espolvorear perejil picado y servir con arroz blanco y rocoto."
+    ],
+    tips:"SELLAR el pollo dorado al inicio = sabor profundo. · TOMATE bien cocido (8 min) = base de sabor. · AZÚCAR en pizca corta acidez del tomate. · VINO opcional pero le da otro nivel. · La salsa debe quedar espesa, no aguada — destapar al final si es necesario."
   },
   quinua: {
     nombre:"Quinua salteada con verduras",
-    tiempo:"30 min",porciones:"4 personas",
-    ing:["2 tazas quinua","1 zapallito o calabacín","1 zanahoria en cubos","½ taza brócoli","1 cebolla","2 dientes de ajo","Sillao","Aceite, sal, pimienta"],
-    pasos:["Lavar la quinua con agua hasta que el agua salga clara.","Cocinar 15 min en 4 tazas de agua con sal.","En sartén, saltear cebolla, ajo, verduras.","Incorporar la quinua cocida, agregar sillao.","Saltear 3 min más, servir caliente."],
-    tips:"Lavar la quinua es CRÍTICO — sino queda amarga (saponinas)."
+    tiempo:"35 min",porciones:"4 personas",
+    ing:[
+      "2½ tazas quinua",
+      "5 tazas agua + sal",
+      "1 zapallito italiano en cubos",
+      "1 zanahoria en cubos pequeños",
+      "1 taza brócoli en floretes pequeños",
+      "1 pimiento rojo en tiras (opcional)",
+      "1 cebolla mediana picada",
+      "3 dientes de ajo molidos",
+      "1 cda kion rallado",
+      "3 cdas sillao",
+      "1 cda aceite de ajonjolí",
+      "Aceite vegetal · sal · pimienta",
+      "Cebollita china picada para servir",
+      "1 huevo frito por persona (opcional)"
+    ],
+    pasos:[
+      "LAVAR la quinua: ponerla en un colador fino y enjuagarla con agua corriente, frotándola con las manos hasta que el agua salga limpia (no espumosa). Esto quita las saponinas que la hacen amarga.",
+      "Hervir 5 tazas de agua con sal. Agregar la quinua y cocinar a fuego medio 15-18 min hasta que se vea el 'gérmen' (anillo blanco) en cada grano. Escurrir bien.",
+      "Mientras: en wok o sartén grande, calentar 2 cdas de aceite. Saltear cebolla 3 min.",
+      "Agregar ajo y kion, saltear 30 seg.",
+      "Incorporar zanahoria primero (1 min), luego brócoli y pimiento (2 min).",
+      "Sumar el zapallito (más blando, va al final) — 1 min más.",
+      "Las verduras deben quedar AL DENTE, no blandas.",
+      "Incorporar la quinua escurrida, mezclar bien.",
+      "Agregar sillao y aceite de ajonjolí. Saltear 2 min.",
+      "Probar y ajustar sal.",
+      "Servir con cebollita china por encima y huevo frito al lado."
+    ],
+    tips:"LAVAR LA QUINUA es CRÍTICO — sin esto queda amarga (saponinas). · ANILLO BLANCO = grano cocido. Si no se ve, falta. · VERDURAS AL DENTE: el plato gana textura. · Huevo frito encima: sube el plato a otro nivel. · Recalentado al día siguiente queda aún mejor."
   },
   ensalada_palta: {
-    nombre:"Ensalada con palta",
-    tiempo:"10 min",porciones:"4 personas",
-    ing:["3 paltas","1 lechuga grande","3 tomates","1 cebolla","2 limones","Aceite de oliva","Sal, pimienta"],
-    pasos:["Lavar y cortar la lechuga en trozos.","Cortar tomate, palta, cebolla en gajos finos.","Mezclar todo en un bowl.","Aderezar con aceite, limón, sal y pimienta."],
-    tips:"Agregar la palta al final para que no se oxide."
+    nombre:"Ensalada con palta y vinagreta",
+    tiempo:"15 min",porciones:"4 personas",
+    ing:[
+      "3 paltas grandes maduras",
+      "1 lechuga grande (americana o italiana)",
+      "3 tomates maduros firmes",
+      "1 cebolla roja mediana",
+      "1 pepino (opcional)",
+      "Vinagreta: ¼ taza aceite de oliva · 2 limones (jugo) · 1 cdita mostaza · 1 cdita miel · 1 diente de ajo machacado · sal · pimienta · ½ cdita orégano",
+      "Adicional: ½ taza queso fresco desmenuzado o fetas, ¼ taza pecanas tostadas, aceitunas"
+    ],
+    pasos:[
+      "Lavar y secar bien la lechuga. Picarla con las manos en trozos grandes (cortar con cuchillo la oxida).",
+      "Cortar tomate en gajos sin pepas (las pepas mojan la ensalada).",
+      "Cortar cebolla en pluma fina y sumergir 5 min en agua con limón para suavizar.",
+      "Cortar pepino en medias lunas finas.",
+      "Preparar la vinagreta: en frasco con tapa, agitar todos los ingredientes hasta emulsionar. Probar y ajustar.",
+      "Cortar la palta en gajos al último momento. Rociar con limón.",
+      "En bowl grande, mezclar lechuga, tomate, cebolla escurrida y pepino.",
+      "Aliñar con la vinagreta y mezclar suave.",
+      "Coronar con la palta encima (no mezclar — se rompe).",
+      "Decorar con queso fresco, pecanas tostadas y aceitunas."
+    ],
+    tips:"PALTA AL FINAL — si la mezclas antes se oxida y rompe. · LECHUGA con manos, no cuchillo. · CEBOLLA en agua con limón = pierde el filo. · VINAGRETA emulsiona en frasco con tapa, mucho mejor que en bowl. · La miel en la vinagreta balancea — casi no se nota."
   },
   pan_palta: {
-    nombre:"Pan con palta y huevo",
-    tiempo:"10 min",porciones:"4 personas",
-    ing:["12 panes (francés o ciabatta)","3 paltas maduras","8 huevos (2 por persona)","2 tomates","1 limón","Sal, pimienta","Café con leche para acompañar"],
-    pasos:["Pisar las paltas con tenedor, sazonar con limón, sal, pimienta.","Tostar el pan ligeramente.","Cocinar los huevos a gusto (revueltos o pochados).","Untar palta sobre el pan.","Colocar huevo encima y rodaja de tomate."],
-    tips:"Un toque de ají molido o orégano realza muchísimo."
+    nombre:"Pan con palta y huevo (sándwich completo)",
+    tiempo:"15 min",porciones:"4 personas",
+    ing:[
+      "12 panes franceses o ciabatta",
+      "3 paltas grandes maduras",
+      "8 huevos (2 por persona)",
+      "2 tomates en rodajas",
+      "1 cebolla pequeña en pluma fina",
+      "Limón · sal · pimienta · ají molido o pimentón",
+      "Mantequilla para tostar el pan",
+      "Mostaza o mayonesa (opcional)",
+      "Café con leche para acompañar",
+      "Hojas de lechuga (opcional)"
+    ],
+    pasos:[
+      "Pisar las paltas con tenedor en un bowl. Sazonar con jugo de ½ limón, sal, pimienta y ají molido. Mezclar dejándola con textura (no puré).",
+      "Sumergir la cebolla en agua con limón 5 min, escurrir.",
+      "Cortar los panes por la mitad. Untar con mantequilla la parte interna.",
+      "Tostar los panes en sartén o tostadora hasta dorar.",
+      "Para los huevos: pueden ser revueltos, pochados, fritos o duros. Lo más rápido para 4 personas: revueltos.",
+      "  REVUELTOS: batir los huevos con sal, calentar mantequilla en sartén a fuego BAJO, agregar y mover constantemente con espátula. Retirar cuando aún se vean cremosos.",
+      "Untar la palta sobre la base del pan tostado.",
+      "Colocar rodajas de tomate y cebolla escurrida encima.",
+      "Coronar con los huevos repartidos.",
+      "Tapar con la otra mitad del pan o servir abierto.",
+      "Espolvorear más ají molido o pimentón si quieres picante."
+    ],
+    tips:"PALTA con TEXTURA, no puré: se siente mejor en boca. · PAN TOSTADO con mantequilla = nivel deli. · HUEVOS REVUELTOS a fuego bajo, sino quedan secos. · Variante: agregar queso fresco o salami. · Si tienes pan ciabatta o francés del día anterior, tuesta más tiempo, queda mejor."
   },
   yogurt: {
-    nombre:"Bowl de yogurt con frutas",
-    tiempo:"5 min",porciones:"4 personas",
-    ing:["1 L yogurt natural o griego","2 plátanos","1 papaya o piña","Granola","Miel o azúcar rubia","Frutos secos al gusto"],
-    pasos:["Servir el yogurt en bowls.","Cortar frutas en cubos pequeños.","Agregar frutas sobre el yogurt.","Espolvorear granola y frutos secos.","Endulzar con miel."],
-    tips:"Si el yogurt está muy ácido, mezcla con un toque de leche evaporada."
+    nombre:"Bowl de yogurt con frutas y granola",
+    tiempo:"10 min",porciones:"4 personas",
+    ing:[
+      "1 L yogurt natural sin azúcar (o griego, más cremoso)",
+      "3 plátanos en rodajas",
+      "2 tazas papaya o piña en cubos (o ambos)",
+      "1 manzana en cubos pequeños",
+      "1 taza granola",
+      "¼ taza miel de abeja o azúcar rubia",
+      "¼ taza frutos secos: pecanas, almendras, nueces, pasas",
+      "Coco rallado (opcional)",
+      "Chía o linaza (opcional)",
+      "1 limón (un toque)"
+    ],
+    pasos:[
+      "En 4 bowls grandes, servir el yogurt en la base (~1 taza por persona).",
+      "Endulzar con miel mezclando suave (1-2 cditas por bowl).",
+      "Cortar las frutas en el momento (no antes — se oxidan).",
+      "Rociar la manzana y el plátano con un poco de jugo de limón.",
+      "Distribuir las frutas sobre el yogurt en orden visual: cubos al fondo, rodajas encima.",
+      "Espolvorear granola sobre todo, sin tapar las frutas.",
+      "Coronar con frutos secos y coco rallado.",
+      "Si quieres, agregar 1 cdita de chía o linaza para fibra.",
+      "Servir inmediatamente para que la granola se mantenga crocante."
+    ],
+    tips:"YOGURT GRIEGO > yogurt común — más cremoso y más proteína. · GRANOLA AL FINAL, sino se humedece y pierde crocancia. · FRUTAS RECIÉN CORTADAS, no antes. · Si el yogurt está muy ácido, mezclar con un poco de miel o leche evaporada. · MIEL > azúcar — sabor superior."
   },
   huevo_revuelto: {
-    nombre:"Huevos revueltos",
-    tiempo:"10 min",porciones:"4 personas",
-    ing:["8 huevos","2 cdas mantequilla","¼ taza leche","Cebollita china picada","Sal, pimienta","Pan tostado para acompañar"],
-    pasos:["Batir los huevos con leche, sal y pimienta.","Calentar mantequilla en sartén a fuego BAJO.","Agregar los huevos, mover constantemente con espátula.","Cuando empiecen a cuajar (cremosos pero no secos), retirar.","Espolvorear cebollita china."],
-    tips:"Fuego BAJO es la clave — fuego alto = huevos secos y duros."
+    nombre:"Huevos revueltos cremosos",
+    tiempo:"12 min",porciones:"4 personas",
+    ing:[
+      "10 huevos grandes (2-3 por persona)",
+      "3 cdas mantequilla",
+      "⅓ taza leche evaporada o crema (no agua)",
+      "1 atado pequeño cebollita china picada finita",
+      "Sal · pimienta",
+      "Opcional: ½ taza queso fresco desmenuzado, ¼ taza tomate cherry, jamón o tocino picado",
+      "Pan tostado para acompañar (8 panes)"
+    ],
+    pasos:[
+      "Romper los huevos en bowl grande. Batirlos energéticamente con tenedor por 1 min — debe quedar uniforme amarillo.",
+      "Agregar la leche, sal y pimienta. Batir 30 segundos más.",
+      "Calentar la mantequilla en sartén antiadherente grande a fuego MUY BAJO. La mantequilla NO debe burbujear ni dorarse.",
+      "Verter los huevos cuando la mantequilla esté derretida pero fría aún.",
+      "Esperar 30 segundos sin tocar. Empezar a mover con espátula de silicona desde los bordes hacia el centro, formando pliegues grandes.",
+      "Continuar moviendo cada 20-30 seg sin batir (movimientos suaves, plegando).",
+      "Cuando estén casi cuajados pero todavía brillantes y un poco líquidos en partes, RETIRAR del fuego. La cocción residual los termina.",
+      "Espolvorear cebollita china (y queso si usas).",
+      "Servir inmediatamente con pan tostado caliente."
+    ],
+    tips:"FUEGO BAJO: el secreto N°1. Fuego alto = huevos secos y duros. · MANTEQUILLA, no aceite — sabor superior. · LECHE EVAPORADA = cremosidad. Agua arruina. · MOVIMIENTO: pliegues grandes, no revolver como tortilla. · RETIRAR ANTES de que se vean cocidos — siguen cocinando fuera del fuego. · Tarda 5-7 min hacerlos bien — no apures."
   },
   crema_brocoli: {
     nombre:"Crema de brócoli",
-    tiempo:"30 min",porciones:"4 personas",
-    ing:["1 brócoli grande","1 papa","1 cebolla","2 dientes de ajo","2 cdas mantequilla","½ taza leche evaporada","Caldo de verduras","Queso parmesano para servir","Sal, pimienta"],
-    pasos:["Separar brócoli en floretes pequeños.","Sofreír cebolla y ajo en mantequilla.","Agregar papa en cubos y brócoli.","Cubrir con caldo, cocinar 15 min.","Licuar hasta cremoso.","Volver a olla, agregar leche evaporada.","Servir con queso parmesano rallado."],
-    tips:"Reserva algunos floretes para decorar encima."
+    tiempo:"35 min",porciones:"4 personas",
+    ing:[
+      "2 brócolis grandes (~800 g) separados en floretes",
+      "2 papas medianas peladas en cubos",
+      "1 cebolla grande picada",
+      "3 dientes de ajo",
+      "3 cdas mantequilla",
+      "1 taza leche evaporada",
+      "5 tazas caldo de verduras o pollo",
+      "1 hoja de laurel · pizca de nuez moscada",
+      "Sal · pimienta",
+      "Para servir: ¾ taza queso parmesano rallado, cubos de pan tostado en mantequilla, 4 floretes pequeños reservados para decorar, perejil"
+    ],
+    pasos:[
+      "Separar el brócoli en floretes pequeños. Reservar 4 floretes lindos para decorar.",
+      "Pelar y cubear las papas en trozos parejos.",
+      "En olla grande, derretir mantequilla a fuego medio. Sofreír cebolla 5 min hasta translúcida.",
+      "Agregar ajo y cocinar 30 seg sin que dore.",
+      "Sumar papas y brócoli. Sofreír 3 min revolviendo.",
+      "Cubrir con caldo, agregar laurel y sal.",
+      "Hervir y bajar a fuego medio. Cocinar 15-18 min hasta que el brócoli esté muy tierno y la papa se deshaga al pinchar.",
+      "Reservar 4 floretes y blanchearlos aparte 2 min para decorar.",
+      "Retirar laurel del caldo.",
+      "Licuar todo hasta obtener una crema sedosa. Si es necesario, pasar por colador para textura más fina.",
+      "Volver a olla, agregar leche evaporada, nuez moscada, ajustar sal y pimienta.",
+      "Calentar 3 min sin hervir.",
+      "Servir en bowls. Decorar cada plato con: florete reservado al centro, queso parmesano, cubos de pan tostado, perejil y un hilo de aceite de oliva."
+    ],
+    tips:"PAPA = espesa naturalmente sin harina. · BLANQUEAR el florete decorativo aparte = no pierde color. · No HERVIR después de poner leche evaporada — corta. · Cubos de pan en MANTEQUILLA, no aceite — saber a deli. · Una pizca de nuez moscada hace toda la diferencia."
   },
   sopa_wantan: {
-    nombre:"Sopa wantán",
-    tiempo:"30 min",porciones:"4 personas",
-    ing:["1 paquete wantán (relleno o vacío)","Pollo deshilachado","Verduras chinas (col china, cebolla china)","Kion rallado","Sillao","Aceite de ajonjolí","2 L caldo de pollo","Sal, pimienta"],
-    pasos:["Hervir el caldo con kion 5 min.","Agregar las verduras chinas y pollo deshilachado.","Cocinar wantán aparte 3 min, escurrir.","Servir wantán en bowl, cubrir con caldo y verduras.","Aderezar con sillao y aceite de ajonjolí."],
-    tips:"No cocines el wantán dentro del caldo — se rompen."
+    nombre:"Sopa wantán completa",
+    tiempo:"40 min",porciones:"4 personas",
+    ing:[
+      "20-24 wantanes (rellenos o vacíos)",
+      "2 piezas de pollo cocido y deshilachado",
+      "200 g lomo de cerdo en tiras (opcional)",
+      "1 taza col china (sui choy) en tiras",
+      "1 atado cebolla china picada (separar parte blanca/verde)",
+      "1 trozo kion machacado (5 cm)",
+      "3 dientes de ajo machacados",
+      "5 cdas sillao",
+      "1 cda aceite de ajonjolí",
+      "1 cda salsa de ostión (opcional)",
+      "2.5 L caldo de pollo (idealmente casero)",
+      "Sal · pimienta · pizca de azúcar",
+      "Para servir: 1 huevo duro en mitades por porción, brotes de soya frescos, gotas de vinagre rojo, cebollita china picada"
+    ],
+    pasos:[
+      "Si el caldo no es casero, hervir agua con cubo de pollo, kion machacado, ajo y la parte blanca de la cebolla china. Cocinar 15 min y colar.",
+      "Volver el caldo a la olla. Agregar sillao, aceite de ajonjolí, ostión, pizca de azúcar y pimienta. Probar y ajustar sal.",
+      "Si usas lomo de cerdo, sellarlo aparte y agregar al caldo.",
+      "Incorporar el pollo deshilachado y la col china. Cocinar 5 min.",
+      "MUY IMPORTANTE: cocinar los wantanes SEPARADOS en otra olla con agua hirviendo + sal. 3-4 min hasta que floten y se vean traslúcidos.",
+      "Escurrir los wantanes con cuchara perforada y enjuagar levemente.",
+      "Servir 5-6 wantanes en cada bowl.",
+      "Cubrir con el caldo caliente y verduras.",
+      "Decorar con cebollita china (parte verde), huevo duro y brotes de soya.",
+      "Llevar vinagre rojo y sillao a la mesa para que cada uno ajuste."
+    ],
+    tips:"WANTANES APARTE: si los cocinas en el caldo se rompen y enturbian la sopa. · CALDO BIEN SAZONADO antes de servir — no se puede arreglar después. · COL CHINA: agregar al final para que mantenga textura. · Vinagre rojo y sillao en la mesa son tradicionales. · Recalentar = wantanes inflados, no pasa nada pero pierde gracia."
   },
   pescado_horno: {
-    nombre:"Pescado al horno",
-    tiempo:"35 min",porciones:"4 personas",
-    ing:["4 filetes de pescado (perico, jurel o bonito)","2 limones","3 dientes de ajo","Mantequilla","Tomates cherry o tomate en rodajas","Cebolla en aros","Vino blanco (opcional)","Hierbas (perejil, tomillo)","Sal, pimienta"],
-    pasos:["Precalentar horno a 200°C.","Marinar el pescado con ajo, limón, sal, pimienta 15 min.","Colocar en bandeja sobre cama de cebolla y tomate.","Rociar con mantequilla derretida y vino.","Hornear 18-22 min (depende del grosor).","Servir con arroz blanco y ensalada."],
-    tips:"El pescado está listo cuando se desmenuza con tenedor pero aún jugoso."
+    nombre:"Pescado al horno con hierbas",
+    tiempo:"45 min",porciones:"4 personas",
+    ing:[
+      "4 filetes grandes de pescado blanco (perico, jurel, lenguado o bonito) ~250 g cada uno",
+      "Marinado: jugo de 2 limones · 4 dientes de ajo molidos · 2 cdas aceite de oliva · 1 cdita orégano · 1 cdita comino · sal · pimienta blanca",
+      "1 cebolla grande en aros",
+      "3 tomates en rodajas (o 2 tazas tomate cherry)",
+      "1 pimiento rojo en tiras",
+      "1 limón en rodajas",
+      "½ taza vino blanco (opcional)",
+      "3 cdas mantequilla en cubos",
+      "1 atado perejil + 1 ramita tomillo o romero",
+      "Aceite de oliva extra",
+      "Para acompañar: 4 tazas arroz blanco, ensalada de palta y tomate"
+    ],
+    pasos:[
+      "Mezclar todos los ingredientes del marinado. Untar los filetes y marinar 15-20 min en frío.",
+      "Precalentar horno a 200°C.",
+      "En bandeja apta para horno, hacer cama con cebolla en aros, tomate en rodajas y pimiento.",
+      "Colocar los filetes encima.",
+      "Distribuir cubos de mantequilla sobre el pescado.",
+      "Rociar con vino blanco y aceite de oliva.",
+      "Acomodar rodajas de limón y ramitas de hierbas frescas alrededor y encima.",
+      "Cubrir con foil sin presionar el pescado.",
+      "Hornear 15 min con foil.",
+      "Destapar y hornear 8-10 min más, hasta que el pescado esté blanco-opaco y se desmenuce con tenedor pero aún jugoso.",
+      "MUY IMPORTANTE: no sobrecocinar — el pescado se seca rapidísimo.",
+      "Servir el filete sobre la cama de verduras con sus jugos. Espolvorear perejil fresco.",
+      "Acompañar con arroz blanco para empapar los jugos."
+    ],
+    tips:"PUNTO DE COCCIÓN: blanco-opaco que se desmenuza pero aún jugoso. Sobrecocido = seco e incomible. · TIEMPO: 8 min por cm de grosor del filete (regla general). · MANTEQUILLA en cubos = se derrite gradual y baña el pescado. · LIMÓN ENCIMA al hornear infunde aroma. · Servir CON los jugos del fondo — son oro."
   },
   bonito: {
     nombre:"Sudado de bonito",
-    tiempo:"30 min",porciones:"4 personas",
-    ing:["1 kg bonito en rodajas","2 tomates en rodajas","1 cebolla en pluma","2 ajíes amarillos en tiras","Culantro","Vinagre, chicha de jora o cerveza","Aceite, sal","Yuca o papa sancochada"],
-    pasos:["Sazonar el bonito con sal y pimienta.","En olla, sofreír cebolla y ají amarillo.","Colocar el pescado encima.","Agregar tomate, vinagre, chicha (½ taza).","Tapar y cocinar 12-15 min a fuego medio.","Espolvorear culantro y servir con yuca."],
-    tips:"NO destapes mientras se cocina — el vapor cocina el pescado."
+    tiempo:"40 min",porciones:"4 personas",
+    ing:[
+      "1 kg bonito en rodajas de 2 cm (4 trozos grandes)",
+      "Marinado: jugo de 2 limones · 3 dientes ajo molido · 1 cdita comino · sal · pimienta",
+      "3 tomates grandes en rodajas",
+      "2 cebollas rojas en pluma gruesa",
+      "3 ajíes amarillos en tiras (sin venas)",
+      "1 cdita pasta de ají amarillo",
+      "1 atado culantro picado",
+      "½ taza chicha de jora (o cerveza, o vino blanco)",
+      "3 cdas vinagre tinto",
+      "Aceite vegetal · sal · pimienta",
+      "Para servir: yuca sancochada o papa amarilla, arroz blanco, salsa criolla"
+    ],
+    pasos:[
+      "Sazonar el bonito con marinado y reposar 15 min en frío.",
+      "En olla ancha y baja (sartén profunda con tapa), calentar 3 cdas de aceite a fuego medio.",
+      "Sofreír cebolla 4 min hasta translúcida.",
+      "Agregar ajos restantes, ají amarillo en tiras y pasta de ají amarillo. Sofreír 3 min.",
+      "Acomodar las rodajas de tomate en una capa sobre el sofrito.",
+      "Colocar las rodajas de bonito encima sin amontonar.",
+      "Verter chicha de jora y vinagre alrededor (no encima del pescado).",
+      "Espolvorear culantro y un poco de sal.",
+      "TAPAR y cocinar a fuego medio-bajo 12-15 min sin destapar. El vapor cocina el pescado en sus propios jugos.",
+      "Verificar: el pescado debe verse opaco y desmenuzarse con tenedor.",
+      "Servir el pescado con la salsa de cebolla y tomate sobre la yuca o papa amarilla, con arroz al lado y salsa criolla.",
+      "Más culantro fresco al servir."
+    ],
+    tips:"NO DESTAPAR mientras se cocina — el vapor es lo que cocina. · CHICHA DE JORA: tradicional. Si no consigues, cerveza pilsen o vino blanco funciona. · BONITO bien fresco — si tiene mucho olor a pescado, no está fresco. · El plato es 'sudado' precisamente por la cocción al vapor de sus propios jugos. · Recalentar suave, no hervir."
   },
   tallarines_rojos: {
-    nombre:"Tallarines rojos",
-    tiempo:"30 min",porciones:"4 personas",
-    ing:["500 g tallarines","500 g carne molida","1 lata pasta de tomate (200 g)","1 cebolla","3 dientes de ajo","1 zanahoria rallada","Orégano, laurel","Queso parmesano","Aceite, sal, azúcar"],
-    pasos:["Cocinar tallarines al dente.","Sofreír cebolla, ajo, zanahoria.","Agregar carne molida, dorar.","Incorporar pasta de tomate, 1 taza agua, orégano, laurel.","Cocinar 15 min hasta espesar.","Mezclar con tallarines y servir con parmesano."],
-    tips:"Una pizca de azúcar (½ cdita) corta la acidez del tomate."
+    nombre:"Tallarines rojos con carne",
+    tiempo:"40 min",porciones:"4 personas",
+    ing:[
+      "600 g tallarines (espagueti o fettuccine)",
+      "600 g carne molida (mezcla res y cerdo, o solo res)",
+      "1 lata grande pasta de tomate (300 g) + 1 taza tomate triturado",
+      "1 cebolla grande picada finísima",
+      "5 dientes de ajo molidos",
+      "1 zanahoria rallada finita (truco para suavizar acidez)",
+      "½ pimiento rojo picado",
+      "2 hojas de laurel · 1 cdita orégano seco · 1 cdita albahaca seca",
+      "1 cda azúcar · 1 cdita comino",
+      "Sal · pimienta · pizca de pimentón",
+      "1 cubo de caldo (res o pollo)",
+      "1 taza agua",
+      "3 cdas aceite",
+      "Para servir: queso parmesano rallado abundante, hojas de albahaca fresca (opcional)"
+    ],
+    pasos:[
+      "Hervir 4 L de agua con sal abundante para los tallarines. Cuando hierva fuerte, agregar los tallarines y cocinar al dente (lee paquete y resta 1 min).",
+      "Mientras: en sartén grande con 3 cdas de aceite, sofreír cebolla 5 min hasta translúcida.",
+      "Agregar ajo y cocinar 30 seg.",
+      "Incorporar la zanahoria rallada y pimiento. Sofreír 4 min hasta blandos.",
+      "Subir el fuego, agregar la carne molida. Cocinar separando con cuchara hasta dorar (8 min). Saltar la grasa si hay exceso.",
+      "Incorporar pasta de tomate y cocinar 3 min revolviendo (oscurece el color, intensifica el sabor).",
+      "Agregar tomate triturado, agua, cubo de caldo desmenuzado, laurel, orégano, albahaca, comino, pimentón y azúcar.",
+      "Hervir y bajar a fuego medio. Cocinar 15-20 min destapado, removiendo de vez en cuando, hasta espesar.",
+      "Probar y ajustar sal, pimienta y azúcar (la salsa debe estar balanceada — ni ácida ni dulce).",
+      "Escurrir los tallarines, mezclarlos con un poco de la salsa para que se integren.",
+      "Servir los tallarines en plato, cubrir con bastante salsa por encima.",
+      "Coronar con queso parmesano rallado abundante y hoja de albahaca."
+    ],
+    tips:"ZANAHORIA RALLADA = secreto para suavizar la acidez del tomate sin azúcar excesivo. · AZÚCAR (1 cda) corta acidez del tomate. · PASTA DE TOMATE 3 min cocida = sabor profundo. · TALLARINES AL DENTE — siguen cocinándose con la salsa caliente. · Reservar agua del tallarín por si la salsa queda espesa."
   },
   arroz: {
     nombre:"Arroz blanco graneado",
-    tiempo:"25 min",porciones:"4 personas",
-    ing:["3 tazas arroz","3¾ tazas agua hirviendo","3 cdas aceite","3 dientes de ajo aplastados","1½ cdita sal"],
-    pasos:["Calentar aceite con ajo hasta que dore, retirar el ajo.","Agregar el arroz, freír 1 min sin que se queme.","Añadir agua hirviendo y sal.","Cocinar a fuego medio sin tapar hasta que se evapore el agua superficial.","Tapar, bajar al mínimo y cocinar 15 min más.","Soltar con tenedor antes de servir."],
-    tips:"El truco está en el agua HIRVIENDO al echarla — granea perfecto."
+    tiempo:"30 min",porciones:"4 personas",
+    ing:[
+      "3 tazas arroz extra (lavar = opcional, según marca)",
+      "3¾ tazas agua HIRVIENDO",
+      "3 cdas aceite vegetal",
+      "4 dientes de ajo aplastados (no molidos)",
+      "1½ cdita sal"
+    ],
+    pasos:[
+      "Hervir 3¾ tazas de agua con sal en una tetera o en otra olla — esto es CRÍTICO.",
+      "En la olla del arroz, calentar el aceite con los ajos aplastados a fuego medio.",
+      "Cuando los ajos estén dorados (3-4 min), retirarlos para que no amarguen.",
+      "Bajar el fuego, agregar el arroz y mover por 1 min hasta que cada grano esté brilloso por el aceite.",
+      "Verter el agua HIRVIENDO sobre el arroz (debe burbujear inmediatamente).",
+      "Ajustar la sal probando el agua — debe estar levemente más salada que una sopa.",
+      "Cocinar a fuego medio-alto SIN TAPAR hasta que el agua se evapore de la superficie y se vean 'cráteres' (5-7 min).",
+      "Cuando ya no haya agua en superficie, BAJAR al MÍNIMO y TAPAR.",
+      "Cocinar 15 min sin destapar nunca.",
+      "Apagar y dejar reposar tapado 5 min.",
+      "Soltar con tenedor (NUNCA cuchara) en movimientos suaves de abajo hacia arriba.",
+      "Servir caliente."
+    ],
+    tips:"AGUA HIRVIENDO al echarla = arroz graneado. Agua fría = pegajoso. · AJO APLASTADO, no molido — solo aroma, no chunks. · NO DESTAPES los 15 min finales — el vapor es la magia. · TENEDOR para soltar, nunca cuchara (rompe granos). · Proporción universal: por cada taza de arroz, 1¼ taza de agua."
   },
   fideos: {
     nombre:"Sopa de fideos con verduras",
-    tiempo:"25 min",porciones:"4 personas",
-    ing:["½ taza fideos cabello de ángel","1 zanahoria en cubos","1 papa en cubos","½ taza apio picado","1 cebolla picada","2 dientes de ajo","Caldo de pollo o agua","Huevo (opcional, batido al final)","Sal, pimienta, culantro"],
-    pasos:["Sofreír cebolla y ajo.","Agregar verduras, sofreír 2 min.","Cubrir con 1.5 L de caldo, hervir 12 min.","Agregar fideos, cocinar 4 min.","Si quieres, batir 1 huevo y agregar revolviendo.","Servir con culantro picado."],
-    tips:"Los fideos se cocinan rápido — vigilar para que no se pasen."
+    tiempo:"30 min",porciones:"4 personas",
+    ing:[
+      "1 taza fideos cabello de ángel (o estrellitas, letras, etc.)",
+      "2 zanahorias en cubos pequeños",
+      "2 papas medianas en cubos",
+      "1 ramita apio picado (con hojas)",
+      "1 poro picado",
+      "1 cebolla grande picada",
+      "3 dientes de ajo molidos",
+      "1 trozo kion (3 cm) machacado",
+      "1 huevo (opcional, en hilo al final)",
+      "2 L caldo de pollo o agua + 2 cubos",
+      "Sal · pimienta · 1 cdita orégano",
+      "1 atado culantro y perejil picados",
+      "Limón en cuartos para servir"
+    ],
+    pasos:[
+      "En olla grande, calentar 2 cdas de aceite a fuego medio. Sofreír cebolla 4 min.",
+      "Agregar ajo y kion, cocinar 30 seg.",
+      "Incorporar zanahoria, papa, apio y poro. Sofreír 3 min.",
+      "Verter el caldo o agua + cubos. Llevar a hervor.",
+      "Cocinar 12-15 min hasta que las papas y zanahorias estén tiernas.",
+      "Probar de sal y agregar pimienta y orégano.",
+      "Subir el fuego para que hierva fuerte.",
+      "Agregar los fideos y cocinar EXACTAMENTE 4 min (no más, sino se pasan).",
+      "Si quieres más cuerpo, batir 1 huevo y verterlo en hilo en el caldo hirviendo, revolviendo (forma fideos de huevo).",
+      "Apagar y agregar culantro y perejil picados.",
+      "Servir bien caliente con limón en cuartos."
+    ],
+    tips:"FIDEOS AL FINAL — se cocinan en 4 min, sino se pasan. · KION machacado da sabor sin trozos molestos. · HUEVO EN HILO es opcional pero le da cremosidad. · LIMÓN al servir es OBLIGATORIO. · Recalentar suave, no hervir, para no apelmazar fideos."
   },
   arroz_atun: {
     nombre:"Arroz con atún a la jardinera",
-    tiempo:"35 min",porciones:"4 personas",
-    ing:["2 tazas arroz","2 latas atún","1 zanahoria en cubos","½ taza arvejas","½ taza choclo","1 cebolla picada","2 dientes de ajo","Pasta de tomate (2 cdas)","Aceite, sal, pimienta, comino"],
-    pasos:["Sofreír cebolla, ajo, comino.","Agregar pasta de tomate, cocinar 2 min.","Incorporar zanahoria, arvejas, choclo.","Agregar arroz, mezclar bien.","Cubrir con 2½ tazas agua, sal.","Cocinar tapado 18 min.","Mezclar el atún al final."],
-    tips:"Si tienes culantro picado, agrégalo al final — transforma el plato."
+    tiempo:"40 min",porciones:"4 personas",
+    ing:[
+      "3 tazas arroz",
+      "3 latas atún en aceite o agua, escurrido",
+      "2 zanahorias en cubos pequeños",
+      "1 taza arvejas (frescas o congeladas)",
+      "1 taza choclo desgranado",
+      "½ pimiento rojo picado (color)",
+      "1 cebolla grande picada finita",
+      "5 dientes de ajo molidos",
+      "3 cdas pasta de tomate",
+      "1 cdita pasta de ají amarillo (opcional)",
+      "3¾ tazas caldo de pollo (o agua + cubo)",
+      "Aceite · sal · pimienta · 1 cdita comino · 1 hoja laurel",
+      "1 atado culantro picado para terminar"
+    ],
+    pasos:[
+      "Calentar 3 cdas de aceite en olla pesada a fuego medio.",
+      "Sofreír cebolla 5 min hasta translúcida.",
+      "Agregar ajo, comino, pimienta y cocinar 1 min.",
+      "Sumar pasta de tomate y ají amarillo. Cocinar 3 min revolviendo (oscurece y suelta aceite).",
+      "Incorporar zanahoria, arvejas, choclo, pimiento. Sofreír 3 min.",
+      "Agregar el arroz y mezclar bien para que se impregne (1 min).",
+      "Verter el caldo caliente. Probar de sal — debe estar levemente más salado que una sopa.",
+      "Agregar laurel.",
+      "Hervir, bajar a fuego mínimo y TAPAR. Cocinar 18-20 min sin destapar.",
+      "Apagar y reposar 5 min con tapa.",
+      "Destapar, agregar el atún escurrido y desmenuzado SOBRE el arroz (no mezclar adentro al inicio — se rompe).",
+      "Espolvorear culantro picado y mezclar suave.",
+      "Servir con salsa criolla o ensalada de tomate."
+    ],
+    tips:"ATÚN AL FINAL — si lo cocinas se reseca y se desmenuza demasiado. · ATÚN EN ACEITE > en agua (más sabor). · CULANTRO al final transforma el plato. · La pasta de ají amarillo da un toque que la mayoría no identifica pero hace la diferencia. · Recalentado al día siguiente queda muy rico (atún se hidrata)."
+  },
+
+  // === Recetas adicionales para los desayunos/almuerzos nuevos ===
+
+  tostadas_francesas: {
+    nombre:"Tostadas francesas con plátano",
+    tiempo:"20 min",porciones:"4 personas",
+    ing:[
+      "12 panes de molde (o 8 panes franceses cortados)",
+      "6 huevos",
+      "1 taza leche evaporada",
+      "1 cdita esencia de vainilla",
+      "1 cda azúcar + canela en polvo",
+      "Pizca de sal",
+      "4 cdas mantequilla",
+      "4 plátanos en rodajas",
+      "Miel de abeja o de maple",
+      "Azúcar impalpable para espolvorear (opcional)",
+      "Café con leche para acompañar"
+    ],
+    pasos:[
+      "En bowl ancho y bajo, batir huevos, leche evaporada, vainilla, azúcar, canela y pizca de sal.",
+      "Calentar mantequilla en sartén a fuego medio (NO alto, sino se quema).",
+      "Sumergir cada pan en la mezcla 5 segundos por lado (no más, sino se desbarata).",
+      "Colocar en sartén y cocinar 2 min por lado hasta dorado.",
+      "Mientras, en otro sartén, derretir 1 cda de mantequilla y caramelizar las rodajas de plátano 2 min con un toque de canela.",
+      "Servir las tostadas con plátano caramelizado encima, miel y azúcar impalpable.",
+      "Acompañar con café con leche."
+    ],
+    tips:"PAN DEL DÍA ANTERIOR funciona mejor (absorbe sin desbaratarse). · NO SOBREMOJAR el pan en la mezcla. · MANTEQUILLA NO ACEITE = sabor superior. · Variante: queso crema entre 2 tostadas + mermelada."
+  },
+
+  sandwich_queso: {
+    nombre:"Sándwich de queso a la plancha",
+    tiempo:"15 min",porciones:"4 personas",
+    ing:[
+      "12 panes de molde (3 por persona, o pan ciabatta)",
+      "300 g queso fresco peruano (o mezcla con cheddar/edam)",
+      "2 tomates grandes en rodajas finas",
+      "Mantequilla blanda",
+      "Mostaza (opcional)",
+      "Hojas de albahaca o de orégano fresco (opcional)",
+      "Sal · pimienta",
+      "Para acompañar: jugo de naranja o mandarina recién exprimido (4 vasos), café"
+    ],
+    pasos:[
+      "Untar mantequilla en la cara externa de cada pan (la que va al sartén).",
+      "En la cara interna, untar mostaza (opcional).",
+      "Armar sándwich: pan, queso, rodaja de tomate, sal, pimienta, hojas de albahaca, queso, pan.",
+      "Calentar plancha o sartén a fuego medio (sin aceite, la mantequilla del pan basta).",
+      "Colocar el sándwich. Tapar con un plato o prensa para presionar.",
+      "Cocinar 3 min hasta dorar la base. Voltear con espátula.",
+      "Cocinar otros 3 min hasta que el queso se derrita y el pan esté dorado.",
+      "Cortar en diagonal y servir caliente con jugo de naranja y café."
+    ],
+    tips:"PRENSAR con plato + algo pesado encima = textura crocante uniforme. · MANTEQUILLA por fuera = dorado perfecto. · QUESO MIXTO (fresco + cheddar) = textura cremosa + sabor. · Variante completa: agregar jamón o palta entre el queso."
+  },
+
+  avena: {
+    nombre:"Avena con plátano y canela",
+    tiempo:"15 min",porciones:"4 personas",
+    ing:[
+      "2 tazas avena en hojuelas",
+      "4 tazas leche evaporada (o leche fresca)",
+      "2 tazas agua",
+      "4 plátanos maduros en rodajas",
+      "1 cdita canela en polvo",
+      "1 cdita esencia de vainilla",
+      "Pizca de sal",
+      "Miel o azúcar rubia al gusto",
+      "¼ taza pasas (opcional)",
+      "Para coronar: granola, almendras o pecanas tostadas, miel, canela extra"
+    ],
+    pasos:[
+      "En olla mediana, hervir agua con la mitad de los plátanos en rodajas (los machacados darán dulzor natural).",
+      "Una vez hervido, agregar la avena y mezclar.",
+      "Incorporar leche evaporada, canela, vainilla y pizca de sal.",
+      "Cocinar a fuego medio-bajo revolviendo constantemente 6-8 min hasta cremosa.",
+      "Probar y endulzar con miel o azúcar al gusto.",
+      "Si está muy espesa, agregar más leche; si líquida, cocinar más.",
+      "Servir en bowls.",
+      "Coronar cada porción con: rodajas frescas de plátano, granola, frutos secos tostados, hilo de miel y espolvoreo de canela.",
+      "Servir caliente."
+    ],
+    tips:"PLÁTANO MACHACADO en la cocción endulza naturalmente sin azúcar. · CANELA Y VAINILLA = aroma del desayuno perfecto. · MEZCLAR CONSTANTE para que no se pegue al fondo. · Variante: agregar 2 cdas de cacao para versión chocolatada."
+  },
+
+  bistec: {
+    nombre:"Bistec apanado",
+    tiempo:"30 min",porciones:"4 personas",
+    ing:[
+      "4 bistecs de res (lomo o cadera) ~180 g cada uno",
+      "Marinado: 4 dientes ajo molido · jugo de 1 limón · 2 cdas sillao · sal · pimienta · comino",
+      "2 huevos batidos",
+      "2 tazas pan rallado (o galletas saladas trituradas)",
+      "1 taza harina",
+      "Aceite para freír",
+      "Para acompañar: 4 tazas arroz blanco, 1 kg papas fritas, ensalada, plátano frito",
+      "Salsa criolla y limón al servir"
+    ],
+    pasos:[
+      "Si los bistecs están gruesos, golpearlos con un mazo entre 2 plásticos hasta 0.5 cm.",
+      "Marinar la carne con ajo, limón, sillao, sal, pimienta, comino. Reposar 15 min.",
+      "Preparar 3 platos: harina, huevos batidos con sal, pan rallado.",
+      "Pasar cada bistec por harina (sacudir exceso), luego huevo, luego pan rallado presionando bien.",
+      "Para mejor crocancia: doble apanado — repetir huevo y pan rallado.",
+      "Calentar aceite (1 cm de profundidad) en sartén grande a fuego medio-alto (180°C).",
+      "Freír los bistecs 2 min por lado hasta dorar uniforme.",
+      "Escurrir en papel absorbente.",
+      "Servir con arroz blanco, papas fritas, ensalada, plátano frito y salsa criolla.",
+      "Limón en cuartos al lado."
+    ],
+    tips:"GOLPEAR la carne fina = se cocina rápido y queda tierna. · DOBLE APANADO = crocancia superior. · ACEITE A 180°C: si está frío, absorbe aceite; si muy caliente, quema afuera y crudo dentro. · Limón al servir es obligatorio."
+  },
+
+  huevo_duro: {
+    nombre:"Huevos duros con pan tostado",
+    tiempo:"15 min",porciones:"4 personas",
+    ing:[
+      "8 huevos",
+      "12 panes (francés o de molde)",
+      "Mantequilla",
+      "Sal · pimienta · ají molido",
+      "Mostaza o mayonesa",
+      "1 limón",
+      "Para acompañar: jugo de naranja, café"
+    ],
+    pasos:[
+      "Colocar los huevos en olla con agua fría que los cubra. Agregar 1 cdita de sal y unas gotas de vinagre.",
+      "Llevar a hervor a fuego alto. Cuando hierva, bajar a fuego medio.",
+      "Cocinar exactamente 9 min para huevo duro perfecto (yema cocida pero no gris).",
+      "Inmediatamente pasar a agua con hielo 5 min — esto detiene la cocción y facilita el pelado.",
+      "Pelar los huevos bajo agua corriente.",
+      "Cortar en mitades o rodajas. Sazonar con sal, pimienta y ají molido.",
+      "Tostar el pan en sartén con mantequilla hasta dorado.",
+      "Untar mostaza o mayonesa en el pan.",
+      "Colocar el huevo en rodajas sobre el pan, espolvorear con un toque de sal y limón.",
+      "Servir con jugo de naranja recién exprimido y café."
+    ],
+    tips:"9 MIN exacto: yema cocida pero NO verdosa (eso es exceso). · AGUA CON HIELO al final = pela fácil. · SAL Y VINAGRE en el agua = la cáscara se separa mejor. · ¡FRESCURA!: huevos muy frescos son más difíciles de pelar — usa los de unos días."
   }
 };
 
@@ -1385,29 +2159,34 @@ function buscarReceta(text){
     [/cevich/,"ceviche"],
     [/arroz con pollo|pollo a la criolla/,"arroz_pollo"],
     [/lomo saltado/,"lomo"],
-    [/aji de gallina|ají de gallina|cau cau/,"aji_gallina"],
+    [/aji de gallina|ají de gallina|cau cau|seco/,"aji_gallina"],
+    [/tostadas francesas/,"tostadas_francesas"],
     [/pesto/,"pesto"],
     [/causa/,"causa"],
     [/chaufa/,"chaufa"],
     [/lenteja|menestra|frijol/,"lentejas"],
     [/sopa de pollo|caldo de pollo/,"sopa_pollo"],
     [/tortilla/,"tortilla"],
-    [/pollo (al horno|broaster|a la brasa|guisado)/,"pollo_horno"],
+    [/pollo (al horno|broaster|a la brasa|guisado)|pollo a la criolla/,"pollo_horno"],
     [/estofado/,"estofado"],
     [/crema de zanahoria|crema de zapallo/,"crema_zanahoria"],
     [/wantán fri|wantan fri/,"wantan_frito"],
     [/sopa de wantán|sopa de wantan|sopa wantan/,"sopa_wantan"],
     [/quinua|quinoa/,"quinua"],
     [/ensalada/,"ensalada_palta"],
+    [/sándwich (de queso|completo)|sandwich (de queso|completo)/,"sandwich_queso"],
+    [/avena/,"avena"],
+    [/huevos? duros?|huevo cocido/,"huevo_duro"],
+    [/bistec|tallarines verdes|tallarines a la huan/,"bistec"],
     [/pan con palta|sándwich|sandwich|desayuno completo/,"pan_palta"],
-    [/yogurt|avena/,"yogurt"],
-    [/huevo revuelto|huevo a la palta|huevo \+/,"huevo_revuelto"],
+    [/yogurt/,"yogurt"],
+    [/huevo revuelto|huevos revueltos|huevo a la palta|huevos al gusto|huevo \+|huevos? \+/,"huevo_revuelto"],
     [/crema de bró|crema de bro|crema de verduras/,"crema_brocoli"],
     [/bonito/,"bonito"],
-    [/pescado (al horno|frito)|bistec/,"pescado_horno"],
-    [/tallarines? rojos|tallarines a la huan|tallarines verdes|pizza/,"tallarines_rojos"],
+    [/pescado (al horno|frito)/,"pescado_horno"],
+    [/tallarines? rojos|pizza/,"tallarines_rojos"],
     [/arroz con atún|arroz con atun|atún a la jardinera/,"arroz_atun"],
-    [/sopa de fideos|sopa de verduras|sopa criolla|sopa ligera|sopa de quinua/,"fideos"],
+    [/sopa de fideos|sopa de verduras|sopa criolla|sopa ligera|sopa de quinua|caldo/,"fideos"],
     [/arroz blanco|arroz/,"arroz"],
     [/tallarin|fideos/,"pesto"]
   ];

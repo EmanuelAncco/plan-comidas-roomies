@@ -426,7 +426,7 @@
       <li><b>FIFO perecederos:</b> Lechuga, tomate, palta, brócoli y bonito se consumen en los primeros 5 días.</li>
       <li><b>Frutas en desayunos:</b> Distribuidas según vida útil (papaya y melón primero, naranja/mandarina al final).</li>
       <li><b>Repetición controlada:</b> Ningún almuerzo se repite en la misma semana.</li>
-      <li><b>Aprovechar el bonito 1 kg:</b> 4 porciones distribuidas entre días 1-4.</li>
+      <li><b>Bonito 1 kg:</b> dividirlo en 4 trozos de 250g (uno por día), usarlo entre días 1-4 (3 trozos al freezer).</li>
       <li><b>Albahaca:</b> Reservada para pesto en día 6 (aguanta poco refrigerada).</li>
       <li><b>Quinua y lentejas:</b> Para días sin proteína animal disponible.</li>
       <li><b>Sopas en cenas:</b> Aprovechan verduras a punto de pasarse.</li>
@@ -776,13 +776,13 @@ renderInventario();
 
 // =================== CALENDARIO 4 SEMANAS ===================
 const planOriginal = [
-  {d:'Día 1 Lun',D:'Pan con palta + huevo + café con leche',A:'Arroz con bonito (porción 1) + ensalada lechuga/tomate',C:'Sopa de coliflor + pan'},
-  {d:'Día 2 Mar',D:'Papaya + queso + café',A:'Tallarines con bonito (porción 2) y brócoli al ajo',C:'Crema de zanahoria + pan con palta'},
+  {d:'Día 1 Lun',D:'Pan con palta + huevo + café con leche',A:'Arroz con bonito + ensalada lechuga/tomate',C:'Sopa de coliflor + pan'},
+  {d:'Día 2 Mar',D:'Papaya + queso + café',A:'Tallarines con bonito y brócoli al ajo',C:'Crema de zanahoria + pan con palta'},
   {d:'Día 3 Mié',D:'Piña + huevo revuelto + café',A:'Causa de papa amarilla con atún + lechuga',C:'Sopa de wantán'},
-  {d:'Día 4 Jue',D:'Plátano + leche + café',A:'Bonito sudado (porción 3) con arroz y choclo',C:'Tortilla de coliflor + ensalada'},
+  {d:'Día 4 Jue',D:'Plátano + leche + café',A:'Bonito sudado con arroz y choclo',C:'Tortilla de coliflor + ensalada'},
   {d:'Día 5 Vie',D:'Mandarina + pan con queso + café',A:'Lentejas con arroz + chorizo',C:'Crema de brócoli'},
   {d:'Día 6 Sáb',D:'Naranja + huevo a la palta + café',A:'Tallarines al pesto (albahaca) + camote frito',C:'Sopa de fideos con verduras'},
-  {d:'Día 7 Dom',D:'Melón + pan con palta + café',A:'Bonito al horno (porción 4) con papa al horno',C:'Wantán frito + ensalada'},
+  {d:'Día 7 Dom',D:'Melón + pan con palta + café',A:'Bonito al horno con papa al horno',C:'Wantán frito + ensalada'},
 
   {d:'Día 8 Lun',D:'Naranja + huevo duro + café',A:'Arroz con atún a la jardinera (zanahoria, choclo)',C:'Quinua salteada con verduras'},
   {d:'Día 9 Mar',D:'Mandarina + pan con queso',A:'Lentejas restantes + arroz',C:'Crema de papa amarilla'},
@@ -1175,14 +1175,14 @@ const RECETAS = {
   ensalada_palta: {
     nombre:"Ensalada con palta",
     tiempo:"10 min",porciones:"4 personas",
-    ing:["2 paltas","1 lechuga","2 tomates","½ cebolla","Limón","Aceite de oliva","Sal, pimienta"],
+    ing:["3 paltas","1 lechuga grande","3 tomates","1 cebolla","2 limones","Aceite de oliva","Sal, pimienta"],
     pasos:["Lavar y cortar la lechuga en trozos.","Cortar tomate, palta, cebolla en gajos finos.","Mezclar todo en un bowl.","Aderezar con aceite, limón, sal y pimienta."],
     tips:"Agregar la palta al final para que no se oxide."
   },
   pan_palta: {
     nombre:"Pan con palta y huevo",
     tiempo:"10 min",porciones:"4 personas",
-    ing:["8 panes (francés o ciabatta)","2 paltas maduras","4 huevos","1 tomate (opcional)","Limón","Sal, pimienta","Café con leche para acompañar"],
+    ing:["12 panes (francés o ciabatta)","3 paltas maduras","8 huevos (2 por persona)","2 tomates","1 limón","Sal, pimienta","Café con leche para acompañar"],
     pasos:["Pisar las paltas con tenedor, sazonar con limón, sal, pimienta.","Tostar el pan ligeramente.","Cocinar los huevos a gusto (revueltos o pochados).","Untar palta sobre el pan.","Colocar huevo encima y rodaja de tomate."],
     tips:"Un toque de ají molido o orégano realza muchísimo."
   },
@@ -1238,7 +1238,7 @@ const RECETAS = {
   arroz: {
     nombre:"Arroz blanco graneado",
     tiempo:"25 min",porciones:"4 personas",
-    ing:["2 tazas arroz","2½ tazas agua hirviendo","2 cdas aceite","2 dientes de ajo aplastados","1 cdita sal"],
+    ing:["3 tazas arroz","3¾ tazas agua hirviendo","3 cdas aceite","3 dientes de ajo aplastados","1½ cdita sal"],
     pasos:["Calentar aceite con ajo hasta que dore, retirar el ajo.","Agregar el arroz, freír 1 min sin que se queme.","Añadir agua hirviendo y sal.","Cocinar a fuego medio sin tapar hasta que se evapore el agua superficial.","Tapar, bajar al mínimo y cocinar 15 min más.","Soltar con tenedor antes de servir."],
     tips:"El truco está en el agua HIRVIENDO al echarla — granea perfecto."
   },

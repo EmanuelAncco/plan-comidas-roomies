@@ -264,6 +264,16 @@
   .modal-tips b{color:var(--mut)}
   .meal{cursor:pointer}
   .meal:hover{box-shadow:0 4px 12px rgba(251,113,133,.25)}
+  .opt-tabs{
+    display:flex;gap:3px;margin-top:5px;justify-content:center
+  }
+  .opt-tabs button{
+    border:0;background:#fef3c7;color:#92400e;font-weight:700;
+    width:22px;height:18px;border-radius:6px;cursor:pointer;font-size:.65rem;
+    transition:all .15s
+  }
+  .opt-tabs button.active{background:linear-gradient(135deg,var(--rose),var(--orange));color:#fff;transform:scale(1.05)}
+  .opt-tabs button:hover{transform:scale(1.08)}
   .meal.cocinada{opacity:.65;position:relative}
   .meal.cocinada::after{
     content:"PREPARADO";position:absolute;top:8px;right:8px;
@@ -408,16 +418,16 @@
   <div class="stats">
     <div class="stat"><div class="stat-label">Items en inventario</div><div class="stat-val" id="s-items">0</div><div class="stat-sub">categorizados por tipo</div></div>
     <div class="stat"><div class="stat-label">Personas en casa</div><div class="stat-val">4</div><div class="stat-sub">Emanuel · William · Geordano · Diego</div></div>
-    <div class="stat"><div class="stat-label">Comidas planificadas</div><div class="stat-val">84</div><div class="stat-sub">28 días × 3 (turnos rotativos)</div></div>
+    <div class="stat"><div class="stat-label">Opciones de comida</div><div class="stat-val">252</div><div class="stat-sub">28 días × 3 slots × 3 opciones</div></div>
     <div class="stat"><div class="stat-label">Turnos por persona</div><div class="stat-val">~21</div><div class="stat-sub">distribuidos en el mes</div></div>
     <div class="stat"><div class="stat-label">Comidas preparadas</div><div class="stat-val" id="s-prep" style="color:#059669">0</div><div class="stat-sub">marcadas como cocinadas</div></div>
   </div>
 
   <div class="info">
-    <b>Cómo está pensado:</b> 4 personas, 28 días, 84 comidas, turnos rotativos.<br>
-    <b>Click en cualquier comida</b> → abre la receta (ingredientes con check de disponibilidad, pasos, tips).<br>
-    <b>Botón "Marcar como preparado"</b> → descuenta automáticamente los ingredientes del inventario.<br>
-    <b>Click sobre el texto</b> → edita el plato. <b>Click sobre el cocinero</b> → reasigna.
+    <b>Cómo está pensado:</b> 4 personas · 28 días · <b>3 opciones por cada comida</b> (252 alternativas) · turnos rotativos respetando horarios reales.<br>
+    <b>Tabs 1/2/3 debajo de cada comida</b> → cambia entre las 3 alternativas (imagen, receta e ingredientes se reajustan automáticamente).<br>
+    <b>Botón ⚡ Reajustar según inventario</b> → elige la mejor opción de cada slot según lo que tienes en stock.<br>
+    <b>Click sobre el plato</b> → receta detallada. <b>Botón "Marcar como preparado"</b> → descuenta del inventario.
   </div>
 
   <div class="strat">
@@ -443,8 +453,11 @@
 <!-- ===================== CALENDARIO ===================== -->
 <div class="panel" id="p-calendario">
   <div class="info" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-    <span>Click sobre cualquier comida para editarla. Tus cambios se guardan automáticamente.</span>
-    <button class="act" onclick="resetCal()">Restaurar plan original</button>
+    <span><b>3 opciones por comida.</b> Click en los números <b>1 / 2 / 3</b> debajo de cada comida para cambiar de opción (la imagen, receta e ingredientes se reajustan automáticamente). Click sobre el plato abre la receta. Click sobre el texto edita.</span>
+    <span style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="act" onclick="reajustarPorInventario()" title="Elige automáticamente la opción de cada slot que mejor aprovecha lo que tienes en inventario" style="background:linear-gradient(135deg,var(--emerald),#059669);box-shadow:0 4px 12px rgba(52,211,153,.4)">⚡ Reajustar según inventario</button>
+      <button class="act" onclick="resetCal()">Restaurar plan original</button>
+    </span>
   </div>
   <div id="calendar"></div>
 </div>
@@ -802,38 +815,375 @@ function renderInventario(){
 renderInventario();
 
 // =================== CALENDARIO 4 SEMANAS ===================
+// Cada slot tiene 3 OPCIONES — el usuario elige la activa con el selector
 const planOriginal = [
-  {d:'Día 1 Lun',D:'Pan con palta y huevo (sándwich) + café con leche',A:'Arroz con bonito + ensalada lechuga/tomate',C:'Sopa de coliflor + pan tostado'},
-  {d:'Día 2 Mar',D:'Sándwich de queso a la plancha + papaya en rodajas + café',A:'Tallarines con bonito y brócoli al ajo',C:'Crema de zanahoria + pan con palta'},
-  {d:'Día 3 Mié',D:'Huevos revueltos con queso + piña fresca + café',A:'Causa de papa amarilla con atún + lechuga',C:'Sopa de wantán'},
-  {d:'Día 4 Jue',D:'Tostadas francesas con plátano + café con leche',A:'Bonito sudado con arroz y choclo',C:'Tortilla de coliflor + ensalada'},
-  {d:'Día 5 Vie',D:'Sándwich de queso con tomate + jugo de mandarina + café',A:'Lentejas con arroz + chorizo',C:'Crema de brócoli + pan tostado'},
-  {d:'Día 6 Sáb',D:'Huevos a la palta sobre pan + jugo de naranja + café',A:'Tallarines al pesto (albahaca) + camote frito',C:'Sopa de fideos con verduras'},
-  {d:'Día 7 Dom',D:'Pan con palta + huevos al gusto + melón en cubos + café',A:'Bonito al horno con papa al horno',C:'Wantán frito + ensalada'},
+  {d:'Día 1 Lun', D:[
+    'Pan con palta y huevo + café con leche',
+    'Tostadas francesas con plátano + café',
+    'Huevos revueltos con queso + papaya + café'
+  ], A:[
+    'Arroz con bonito + ensalada lechuga/tomate',
+    'Bonito sudado con yuca y choclo',
+    'Tallarines con bonito al ajo'
+  ], C:[
+    'Sopa de coliflor + pan tostado',
+    'Crema de zanahoria + pan con palta',
+    'Tortilla de papa con verduras'
+  ]},
+  {d:'Día 2 Mar', D:[
+    'Sándwich de queso a la plancha + papaya + café',
+    'Pan con palta y queso + papaya en cubos + café',
+    'Huevos a la palta + papaya + café'
+  ], A:[
+    'Tallarines con bonito y brócoli al ajo',
+    'Causa de papa amarilla con atún + lechuga',
+    'Arroz con atún a la jardinera'
+  ], C:[
+    'Crema de zanahoria + pan con palta',
+    'Sopa de fideos con verduras',
+    'Tortilla de coliflor + ensalada'
+  ]},
+  {d:'Día 3 Mié', D:[
+    'Huevos revueltos con queso + piña fresca + café',
+    'Yogurt con piña y granola',
+    'Sándwich de queso con tomate + piña + café'
+  ], A:[
+    'Causa de papa amarilla con atún + lechuga',
+    'Arroz con atún a la jardinera',
+    'Tallarines al pesto + atún'
+  ], C:[
+    'Sopa de wantán',
+    'Wantán frito con ensalada de col',
+    'Crema de brócoli'
+  ]},
+  {d:'Día 4 Jue', D:[
+    'Tostadas francesas con plátano + café con leche',
+    'Avena con plátano y canela + café',
+    'Pan con palta + plátano frito + café'
+  ], A:[
+    'Bonito sudado con arroz y choclo',
+    'Bonito al horno con papas',
+    'Pescado al horno con verduras'
+  ], C:[
+    'Tortilla de coliflor + ensalada',
+    'Sopa de coliflor con pan',
+    'Crema de brócoli'
+  ]},
+  {d:'Día 5 Vie', D:[
+    'Sándwich de queso con tomate + jugo de mandarina + café',
+    'Pan con palta y huevo + mandarina + café',
+    'Yogurt con frutas + mandarina'
+  ], A:[
+    'Lentejas con arroz + chorizo',
+    'Estofado de pollo con papa',
+    'Tallarines rojos con carne molida'
+  ], C:[
+    'Crema de brócoli + pan tostado',
+    'Sopa de pollo casera',
+    'Tortilla de papa con verduras'
+  ]},
+  {d:'Día 6 Sáb', D:[
+    'Huevos a la palta sobre pan + jugo de naranja + café',
+    'Tostadas francesas con plátano + café',
+    'Yogurt con fruta y granola + pan tostado'
+  ], A:[
+    'Tallarines al pesto (albahaca) + camote frito',
+    'Tallarines al pesto con bistec apanado',
+    'Tallarines al pesto con huevo frito'
+  ], C:[
+    'Sopa de fideos con verduras',
+    'Crema de zanahoria',
+    'Tortilla de verduras + ensalada'
+  ]},
+  {d:'Día 7 Dom', D:[
+    'Pan con palta + huevos al gusto + melón + café',
+    'Desayuno completo: huevos, pan, palta, fruta + café',
+    'Tostadas francesas + melón en cubos + café'
+  ], A:[
+    'Bonito al horno con papa al horno',
+    'Pescado al horno con camote',
+    'Pollo al horno con papas y camote'
+  ], C:[
+    'Wantán frito + ensalada de col',
+    'Sopa wantán completa',
+    'Tortilla con ensalada'
+  ]},
 
-  {d:'Día 8 Lun',D:'Huevos duros con pan tostado + jugo de naranja + café',A:'Arroz con atún a la jardinera (zanahoria, choclo)',C:'Quinua salteada con verduras'},
-  {d:'Día 9 Mar',D:'Sándwich de queso + mandarinas + café',A:'Lentejas con arroz (sobrante recalentado) + huevo frito',C:'Crema de papa amarilla'},
-  {d:'Día 10 Mié',D:'Tostadas con plátano caramelizado + café con leche',A:'Fideos con chorizo y tomate',C:'Tortilla de papa + ensalada'},
-  {d:'Día 11 Jue',D:'Huevos revueltos con queso + jugo de granada + pan',A:'Pollo guisado con arroz',C:'Sopa de fideos con huevo'},
-  {d:'Día 12 Vie',D:'Pan con palta y queso + café con leche',A:'Estofado de pollo con papa',C:'Quinua con verduras y huevo'},
-  {d:'Día 13 Sáb',D:'Sándwich de palta + papaya o piña + café',A:'Arroz chaufa con huevo y verduras',C:'Sopa de wantán'},
-  {d:'Día 14 Dom',D:'Huevos al gusto con pan + mandarina + café',A:'Pollo al horno con camote y ensalada',C:'Tallarines rojos con queso parmesano'},
+  {d:'Día 8 Lun', D:[
+    'Huevos duros con pan tostado + jugo de naranja + café',
+    'Avena con fruta + café',
+    'Pan con palta y huevo + café'
+  ], A:[
+    'Arroz con atún a la jardinera (zanahoria, choclo)',
+    'Lentejas con arroz + huevo',
+    'Quinua salteada con verduras'
+  ], C:[
+    'Quinua salteada con verduras',
+    'Sopa de fideos con verduras',
+    'Crema de zanahoria'
+  ]},
+  {d:'Día 9 Mar', D:[
+    'Sándwich de queso + mandarinas + café',
+    'Yogurt con fruta y granola + pan',
+    'Tostadas francesas con plátano'
+  ], A:[
+    'Lentejas con arroz (recalentado) + huevo frito',
+    'Arroz con atún + ensalada',
+    'Tallarines rojos con carne'
+  ], C:[
+    'Crema de papa amarilla',
+    'Sopa de pollo casera',
+    'Tortilla de verduras'
+  ]},
+  {d:'Día 10 Mié', D:[
+    'Tostadas con plátano caramelizado + café con leche',
+    'Pan con palta y huevo + café',
+    'Yogurt con frutas y granola'
+  ], A:[
+    'Fideos con chorizo y tomate',
+    'Tallarines rojos con carne',
+    'Estofado de pollo con papa'
+  ], C:[
+    'Tortilla de papa + ensalada',
+    'Sopa de fideos con verduras',
+    'Crema de brócoli'
+  ]},
+  {d:'Día 11 Jue', D:[
+    'Huevos revueltos con queso + jugo de granada + pan',
+    'Yogurt con granada + granola + café',
+    'Pan con palta y huevo + granada'
+  ], A:[
+    'Pollo guisado con arroz',
+    'Estofado de pollo con papa',
+    'Arroz con pollo a la criolla'
+  ], C:[
+    'Sopa de fideos con huevo',
+    'Crema de zanahoria',
+    'Tortilla de papa con verduras'
+  ]},
+  {d:'Día 12 Vie', D:[
+    'Pan con palta y queso + café con leche',
+    'Tostadas francesas con plátano',
+    'Avena con plátano y canela'
+  ], A:[
+    'Estofado de pollo con papa',
+    'Lomo saltado con arroz y papas',
+    'Pollo al horno con papas'
+  ], C:[
+    'Quinua con verduras y huevo',
+    'Sopa de pollo casera',
+    'Crema de brócoli'
+  ]},
+  {d:'Día 13 Sáb', D:[
+    'Sándwich de palta + papaya o piña + café',
+    'Yogurt con fruta y granola',
+    'Tostadas francesas + frutas'
+  ], A:[
+    'Arroz chaufa con huevo y verduras',
+    'Tallarines al pesto',
+    'Lomo saltado con arroz'
+  ], C:[
+    'Sopa de wantán',
+    'Wantán frito + ensalada',
+    'Tortilla con ensalada'
+  ]},
+  {d:'Día 14 Dom', D:[
+    'Huevos al gusto con pan + mandarina + café',
+    'Desayuno completo: huevos, pan, palta, fruta',
+    'Pan con palta y huevo + frutas'
+  ], A:[
+    'Pollo al horno con camote y ensalada',
+    'Pollo a la brasa casero con papas',
+    'Arroz con pollo a la criolla'
+  ], C:[
+    'Tallarines rojos con queso parmesano',
+    'Pizza casera',
+    'Sopa criolla con leche y huevo'
+  ]},
 
-  {d:'Día 15 Lun',D:'Avena con plátano y canela + café',A:'Arroz con menestra (frijol o lenteja) + ensalada',C:'Sopa de verduras con fideos'},
-  {d:'Día 16 Mar',D:'Yogurt con fruta y granola + pan tostado',A:'Pescado frito con arroz y ensalada criolla',C:'Tortilla de verduras + pan'},
-  {d:'Día 17 Mié',D:'Pan con palta y huevo + café con leche',A:'Tallarines a la huancaína con bistec',C:'Caldo de pollo con cabello de ángel'},
-  {d:'Día 18 Jue',D:'Huevos revueltos + fruta de estación + queso',A:'Arroz con pollo a la criolla + salsa criolla',C:'Sopa de quinua con verduras'},
-  {d:'Día 19 Vie',D:'Sándwich de plátano con leche + café',A:'Lomo saltado con arroz y papas fritas',C:'Crema de zapallo + pan tostado'},
-  {d:'Día 20 Sáb',D:'Sándwich de huevo con tomate + café',A:'Ají de gallina con arroz y papa',C:'Pizza casera o tallarines rojos'},
-  {d:'Día 21 Dom',D:'Desayuno completo: huevos, pan con palta, fruta + café',A:'Ceviche o pescado al horno con camote',C:'Sopa criolla con leche y huevo'},
+  {d:'Día 15 Lun', D:[
+    'Avena con plátano y canela + café',
+    'Yogurt con frutas y granola',
+    'Pan con palta y huevo + café'
+  ], A:[
+    'Arroz con menestra (frijol o lenteja) + ensalada',
+    'Lentejas con arroz + chorizo',
+    'Quinua con verduras'
+  ], C:[
+    'Sopa de verduras con fideos',
+    'Crema de zapallo + pan tostado',
+    'Tortilla de papa'
+  ]},
+  {d:'Día 16 Mar', D:[
+    'Yogurt con fruta y granola + pan tostado',
+    'Avena con frutas + café',
+    'Sándwich de queso a la plancha + jugo'
+  ], A:[
+    'Pescado frito con arroz y ensalada criolla',
+    'Pescado al horno con camote',
+    'Arroz con atún a la jardinera'
+  ], C:[
+    'Tortilla de verduras + pan',
+    'Sopa de fideos con huevo',
+    'Crema de brócoli'
+  ]},
+  {d:'Día 17 Mié', D:[
+    'Pan con palta y huevo + café con leche',
+    'Huevos revueltos con queso + frutas',
+    'Tostadas francesas con plátano'
+  ], A:[
+    'Tallarines a la huancaína con bistec',
+    'Tallarines verdes con bistec',
+    'Lomo saltado con arroz'
+  ], C:[
+    'Caldo de pollo con cabello de ángel',
+    'Sopa de fideos con huevo',
+    'Crema de zanahoria'
+  ]},
+  {d:'Día 18 Jue', D:[
+    'Huevos revueltos + fruta de estación + queso',
+    'Yogurt con frutas y granola',
+    'Pan con palta y huevo + café'
+  ], A:[
+    'Arroz con pollo a la criolla + salsa criolla',
+    'Pollo al horno con papas',
+    'Estofado de pollo con verduras'
+  ], C:[
+    'Sopa de quinua con verduras',
+    'Crema de zanahoria',
+    'Tortilla con ensalada'
+  ]},
+  {d:'Día 19 Vie', D:[
+    'Sándwich de plátano con leche + café',
+    'Avena con plátano y canela',
+    'Tostadas francesas con plátano'
+  ], A:[
+    'Lomo saltado con arroz y papas fritas',
+    'Bistec apanado con arroz y ensalada',
+    'Estofado de carne con papa'
+  ], C:[
+    'Crema de zapallo + pan tostado',
+    'Sopa de pollo casera',
+    'Tortilla de verduras'
+  ]},
+  {d:'Día 20 Sáb', D:[
+    'Sándwich de huevo con tomate + café',
+    'Pan con palta y huevo + frutas',
+    'Yogurt con frutas y granola'
+  ], A:[
+    'Ají de gallina con arroz y papa',
+    'Cau cau con arroz',
+    'Lomo saltado con arroz'
+  ], C:[
+    'Pizza casera',
+    'Tallarines rojos con carne',
+    'Wantán frito + ensalada'
+  ]},
+  {d:'Día 21 Dom', D:[
+    'Desayuno completo: huevos, pan con palta, fruta + café',
+    'Pan con palta y huevo + queso + jugo',
+    'Tostadas francesas + frutas + café'
+  ], A:[
+    'Ceviche de pescado + camote + choclo',
+    'Pescado al horno con camote',
+    'Arroz con mariscos (si hay)'
+  ], C:[
+    'Sopa criolla con leche y huevo',
+    'Caldo de pollo casero',
+    'Tortilla con ensalada'
+  ]},
 
-  {d:'Día 22 Lun',D:'Avena con fruta picada + café',A:'Arroz con atún o pollo + ensalada',C:'Sopa de fideos con verduras'},
-  {d:'Día 23 Mar',D:'Pan con queso a la plancha + jugo + café',A:'Estofado de carne con papa y zanahoria',C:'Tortilla de verduras + ensalada'},
-  {d:'Día 24 Mié',D:'Yogurt con frutas y granola + pan',A:'Tallarines verdes con bistec apanado',C:'Crema de verduras del día'},
-  {d:'Día 25 Jue',D:'Huevos al gusto + pan con palta + café',A:'Arroz con menestra + ensalada de palta',C:'Sopa de quinua'},
-  {d:'Día 26 Vie',D:'Sándwich de queso con tomate + fruta + café',A:'Pollo broaster casero con papas fritas',C:'Wantán frito o tallarines salteados'},
-  {d:'Día 27 Sáb',D:'Sándwich completo (queso, palta, huevo) + café',A:'Ají de gallina o seco de res',C:'Pizza casera o sopa criolla'},
-  {d:'Día 28 Dom',D:'Desayuno completo: huevos, pan, palta, fruta + café',A:'Pollo a la brasa con papas y ensalada',C:'Sopa ligera de pollo + gelatina'}
+  {d:'Día 22 Lun', D:[
+    'Avena con fruta picada + café',
+    'Yogurt con granola + frutas',
+    'Pan con palta y huevo + café'
+  ], A:[
+    'Arroz con atún + ensalada',
+    'Arroz con pollo a la criolla',
+    'Lentejas con arroz + chorizo'
+  ], C:[
+    'Sopa de fideos con verduras',
+    'Crema de brócoli',
+    'Tortilla de papa con verduras'
+  ]},
+  {d:'Día 23 Mar', D:[
+    'Pan con queso a la plancha + jugo + café',
+    'Tostadas francesas con plátano',
+    'Avena con plátano y canela'
+  ], A:[
+    'Estofado de carne con papa y zanahoria',
+    'Lomo saltado con arroz y papas',
+    'Bistec apanado con arroz'
+  ], C:[
+    'Tortilla de verduras + ensalada',
+    'Sopa de fideos con huevo',
+    'Crema de zanahoria'
+  ]},
+  {d:'Día 24 Mié', D:[
+    'Yogurt con frutas y granola + pan',
+    'Avena con plátano + café',
+    'Pan con palta y huevo + frutas'
+  ], A:[
+    'Tallarines verdes con bistec apanado',
+    'Tallarines a la huancaína con bistec',
+    'Lomo saltado con arroz'
+  ], C:[
+    'Crema de verduras del día',
+    'Sopa de pollo casera',
+    'Tortilla con ensalada'
+  ]},
+  {d:'Día 25 Jue', D:[
+    'Huevos al gusto + pan con palta + café',
+    'Sándwich de queso a la plancha + jugo',
+    'Tostadas francesas + frutas'
+  ], A:[
+    'Arroz con menestra + ensalada de palta',
+    'Lentejas con arroz + chorizo',
+    'Estofado de pollo con papa'
+  ], C:[
+    'Sopa de quinua con verduras',
+    'Crema de zanahoria',
+    'Tortilla de verduras'
+  ]},
+  {d:'Día 26 Vie', D:[
+    'Sándwich de queso con tomate + fruta + café',
+    'Pan con palta + huevo + jugo',
+    'Yogurt con frutas y granola'
+  ], A:[
+    'Pollo broaster casero con papas fritas',
+    'Pollo a la brasa con papas',
+    'Lomo saltado con arroz'
+  ], C:[
+    'Wantán frito + ensalada',
+    'Tallarines rojos con queso',
+    'Sopa de wantán'
+  ]},
+  {d:'Día 27 Sáb', D:[
+    'Sándwich completo (queso, palta, huevo) + café',
+    'Tostadas francesas + frutas + café',
+    'Pan con palta y huevo + jugo'
+  ], A:[
+    'Ají de gallina con arroz y papa',
+    'Seco de res con frijoles',
+    'Pollo al horno con papas'
+  ], C:[
+    'Pizza casera',
+    'Sopa criolla con leche y huevo',
+    'Tallarines rojos con carne'
+  ]},
+  {d:'Día 28 Dom', D:[
+    'Desayuno completo: huevos, pan, palta, fruta + café',
+    'Tostadas francesas + jugo + café',
+    'Pan con palta y huevo + frutas'
+  ], A:[
+    'Pollo a la brasa con papas y ensalada',
+    'Arroz con pollo a la criolla',
+    'Pescado al horno con camote'
+  ], C:[
+    'Sopa ligera de pollo + gelatina',
+    'Crema de verduras',
+    'Tortilla con ensalada'
+  ]}
 ];
 
 // =================== TURNOS DE COCINA ===================
@@ -918,13 +1268,62 @@ function generarTurnos(){
 }
 
 function loadPlan(){
-  const saved = localStorage.getItem('plancomidas_v3');
+  const saved = localStorage.getItem('plancomidas_v4');
   if(saved) return JSON.parse(saved);
-  // Migración: limpiar versión vieja si existe
+  // Migración: limpiar versiones viejas
   localStorage.removeItem('plancomidas_v2');
+  localStorage.removeItem('plancomidas_v3');
   return JSON.parse(JSON.stringify(planOriginal));
 }
-function savePlan(p){ localStorage.setItem('plancomidas_v3', JSON.stringify(p)); }
+function savePlan(p){ localStorage.setItem('plancomidas_v4', JSON.stringify(p)); }
+
+// Selecciones: cuál de las 3 opciones está activa por (idx, slot)
+function loadSelecciones(){
+  const saved = localStorage.getItem('planselecciones_v1');
+  return saved ? JSON.parse(saved) : {};
+}
+function saveSelecciones(s){ localStorage.setItem('planselecciones_v1', JSON.stringify(s)); }
+let selecciones = loadSelecciones();
+
+// Devuelve la opción activa de un slot (texto)
+function getActiveComida(idx, slot){
+  const opts = plan[idx][slot];
+  if(!Array.isArray(opts)) return opts; // backward compat
+  const sel = selecciones[idx]?.[slot] ?? 0;
+  return opts[Math.min(sel, opts.length-1)] || opts[0];
+}
+function getActiveIdx(idx, slot){
+  return selecciones[idx]?.[slot] ?? 0;
+}
+function setActiveOption(idx, slot, optIdx){
+  if(!selecciones[idx]) selecciones[idx] = {};
+  selecciones[idx][slot] = optIdx;
+  saveSelecciones(selecciones);
+}
+
+// Reajuste automático: para un slot, elige la opción que use ingredientes con MÁS stock disponible
+function reajustarPorInventario(){
+  for(let i=0;i<plan.length;i++){
+    for(const slot of ['D','A','C']){
+      const opts = plan[i][slot];
+      if(!Array.isArray(opts)) continue;
+      // Score cada opción por cantidad de ingredientes disponibles
+      let bestIdx = 0, bestScore = -1;
+      opts.forEach((opt, oi)=>{
+        const palabras = opt.toLowerCase().split(/[\s,+()]+/);
+        let score = 0;
+        palabras.forEach(p=>{
+          const it = matchInventario(p);
+          if(it && (stock[it.id]??0) > 0) score += stock[it.id];
+        });
+        if(score > bestScore){ bestScore = score; bestIdx = oi; }
+      });
+      setActiveOption(i, slot, bestIdx);
+    }
+  }
+  saveSelecciones(selecciones);
+  renderCal();
+}
 function loadTurnos(){
   // v2: nuevo algoritmo con disponibilidades reales por persona
   const saved = localStorage.getItem('planturnos_v2');
@@ -955,29 +1354,40 @@ function renderCal(){
       const pD = preparadas[`${idx}_D`] ? ' cocinada' : '';
       const pA = preparadas[`${idx}_A`] ? ' cocinada' : '';
       const pC = preparadas[`${idx}_C`] ? ' cocinada' : '';
+      const txtD = getActiveComida(idx, 'D'), aiD = getActiveIdx(idx, 'D');
+      const txtA = getActiveComida(idx, 'A'), aiA = getActiveIdx(idx, 'A');
+      const txtC = getActiveComida(idx, 'C'), aiC = getActiveIdx(idx, 'C');
+      const optsD = Array.isArray(day.D) ? day.D : [day.D];
+      const optsA = Array.isArray(day.A) ? day.A : [day.A];
+      const optsC = Array.isArray(day.C) ? day.C : [day.C];
+      const tabsHTML = (slot, active, opts) => opts.length>1 ?
+        `<div class="opt-tabs">${opts.map((o,oi)=>`<button class="${oi===active?'active':''}" data-idx="${idx}" data-slot="${slot}" data-opt="${oi}" title="${o.replace(/"/g,'&quot;')}">${oi+1}</button>`).join('')}</div>` : '';
       dayEl.innerHTML = `
         <div class="day-h">${day.d}</div>
         <div class="meal${pD}" data-idx="${idx}" data-slot="D" title="Click para ver la receta">
-          <img class="meal-img" src="${pickImg(day.D)}" alt="" loading="lazy">
+          <img class="meal-img" src="${pickImg(txtD)}" alt="" loading="lazy">
           <div class="meal-body">
             <div class="meal-l des"><span class="dot"></span>Desayuno</div>
-            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="D">${day.D}</div>
+            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="D">${txtD}</div>
+            ${tabsHTML('D', aiD, optsD)}
             <span class="chef ${tD}" data-idx="${idx}" data-k="D">${NOMBRES[tD]}</span>
           </div>
         </div>
         <div class="meal${pA}" data-idx="${idx}" data-slot="A" title="Click para ver la receta">
-          <img class="meal-img" src="${pickImg(day.A)}" alt="" loading="lazy">
+          <img class="meal-img" src="${pickImg(txtA)}" alt="" loading="lazy">
           <div class="meal-body">
             <div class="meal-l alm"><span class="dot"></span>Almuerzo</div>
-            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="A">${day.A}</div>
+            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="A">${txtA}</div>
+            ${tabsHTML('A', aiA, optsA)}
             <span class="chef ${tA}" data-idx="${idx}" data-k="A">${NOMBRES[tA]}</span>
           </div>
         </div>
         <div class="meal${pC}" data-idx="${idx}" data-slot="C" title="Click para ver la receta">
-          <img class="meal-img" src="${pickImg(day.C)}" alt="" loading="lazy">
+          <img class="meal-img" src="${pickImg(txtC)}" alt="" loading="lazy">
           <div class="meal-body">
             <div class="meal-l cen"><span class="dot"></span>Cena</div>
-            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="C">${day.C}</div>
+            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="C">${txtC}</div>
+            ${tabsHTML('C', aiC, optsC)}
             <span class="chef ${tC}" data-idx="${idx}" data-k="C">${NOMBRES[tC]}</span>
           </div>
         </div>`;
@@ -988,9 +1398,16 @@ function renderCal(){
   document.querySelectorAll('.meal-c[contenteditable]').forEach(el=>{
     el.addEventListener('blur',e=>{
       const i = +e.target.dataset.idx, k = e.target.dataset.k;
-      plan[i][k] = e.target.textContent.trim();
+      const nuevoTexto = e.target.textContent.trim();
+      // Actualizar la opción activa actual (no sobrescribir las otras)
+      if(Array.isArray(plan[i][k])){
+        const ai = getActiveIdx(i, k);
+        plan[i][k][ai] = nuevoTexto;
+      } else {
+        plan[i][k] = nuevoTexto;
+      }
       savePlan(plan);
-      const newImg = pickImg(plan[i][k]);
+      const newImg = pickImg(nuevoTexto);
       const img = e.target.closest('.meal').querySelector('.meal-img');
       if(img && img.src !== newImg) img.src = newImg;
     });
@@ -1001,12 +1418,23 @@ function renderCal(){
       abrirMenuChef(el);
     });
   });
+  document.querySelectorAll('.opt-tabs button').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const i = +el.dataset.idx;
+      const s = el.dataset.slot;
+      const o = +el.dataset.opt;
+      setActiveOption(i, s, o);
+      renderCal();
+    });
+  });
   document.querySelectorAll('.meal').forEach(el=>{
     el.addEventListener('click', e=>{
-      // No abrir receta si se está editando texto o clickeando el chef
+      // No abrir receta si está editando texto, clickeando el chef o los tabs de opciones
       if(e.target.classList.contains('chef')) return;
       if(e.target.classList.contains('meal-c')) return;
       if(e.target.isContentEditable) return;
+      if(e.target.closest('.opt-tabs')) return;
       const idx = +el.dataset.idx;
       const slot = el.dataset.slot;
       abrirReceta(idx, slot);
@@ -1106,16 +1534,18 @@ function renderTablaDisp(){
   });
 }
 function resetCal(){
-  if(confirm('¿Restaurar TODO (comidas + turnos + stock + comidas preparadas)? Perderás tus ediciones.')){
+  if(confirm('¿Restaurar TODO (comidas + selecciones + turnos + stock + preparadas)? Perderás tus ediciones.')){
     plan = JSON.parse(JSON.stringify(planOriginal));
     turnos = generarTurnos();
     preparadas = {};
+    selecciones = {};
     stock = {};
     for(const cat of Object.values(inventarioBase))
       for(const it of cat.items) stock[it.id] = it.max;
     savePlan(plan);
     saveTurnos(turnos);
     savePrep(preparadas);
+    saveSelecciones(selecciones);
     saveStock(stock);
     renderInventario();
     renderCal();
@@ -2200,7 +2630,7 @@ let recetaActual = null;
 
 function abrirReceta(idx, slot){
   const day = plan[idx];
-  const comida = day[slot];
+  const comida = getActiveComida(idx, slot);
   const turno = turnos[idx][slot];
   const receta = buscarReceta(comida);
   const slotName = {D:'Desayuno',A:'Almuerzo',C:'Cena'}[slot];

@@ -454,23 +454,50 @@
   <div class="info">Rotación de turnos de cocina entre los 4 integrantes. Cada persona cocina 1 comida al día (rotando entre desayuno/almuerzo/cena). Click en cualquier asignación del calendario para cambiarla manualmente.</div>
 
   <div class="turnos">
-    <h3>El equipo</h3>
+    <h3>El equipo y sus horarios</h3>
     <div class="personas">
-      <div class="persona emanuel"><div class="persona-nombre">Emanuel</div><div class="persona-stats" id="st-emanuel">— turnos</div></div>
-      <div class="persona william"><div class="persona-nombre">William</div><div class="persona-stats" id="st-william">— turnos</div></div>
-      <div class="persona geordano"><div class="persona-nombre">Geordano</div><div class="persona-stats" id="st-geordano">— turnos</div></div>
-      <div class="persona diego"><div class="persona-nombre">Diego</div><div class="persona-stats" id="st-diego">— turnos</div></div>
+      <div class="persona emanuel">
+        <div class="persona-nombre">Emanuel</div>
+        <div class="persona-stats" id="st-emanuel">— turnos</div>
+        <div class="persona-stats" style="margin-top:6px;font-size:.7rem">Trabajo remoto · toda la semana</div>
+      </div>
+      <div class="persona william">
+        <div class="persona-nombre">William</div>
+        <div class="persona-stats" id="st-william">— turnos</div>
+        <div class="persona-stats" style="margin-top:6px;font-size:.7rem">Trabajo remoto · sin cena Lun/Mar (tesis)</div>
+      </div>
+      <div class="persona geordano">
+        <div class="persona-nombre">Geordano</div>
+        <div class="persona-stats" id="st-geordano">— turnos</div>
+        <div class="persona-stats" style="margin-top:6px;font-size:.7rem">Clases presenciales Mié, Jue, Sáb</div>
+      </div>
+      <div class="persona diego">
+        <div class="persona-nombre">Diego</div>
+        <div class="persona-stats" id="st-diego">— turnos</div>
+        <div class="persona-stats" style="margin-top:6px;font-size:.7rem">Clases presenciales Mar y Jue</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="turnos">
+    <h3>Cronograma semanal de disponibilidad</h3>
+    <p style="font-size:.88rem;color:var(--mut);margin-bottom:10px">Los turnos automáticos respetan estas restricciones. Verde = disponible, gris = ocupado.</p>
+    <div style="overflow-x:auto">
+      <table class="turnos-tabla" id="tabla-disp">
+        <thead><tr><th>Persona</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 
   <div class="turnos">
     <h3>Reglas de rotación</h3>
     <ul style="margin-left:20px;font-size:.92rem">
-      <li><b>Distribución equitativa:</b> 28 días × 3 comidas = 84 turnos. Cada persona cocina 21 veces en el mes.</li>
-      <li><b>Rotación horaria:</b> Si Emanuel hace desayuno hoy, William lo hace mañana, Geordano pasado, Diego al cuarto día.</li>
-      <li><b>Doble turno:</b> Quien cocina almuerzo NO cocina cena el mismo día (excepto si lo decide el equipo).</li>
-      <li><b>Domingos:</b> Desayuno colaborativo o libre (marcado como "Libre"). El responsable del almuerzo del domingo prepara una comida especial.</li>
-      <li><b>Click en una asignación</b> en el calendario para cambiarla a otra persona si hay reemplazo o intercambio.</li>
+      <li><b>Distribución balanceada:</b> el algoritmo asigna a la persona disponible con menos turnos acumulados.</li>
+      <li><b>Disponibilidades respetadas:</b> nadie cocina si está en clase presencial o exonerado (William sin cena Lun/Mar por tesis).</li>
+      <li><b>Doble turno mismo día:</b> se evita salvo cuando solo queda 1 persona disponible.</li>
+      <li><b>Domingos:</b> desayuno colaborativo (marcado como "Libre"). Almuerzo y cena rotando.</li>
+      <li><b>Reasignación manual:</b> click en la etiqueta del cocinero en el calendario para cambiarlo (intercambios entre roomies).</li>
     </ul>
   </div>
 
@@ -776,77 +803,137 @@ renderInventario();
 
 // =================== CALENDARIO 4 SEMANAS ===================
 const planOriginal = [
-  {d:'Día 1 Lun',D:'Pan con palta + huevo + café con leche',A:'Arroz con bonito + ensalada lechuga/tomate',C:'Sopa de coliflor + pan'},
-  {d:'Día 2 Mar',D:'Papaya + queso + café',A:'Tallarines con bonito y brócoli al ajo',C:'Crema de zanahoria + pan con palta'},
-  {d:'Día 3 Mié',D:'Piña + huevo revuelto + café',A:'Causa de papa amarilla con atún + lechuga',C:'Sopa de wantán'},
-  {d:'Día 4 Jue',D:'Plátano + leche + café',A:'Bonito sudado con arroz y choclo',C:'Tortilla de coliflor + ensalada'},
-  {d:'Día 5 Vie',D:'Mandarina + pan con queso + café',A:'Lentejas con arroz + chorizo',C:'Crema de brócoli'},
-  {d:'Día 6 Sáb',D:'Naranja + huevo a la palta + café',A:'Tallarines al pesto (albahaca) + camote frito',C:'Sopa de fideos con verduras'},
-  {d:'Día 7 Dom',D:'Melón + pan con palta + café',A:'Bonito al horno con papa al horno',C:'Wantán frito + ensalada'},
+  {d:'Día 1 Lun',D:'Pan con palta y huevo (sándwich) + café con leche',A:'Arroz con bonito + ensalada lechuga/tomate',C:'Sopa de coliflor + pan tostado'},
+  {d:'Día 2 Mar',D:'Sándwich de queso a la plancha + papaya en rodajas + café',A:'Tallarines con bonito y brócoli al ajo',C:'Crema de zanahoria + pan con palta'},
+  {d:'Día 3 Mié',D:'Huevos revueltos con queso + piña fresca + café',A:'Causa de papa amarilla con atún + lechuga',C:'Sopa de wantán'},
+  {d:'Día 4 Jue',D:'Tostadas francesas con plátano + café con leche',A:'Bonito sudado con arroz y choclo',C:'Tortilla de coliflor + ensalada'},
+  {d:'Día 5 Vie',D:'Sándwich de queso con tomate + jugo de mandarina + café',A:'Lentejas con arroz + chorizo',C:'Crema de brócoli + pan tostado'},
+  {d:'Día 6 Sáb',D:'Huevos a la palta sobre pan + jugo de naranja + café',A:'Tallarines al pesto (albahaca) + camote frito',C:'Sopa de fideos con verduras'},
+  {d:'Día 7 Dom',D:'Pan con palta + huevos al gusto + melón en cubos + café',A:'Bonito al horno con papa al horno',C:'Wantán frito + ensalada'},
 
-  {d:'Día 8 Lun',D:'Naranja + huevo duro + café',A:'Arroz con atún a la jardinera (zanahoria, choclo)',C:'Quinua salteada con verduras'},
-  {d:'Día 9 Mar',D:'Mandarina + pan con queso',A:'Lentejas restantes + arroz',C:'Crema de papa amarilla'},
-  {d:'Día 10 Mié',D:'Plátano + leche + café',A:'Fideos con chorizo y tomate',C:'Tortilla de papa + ensalada'},
-  {d:'Día 11 Jue',D:'Granada + huevo revuelto',A:'Pollo guisado con arroz',C:'Sopa de fideos'},
-  {d:'Día 12 Vie',D:'Pan con palta + café',A:'Estofado de pollo con papa',C:'Quinua con verduras'},
-  {d:'Día 13 Sáb',D:'Papaya o piña + queso',A:'Arroz chaufa con huevo y verduras',C:'Sopa de wantán'},
-  {d:'Día 14 Dom',D:'Mandarina + huevo + café',A:'Pollo al horno con camote y ensalada',C:'Tallarines rojos + queso'},
+  {d:'Día 8 Lun',D:'Huevos duros con pan tostado + jugo de naranja + café',A:'Arroz con atún a la jardinera (zanahoria, choclo)',C:'Quinua salteada con verduras'},
+  {d:'Día 9 Mar',D:'Sándwich de queso + mandarinas + café',A:'Lentejas con arroz (sobrante recalentado) + huevo frito',C:'Crema de papa amarilla'},
+  {d:'Día 10 Mié',D:'Tostadas con plátano caramelizado + café con leche',A:'Fideos con chorizo y tomate',C:'Tortilla de papa + ensalada'},
+  {d:'Día 11 Jue',D:'Huevos revueltos con queso + jugo de granada + pan',A:'Pollo guisado con arroz',C:'Sopa de fideos con huevo'},
+  {d:'Día 12 Vie',D:'Pan con palta y queso + café con leche',A:'Estofado de pollo con papa',C:'Quinua con verduras y huevo'},
+  {d:'Día 13 Sáb',D:'Sándwich de palta + papaya o piña + café',A:'Arroz chaufa con huevo y verduras',C:'Sopa de wantán'},
+  {d:'Día 14 Dom',D:'Huevos al gusto con pan + mandarina + café',A:'Pollo al horno con camote y ensalada',C:'Tallarines rojos con queso parmesano'},
 
-  {d:'Día 15 Lun',D:'Avena con plátano + café',A:'Arroz con menestra (frijol o lenteja)',C:'Sopa de verduras'},
-  {d:'Día 16 Mar',D:'Yogurt con fruta + pan',A:'Pescado frito con arroz y ensalada',C:'Tortilla de verduras'},
-  {d:'Día 17 Mié',D:'Pan con palta + huevo + café',A:'Tallarines a la huancaína',C:'Caldo de pollo'},
-  {d:'Día 18 Jue',D:'Fruta + queso',A:'Arroz con pollo a la criolla',C:'Sopa de quinua'},
-  {d:'Día 19 Vie',D:'Plátano + leche',A:'Lomo saltado con arroz',C:'Crema de zapallo'},
-  {d:'Día 20 Sáb',D:'Sándwich de huevo + café',A:'Cau cau o ají de gallina',C:'Pizza casera o tallarines'},
-  {d:'Día 21 Dom',D:'Desayuno completo (huevos, pan, palta)',A:'Ceviche o pescado al horno',C:'Sopa criolla'},
+  {d:'Día 15 Lun',D:'Avena con plátano y canela + café',A:'Arroz con menestra (frijol o lenteja) + ensalada',C:'Sopa de verduras con fideos'},
+  {d:'Día 16 Mar',D:'Yogurt con fruta y granola + pan tostado',A:'Pescado frito con arroz y ensalada criolla',C:'Tortilla de verduras + pan'},
+  {d:'Día 17 Mié',D:'Pan con palta y huevo + café con leche',A:'Tallarines a la huancaína con bistec',C:'Caldo de pollo con cabello de ángel'},
+  {d:'Día 18 Jue',D:'Huevos revueltos + fruta de estación + queso',A:'Arroz con pollo a la criolla + salsa criolla',C:'Sopa de quinua con verduras'},
+  {d:'Día 19 Vie',D:'Sándwich de plátano con leche + café',A:'Lomo saltado con arroz y papas fritas',C:'Crema de zapallo + pan tostado'},
+  {d:'Día 20 Sáb',D:'Sándwich de huevo con tomate + café',A:'Ají de gallina con arroz y papa',C:'Pizza casera o tallarines rojos'},
+  {d:'Día 21 Dom',D:'Desayuno completo: huevos, pan con palta, fruta + café',A:'Ceviche o pescado al horno con camote',C:'Sopa criolla con leche y huevo'},
 
-  {d:'Día 22 Lun',D:'Avena + fruta + café',A:'Arroz con atún o pollo',C:'Sopa de fideos'},
-  {d:'Día 23 Mar',D:'Pan con queso + café',A:'Estofado de carne',C:'Tortilla + ensalada'},
-  {d:'Día 24 Mié',D:'Yogurt con frutas',A:'Tallarines verdes + bistec',C:'Crema de verduras'},
-  {d:'Día 25 Jue',D:'Huevo + pan con palta',A:'Arroz con menestra + ensalada',C:'Sopa de quinua'},
-  {d:'Día 26 Vie',D:'Fruta + queso + café',A:'Pollo broaster con papa',C:'Wantán o tallarines'},
-  {d:'Día 27 Sáb',D:'Sándwich + café',A:'Ají de gallina o seco',C:'Pizza o sopa criolla'},
-  {d:'Día 28 Dom',D:'Desayuno completo',A:'Pollo a la brasa con papas',C:'Sopa ligera + gelatina'}
+  {d:'Día 22 Lun',D:'Avena con fruta picada + café',A:'Arroz con atún o pollo + ensalada',C:'Sopa de fideos con verduras'},
+  {d:'Día 23 Mar',D:'Pan con queso a la plancha + jugo + café',A:'Estofado de carne con papa y zanahoria',C:'Tortilla de verduras + ensalada'},
+  {d:'Día 24 Mié',D:'Yogurt con frutas y granola + pan',A:'Tallarines verdes con bistec apanado',C:'Crema de verduras del día'},
+  {d:'Día 25 Jue',D:'Huevos al gusto + pan con palta + café',A:'Arroz con menestra + ensalada de palta',C:'Sopa de quinua'},
+  {d:'Día 26 Vie',D:'Sándwich de queso con tomate + fruta + café',A:'Pollo broaster casero con papas fritas',C:'Wantán frito o tallarines salteados'},
+  {d:'Día 27 Sáb',D:'Sándwich completo (queso, palta, huevo) + café',A:'Ají de gallina o seco de res',C:'Pizza casera o sopa criolla'},
+  {d:'Día 28 Dom',D:'Desayuno completo: huevos, pan, palta, fruta + café',A:'Pollo a la brasa con papas y ensalada',C:'Sopa ligera de pollo + gelatina'}
 ];
 
 // =================== TURNOS DE COCINA ===================
 const PERSONAS = ['emanuel','william','geordano','diego'];
 const NOMBRES = {emanuel:'Emanuel',william:'William',geordano:'Geordano',diego:'Diego',libre:'Libre'};
 
-// Genera turnos rotativos: 4 personas × 3 comidas/día × 28 días = 84 turnos
-// Cada persona cocina 21 veces. Rotación: cada día corre un offset por comida.
+// Disponibilidad por persona — días/slots en que NO pueden cocinar
+// dow: 0=Lun 1=Mar 2=Mié 3=Jue 4=Vie 5=Sáb 6=Dom
+// slots: D=Desayuno, A=Almuerzo, C=Cena
+const DISPONIBILIDAD = {
+  emanuel: {
+    nota: "Trabajo remoto — disponible toda la semana",
+    bloqueos: [] // sin restricciones
+  },
+  william: {
+    nota: "Trabajo remoto — sin cena lunes/martes (tesis)",
+    bloqueos: [
+      {dow:0, slot:"C"}, // lunes cena
+      {dow:1, slot:"C"}  // martes cena
+    ]
+  },
+  geordano: {
+    nota: "Clases presenciales miércoles, jueves, sábado",
+    bloqueos: [
+      {dow:2}, {dow:3}, {dow:5} // todo el día esos días
+    ]
+  },
+  diego: {
+    nota: "Clases presenciales martes y jueves",
+    bloqueos: [
+      {dow:1}, {dow:3}
+    ]
+  }
+};
+
+function disponible(persona, dow, slot){
+  const cfg = DISPONIBILIDAD[persona];
+  if(!cfg) return true;
+  for(const b of cfg.bloqueos){
+    if(b.dow !== dow) continue;
+    if(!b.slot) return false; // bloqueo de día completo
+    if(b.slot === slot) return false;
+  }
+  return true;
+}
+
+// Genera turnos respetando disponibilidad y balanceando carga.
+// Para cada slot del mes: elegir entre los disponibles al que menos turnos tenga.
 function generarTurnos(){
   const t = [];
+  const cuenta = {emanuel:0, william:0, geordano:0, diego:0};
+
   for(let d=0;d<28;d++){
-    const dow = d % 7; // 0=Lun ... 6=Dom
-    if(dow === 6){ // Domingos: desayuno libre, almuerzo y cena rotando
-      t.push({
-        D: 'libre',
-        A: PERSONAS[(d+1) % 4],
-        C: PERSONAS[(d+2) % 4]
+    const dow = d % 7;
+    const dia = {};
+
+    for(const slot of ['D','A','C']){
+      // Domingos: desayuno colaborativo libre
+      if(slot === 'D' && dow === 6){
+        dia[slot] = 'libre';
+        continue;
+      }
+      const candidatos = PERSONAS.filter(p => disponible(p, dow, slot));
+      if(candidatos.length === 0){
+        dia[slot] = 'libre';
+        continue;
+      }
+      // Ordenar por menor cantidad de turnos asignados (balance), luego rotación natural
+      candidatos.sort((a,b)=>{
+        if(cuenta[a] !== cuenta[b]) return cuenta[a] - cuenta[b];
+        return PERSONAS.indexOf(a) - PERSONAS.indexOf(b);
       });
-    } else {
-      // Día normal: rotación pura por offset
-      t.push({
-        D: PERSONAS[d % 4],
-        A: PERSONAS[(d+1) % 4],
-        C: PERSONAS[(d+2) % 4]
-      });
+      // Evitar que la misma persona cocine 2 slots seguidos el mismo día (a menos que sea forzado)
+      const yaHoy = Object.values(dia);
+      let elegido = candidatos.find(c => !yaHoy.includes(c)) || candidatos[0];
+      dia[slot] = elegido;
+      cuenta[elegido]++;
     }
+    t.push(dia);
   }
   return t;
 }
 
 function loadPlan(){
-  const saved = localStorage.getItem('plancomidas_v2');
-  return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(planOriginal));
+  const saved = localStorage.getItem('plancomidas_v3');
+  if(saved) return JSON.parse(saved);
+  // Migración: limpiar versión vieja si existe
+  localStorage.removeItem('plancomidas_v2');
+  return JSON.parse(JSON.stringify(planOriginal));
 }
-function savePlan(p){ localStorage.setItem('plancomidas_v2', JSON.stringify(p)); }
+function savePlan(p){ localStorage.setItem('plancomidas_v3', JSON.stringify(p)); }
 function loadTurnos(){
-  const saved = localStorage.getItem('planturnos_v1');
-  return saved ? JSON.parse(saved) : generarTurnos();
+  // v2: nuevo algoritmo con disponibilidades reales por persona
+  const saved = localStorage.getItem('planturnos_v2');
+  if(saved) return JSON.parse(saved);
+  // Migración: limpiar versión vieja si existe
+  localStorage.removeItem('planturnos_v1');
+  return generarTurnos();
 }
-function saveTurnos(t){ localStorage.setItem('planturnos_v1', JSON.stringify(t)); }
+function saveTurnos(t){ localStorage.setItem('planturnos_v2', JSON.stringify(t)); }
 let plan = loadPlan();
 let turnos = loadTurnos();
 
@@ -984,6 +1071,39 @@ function renderTablaTurnos(){
       <td><span class="chef ${t.C}">${NOMBRES[t.C]}</span></td>`;
     tbody.appendChild(tr);
   }
+  renderTablaDisp();
+}
+
+function renderTablaDisp(){
+  const tbody = document.querySelector('#tabla-disp tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+  PERSONAS.forEach(p=>{
+    const tr = document.createElement('tr');
+    let cells = `<td><span class="chef ${p}">${NOMBRES[p]}</span></td>`;
+    for(let dow=0; dow<7; dow++){
+      // Para cada día, evaluar si está disponible en al menos 1 slot
+      const dispD = disponible(p, dow, 'D');
+      const dispA = disponible(p, dow, 'A');
+      const dispC = disponible(p, dow, 'C');
+      let txt = '', bg = '';
+      if(dispD && dispA && dispC){
+        txt = 'Sí'; bg = '#d1fae5; color:#065f46';
+      } else if(!dispD && !dispA && !dispC){
+        txt = 'No'; bg = '#fee2e2; color:#991b1b';
+      } else {
+        const slots = [];
+        if(!dispD) slots.push('sin D');
+        if(!dispA) slots.push('sin A');
+        if(!dispC) slots.push('sin C');
+        txt = slots.join(', ');
+        bg = '#fef3c7; color:#92400e';
+      }
+      cells += `<td style="background:${bg};font-weight:600;font-size:.78rem">${txt}</td>`;
+    }
+    tr.innerHTML = cells;
+    tbody.appendChild(tr);
+  });
 }
 function resetCal(){
   if(confirm('¿Restaurar TODO (comidas + turnos + stock + comidas preparadas)? Perderás tus ediciones.')){

@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Plan de Comidas - 1 Mes</title>
+<style>
+  :root{
+    --bg:#fff7ed;
+    --bg2:#ffedd5;
+    --panel:#ffffff;
+    --panel2:#fff3e0;
+    --border:#fdba74;
+    --txt:#3d2817;
+    --mut:#92400e;
+    --rose:#fb7185;
+    --orange:#fb923c;
+    --amber:#fbbf24;
+    --lime:#a3e635;
+    --emerald:#34d399;
+    --teal:#2dd4bf;
+    --sky:#38bdf8;
+    --indigo:#818cf8;
+    --violet:#a78bfa;
+    --pink:#f472b6;
+    --proteina:#fb7185;
+    --carb:#fbbf24;
+    --verdura:#34d399;
+    --fruta:#fb923c;
+    --lacteo:#38bdf8;
+    --otro:#a78bfa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:linear-gradient(135deg,#fff7ed 0%,#fef3c7 50%,#fce7f3 100%);
+    background-attachment:fixed;
+    color:var(--txt);line-height:1.5;padding:24px;min-height:100vh
+  }
+  .header{
+    background:linear-gradient(135deg,var(--rose),var(--orange) 50%,var(--amber));
+    padding:30px;border-radius:20px;margin-bottom:24px;
+    box-shadow:0 10px 30px rgba(251,113,133,.25);color:#fff;
+    position:relative;overflow:hidden
+  }
+  .header::before{
+    content:"";position:absolute;top:-50%;right:-10%;width:300px;height:300px;
+    background:radial-gradient(circle,rgba(255,255,255,.3),transparent 70%);
+    border-radius:50%
+  }
+  .header h1{font-size:2rem;margin-bottom:6px;font-weight:700;position:relative}
+  .header .sub{font-size:.95rem;opacity:.95;position:relative;max-width:780px}
+
+  .tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+  .tab{
+    padding:10px 18px;cursor:pointer;border:0;background:#fff;
+    color:var(--mut);font-size:.92rem;border-radius:30px;
+    font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.06);
+    transition:all .2s
+  }
+  .tab:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+  .tab.active{
+    background:linear-gradient(135deg,var(--rose),var(--orange));
+    color:#fff;box-shadow:0 4px 14px rgba(251,113,133,.4)
+  }
+  .panel{display:none;animation:fadeIn .3s ease}
+  .panel.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:24px}
+  .stat{
+    background:#fff;border-radius:16px;padding:18px;
+    box-shadow:0 4px 14px rgba(0,0,0,.05);
+    border-top:4px solid var(--rose);
+    transition:transform .15s
+  }
+  .stat:nth-child(2){border-top-color:var(--orange)}
+  .stat:nth-child(3){border-top-color:var(--emerald)}
+  .stat:nth-child(4){border-top-color:var(--violet)}
+  .stat:nth-child(5){border-top-color:var(--sky)}
+  .stat:hover{transform:translateY(-3px)}
+  .stat-label{font-size:.7rem;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+  .stat-val{font-size:1.8rem;font-weight:700;margin-top:6px;color:var(--txt)}
+  .stat-sub{font-size:.78rem;color:var(--mut);margin-top:4px}
+
+  /* Inventario */
+  .cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .cat{
+    background:#fff;border-radius:16px;padding:18px;
+    box-shadow:0 4px 14px rgba(0,0,0,.05);position:relative;overflow:hidden
+  }
+  .cat::before{
+    content:"";position:absolute;top:0;left:0;width:100%;height:5px;
+    background:linear-gradient(90deg,var(--c1),var(--c2))
+  }
+  .cat.proteina{--c1:var(--rose);--c2:#f87171}
+  .cat.carb{--c1:var(--amber);--c2:var(--orange)}
+  .cat.verdura{--c1:var(--lime);--c2:var(--emerald)}
+  .cat.fruta{--c1:var(--orange);--c2:var(--rose)}
+  .cat.lacteo{--c1:var(--sky);--c2:var(--indigo)}
+  .cat.otro{--c1:var(--violet);--c2:var(--pink)}
+  .cat h3{font-size:1.05rem;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-weight:700}
+  .cat h3 .count{
+    background:var(--bg2);color:var(--mut);font-size:.7rem;
+    padding:2px 10px;border-radius:12px;font-weight:600
+  }
+  .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+  .inv-item{
+    background:var(--bg);border-radius:10px;overflow:hidden;
+    border:1px solid var(--bg2);transition:transform .2s
+  }
+  .inv-item:hover{transform:scale(1.05)}
+  .inv-item img{width:100%;height:70px;object-fit:cover;display:block}
+  .inv-info{padding:6px 8px}
+  .inv-name{font-size:.78rem;font-weight:600;line-height:1.2}
+  .inv-life{font-size:.65rem;color:var(--mut);margin-top:2px}
+  .badge{
+    display:inline-block;font-size:.6rem;padding:1px 6px;border-radius:8px;
+    font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.3px
+  }
+  .badge.urgent{background:#fee2e2;color:#dc2626}
+  .badge.soon{background:#fef3c7;color:#d97706}
+  .badge.ok{background:#d1fae5;color:#059669}
+
+  /* Calendario */
+  .week{margin-bottom:24px;background:#fff;border-radius:16px;padding:18px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  .week-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+  .week-h h3{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:10px}
+  .week-h h3::before{
+    content:"";display:inline-block;width:8px;height:24px;border-radius:4px;
+    background:linear-gradient(180deg,var(--rose),var(--orange))
+  }
+  .week:nth-child(2) .week-h h3::before{background:linear-gradient(180deg,var(--orange),var(--amber))}
+  .week:nth-child(3) .week-h h3::before{background:linear-gradient(180deg,var(--lime),var(--emerald))}
+  .week:nth-child(4) .week-h h3::before{background:linear-gradient(180deg,var(--sky),var(--violet))}
+  .week-tag{
+    font-size:.78rem;color:var(--mut);background:var(--bg2);
+    padding:4px 12px;border-radius:12px;font-weight:600
+  }
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+  @media(max-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
+  @media(max-width:780px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:500px){.grid{grid-template-columns:1fr}}
+  .day{
+    background:linear-gradient(160deg,#fff,var(--bg));
+    border-radius:12px;padding:10px;font-size:.8rem;
+    border:1px solid var(--bg2);transition:transform .15s
+  }
+  .day:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.08)}
+  .day-h{
+    font-weight:700;color:#fff;margin-bottom:10px;font-size:.78rem;
+    background:linear-gradient(135deg,var(--rose),var(--orange));
+    padding:5px 10px;border-radius:8px;text-align:center
+  }
+  .meal{margin-bottom:8px;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #fef3c7}
+  .meal-img{width:100%;height:56px;object-fit:cover;display:block}
+  .meal-body{padding:6px 8px}
+  .meal-l{
+    font-size:.62rem;color:var(--mut);text-transform:uppercase;
+    letter-spacing:.5px;font-weight:700;display:flex;align-items:center;gap:4px
+  }
+  .meal-l .dot{width:6px;height:6px;border-radius:50%;background:var(--orange)}
+  .meal-l.des .dot{background:var(--amber)}
+  .meal-l.alm .dot{background:var(--rose)}
+  .meal-l.cen .dot{background:var(--violet)}
+  .meal-c{margin-top:3px;font-size:.78rem;line-height:1.3;color:var(--txt)}
+  .meal-c[contenteditable]:focus{outline:2px solid var(--orange);background:var(--bg);border-radius:4px}
+
+  /* Cocinero / personas */
+  .chef{
+    display:inline-flex;align-items:center;gap:5px;font-size:.65rem;font-weight:700;
+    padding:2px 8px;border-radius:10px;margin-top:4px;color:#fff;cursor:pointer;
+    transition:transform .15s
+  }
+  .chef:hover{transform:scale(1.05)}
+  .chef.emanuel{background:linear-gradient(135deg,#fb7185,#e11d48)}
+  .chef.william{background:linear-gradient(135deg,#34d399,#059669)}
+  .chef.geordano{background:linear-gradient(135deg,#38bdf8,#2563eb)}
+  .chef.diego{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+  .chef.libre{background:linear-gradient(135deg,#9ca3af,#6b7280)}
+  .chef::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff}
+
+  /* Tabla de turnos */
+  .turnos{background:#fff;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  .turnos h3{font-size:1.05rem;margin-bottom:12px;font-weight:700}
+  .personas{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+  @media(max-width:700px){.personas{grid-template-columns:1fr 1fr}}
+  .persona{
+    padding:14px;border-radius:12px;color:#fff;text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.1)
+  }
+  .persona.emanuel{background:linear-gradient(135deg,#fb7185,#e11d48)}
+  .persona.william{background:linear-gradient(135deg,#34d399,#059669)}
+  .persona.geordano{background:linear-gradient(135deg,#38bdf8,#2563eb)}
+  .persona.diego{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+  .persona-nombre{font-size:1.1rem;font-weight:700;margin-bottom:4px}
+  .persona-stats{font-size:.78rem;opacity:.95}
+  .turnos-tabla{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:10px}
+  .turnos-tabla th{background:var(--bg2);padding:8px;text-align:left;font-weight:700;color:var(--mut);font-size:.72rem;text-transform:uppercase;letter-spacing:.4px}
+  .turnos-tabla td{padding:6px 8px;border-bottom:1px solid var(--bg2)}
+  .turnos-tabla tr:hover{background:var(--bg)}
+
+  /* Modal de receta */
+  .modal-bg{
+    position:fixed;inset:0;background:rgba(60,30,10,.5);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;z-index:200;padding:20px;
+    animation:fadeIn .2s ease
+  }
+  .modal-bg.show{display:flex}
+  .modal{
+    background:#fff;border-radius:20px;max-width:680px;width:100%;max-height:90vh;
+    overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .25s ease
+  }
+  @keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  .modal-hero{
+    height:180px;background-size:cover;background-position:center;position:relative;
+  }
+  .modal-hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7))
+  }
+  .modal-hero h2{
+    position:absolute;bottom:14px;left:20px;right:20px;color:#fff;
+    font-size:1.5rem;z-index:1;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.5)
+  }
+  .modal-close{
+    position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.9);border:0;cursor:pointer;font-size:1.2rem;
+    z-index:2;display:flex;align-items:center;justify-content:center;font-weight:700
+  }
+  .modal-meta{
+    display:flex;gap:10px;padding:12px 20px;background:var(--bg);
+    border-bottom:1px solid var(--bg2);flex-wrap:wrap;font-size:.82rem
+  }
+  .modal-meta .pill{
+    background:#fff;padding:5px 12px;border-radius:14px;font-weight:600;
+    border:1px solid var(--bg2);color:var(--mut)
+  }
+  .modal-meta .pill.chef{color:#fff;border:0}
+  .modal-meta .pill.chef.emanuel{background:linear-gradient(135deg,#fb7185,#e11d48)}
+  .modal-meta .pill.chef.william{background:linear-gradient(135deg,#34d399,#059669)}
+  .modal-meta .pill.chef.geordano{background:linear-gradient(135deg,#38bdf8,#2563eb)}
+  .modal-meta .pill.chef.diego{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+  .modal-meta .pill.chef.libre{background:linear-gradient(135deg,#9ca3af,#6b7280)}
+  .modal-body{padding:20px;overflow-y:auto;flex:1}
+  .modal-body h3{
+    font-size:.95rem;margin:14px 0 8px;color:var(--mut);
+    text-transform:uppercase;letter-spacing:.5px;font-weight:700;
+    display:flex;align-items:center;gap:8px
+  }
+  .modal-body h3::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--orange)}
+  .modal-body h3:first-child{margin-top:0}
+  .modal-body ul,.modal-body ol{margin-left:20px;font-size:.92rem}
+  .modal-body li{margin-bottom:6px;line-height:1.5}
+  .modal-body ul li::marker{color:var(--orange)}
+  .modal-body ol li::marker{color:var(--rose);font-weight:700}
+  .modal-tips{
+    background:linear-gradient(135deg,#fef3c7,#fed7aa);
+    padding:12px 16px;border-radius:10px;margin-top:14px;font-size:.88rem;
+    border-left:4px solid var(--orange)
+  }
+  .modal-tips b{color:var(--mut)}
+  .meal{cursor:pointer}
+  .meal:hover{box-shadow:0 4px 12px rgba(251,113,133,.25)}
+
+  /* Selector cocinero menu */
+  .chef-menu{
+    position:absolute;background:#fff;border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);padding:6px;z-index:100;
+    display:flex;flex-direction:column;gap:3px;min-width:120px
+  }
+  .chef-menu button{
+    border:0;background:transparent;padding:6px 10px;border-radius:6px;
+    cursor:pointer;font-size:.8rem;text-align:left;font-weight:600;color:#fff
+  }
+  .chef-menu button.emanuel{background:linear-gradient(135deg,#fb7185,#e11d48)}
+  .chef-menu button.william{background:linear-gradient(135deg,#34d399,#059669)}
+  .chef-menu button.geordano{background:linear-gradient(135deg,#38bdf8,#2563eb)}
+  .chef-menu button.diego{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+  .chef-menu button.libre{background:linear-gradient(135deg,#9ca3af,#6b7280)}
+
+  /* Estrategia */
+  .strat{
+    background:#fff;border-radius:16px;padding:22px;margin-bottom:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,.05);border-left:5px solid var(--orange)
+  }
+  .strat:nth-child(2){border-left-color:var(--emerald)}
+  .strat:nth-child(3){border-left-color:var(--violet)}
+  .strat h3{margin-bottom:12px;color:var(--txt);font-size:1.1rem;font-weight:700}
+  .strat ul{margin-left:20px;font-size:.92rem}
+  .strat li{margin-bottom:6px}
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+  @media(max-width:780px){.timeline{grid-template-columns:1fr 1fr}}
+  .tl{
+    background:linear-gradient(135deg,var(--c1,var(--rose)),var(--c2,var(--orange)));
+    color:#fff;border-radius:12px;padding:14px;font-size:.85rem;
+    box-shadow:0 4px 12px rgba(0,0,0,.1)
+  }
+  .tl:nth-child(1){--c1:#fb7185;--c2:#fb923c}
+  .tl:nth-child(2){--c1:#fbbf24;--c2:#f59e0b}
+  .tl:nth-child(3){--c1:#34d399;--c2:#10b981}
+  .tl:nth-child(4){--c1:#818cf8;--c2:#a78bfa}
+  .tl b{display:block;font-size:.85rem;margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+
+  /* Compras */
+  .shop{background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  .shop-cat{margin-bottom:18px}
+  .shop-cat h4{font-size:1rem;margin-bottom:10px;color:var(--txt);font-weight:700;display:flex;align-items:center;gap:8px}
+  .shop-cat h4::before{
+    content:"";width:6px;height:18px;border-radius:3px;background:var(--rose)
+  }
+  .shop-cat ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px}
+  .shop-cat li{
+    display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:.9rem;
+    background:var(--bg);border-radius:8px;border:1px solid var(--bg2)
+  }
+  .shop-cat input[type=checkbox]{cursor:pointer;width:16px;height:16px;accent-color:var(--orange)}
+  .shop-cat label{cursor:pointer;flex:1}
+  .shop-cat label.done{text-decoration:line-through;color:var(--mut)}
+  .priority{font-size:.65rem;padding:2px 8px;border-radius:8px;font-weight:700;text-transform:uppercase}
+  .priority.alta{background:#fecaca;color:#dc2626}
+  .priority.media{background:#fef3c7;color:#d97706}
+  .priority.baja{background:#dbeafe;color:#2563eb}
+
+  .info{
+    background:linear-gradient(135deg,#fef3c7,#fed7aa);
+    border-left:5px solid var(--orange);padding:14px 18px;
+    margin-bottom:18px;font-size:.9rem;border-radius:10px;color:var(--txt)
+  }
+  .footer{margin-top:30px;text-align:center;color:var(--mut);font-size:.78rem}
+  button.act{
+    background:linear-gradient(135deg,var(--orange),var(--rose));
+    color:#fff;border:0;padding:8px 14px;border-radius:8px;
+    cursor:pointer;font-size:.85rem;font-weight:600;
+    box-shadow:0 2px 8px rgba(251,113,133,.3)
+  }
+  button.act:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(251,113,133,.4)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Plan de Comidas — 1 Mes</h1>
+  <p class="sub">Inventario clasificado, calendario de 4 semanas con desayuno/almuerzo/cena, estrategia FIFO para perecederos y compras complementarias. Todas las imágenes son referenciales (Unsplash). Click sobre cualquier comida para editarla.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-t="resumen">Resumen</button>
+  <button class="tab" data-t="inventario">Inventario</button>
+  <button class="tab" data-t="calendario">Calendario 4 semanas</button>
+  <button class="tab" data-t="turnos">Turnos de cocina</button>
+  <button class="tab" data-t="estrategia">Estrategia FIFO</button>
+  <button class="tab" data-t="compras">Compras complementarias</button>
+</div>
+
+<!-- ===================== RESUMEN ===================== -->
+<div class="panel active" id="p-resumen">
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Items en inventario</div><div class="stat-val" id="s-items">0</div><div class="stat-sub">categorizados por tipo</div></div>
+    <div class="stat"><div class="stat-label">Personas en casa</div><div class="stat-val">4</div><div class="stat-sub">Emanuel · William · Geordano · Diego</div></div>
+    <div class="stat"><div class="stat-label">Comidas planificadas</div><div class="stat-val">84</div><div class="stat-sub">28 días × 3 (turnos rotativos)</div></div>
+    <div class="stat"><div class="stat-label">Turnos por persona</div><div class="stat-val">~21</div><div class="stat-sub">distribuidos en el mes</div></div>
+    <div class="stat"><div class="stat-label">Perecederos urgentes</div><div class="stat-val" style="color:#dc2626">7</div><div class="stat-sub">usar en 5 días</div></div>
+  </div>
+
+  <div class="info">
+    <b>Cómo está pensado:</b> Las primeras 2 semanas usan tu inventario actual (verduras frescas y bonito primero). Semanas 3 y 4 dependen de las compras complementarias. <b>Click en cualquier comida</b> para abrir la receta completa (ingredientes, pasos, tips). <b>Click sobre el texto</b> para editar la comida. <b>Click sobre la etiqueta del cocinero</b> para reasignar a otra persona.
+  </div>
+
+  <div class="strat">
+    <h3>Reglas de optimización aplicadas</h3>
+    <ul>
+      <li><b>FIFO perecederos:</b> Lechuga, tomate, palta, brócoli y bonito se consumen en los primeros 5 días.</li>
+      <li><b>Frutas en desayunos:</b> Distribuidas según vida útil (papaya y melón primero, naranja/mandarina al final).</li>
+      <li><b>Repetición controlada:</b> Ningún almuerzo se repite en la misma semana.</li>
+      <li><b>Aprovechar el bonito 1 kg:</b> 4 porciones distribuidas entre días 1-4.</li>
+      <li><b>Albahaca:</b> Reservada para pesto en día 6 (aguanta poco refrigerada).</li>
+      <li><b>Quinua y lentejas:</b> Para días sin proteína animal disponible.</li>
+      <li><b>Sopas en cenas:</b> Aprovechan verduras a punto de pasarse.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== INVENTARIO ===================== -->
+<div class="panel" id="p-inventario">
+  <div class="info">Tu inventario clasificado por tipo. La etiqueta en cada item indica vida útil estimada y prioridad de consumo.</div>
+  <div class="cats" id="cats"></div>
+</div>
+
+<!-- ===================== CALENDARIO ===================== -->
+<div class="panel" id="p-calendario">
+  <div class="info" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <span>Click sobre cualquier comida para editarla. Tus cambios se guardan automáticamente.</span>
+    <button class="act" onclick="resetCal()">Restaurar plan original</button>
+  </div>
+  <div id="calendar"></div>
+</div>
+
+<!-- ===================== TURNOS ===================== -->
+<div class="panel" id="p-turnos">
+  <div class="info">Rotación de turnos de cocina entre los 4 integrantes. Cada persona cocina 1 comida al día (rotando entre desayuno/almuerzo/cena). Click en cualquier asignación del calendario para cambiarla manualmente.</div>
+
+  <div class="turnos">
+    <h3>El equipo</h3>
+    <div class="personas">
+      <div class="persona emanuel"><div class="persona-nombre">Emanuel</div><div class="persona-stats" id="st-emanuel">— turnos</div></div>
+      <div class="persona william"><div class="persona-nombre">William</div><div class="persona-stats" id="st-william">— turnos</div></div>
+      <div class="persona geordano"><div class="persona-nombre">Geordano</div><div class="persona-stats" id="st-geordano">— turnos</div></div>
+      <div class="persona diego"><div class="persona-nombre">Diego</div><div class="persona-stats" id="st-diego">— turnos</div></div>
+    </div>
+  </div>
+
+  <div class="turnos">
+    <h3>Reglas de rotación</h3>
+    <ul style="margin-left:20px;font-size:.92rem">
+      <li><b>Distribución equitativa:</b> 28 días × 3 comidas = 84 turnos. Cada persona cocina 21 veces en el mes.</li>
+      <li><b>Rotación horaria:</b> Si Emanuel hace desayuno hoy, William lo hace mañana, Geordano pasado, Diego al cuarto día.</li>
+      <li><b>Doble turno:</b> Quien cocina almuerzo NO cocina cena el mismo día (excepto si lo decide el equipo).</li>
+      <li><b>Domingos:</b> Desayuno colaborativo o libre (marcado como "Libre"). El responsable del almuerzo del domingo prepara una comida especial.</li>
+      <li><b>Click en una asignación</b> en el calendario para cambiarla a otra persona si hay reemplazo o intercambio.</li>
+    </ul>
+  </div>
+
+  <div class="turnos">
+    <h3>Tabla de turnos del mes</h3>
+    <div style="overflow-x:auto">
+      <table class="turnos-tabla" id="tabla-turnos">
+        <thead><tr><th>Día</th><th>Desayuno</th><th>Almuerzo</th><th>Cena</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ESTRATEGIA ===================== -->
+<div class="panel" id="p-estrategia">
+  <div class="strat">
+    <h3>Línea de tiempo del consumo</h3>
+    <p style="font-size:.9rem;color:var(--mut);margin-bottom:8px">Orden óptimo de uso para minimizar desperdicio:</p>
+    <div class="timeline">
+      <div class="tl"><b>Días 1-3</b>Lechuga, tomate, palta, brócoli, papaya, melón, plátano consumo, bonito (½ kg)</div>
+      <div class="tl"><b>Días 4-7</b>Coliflor, piña, plátano freír, choclo, bonito (½ kg) congelado, albahaca</div>
+      <div class="tl"><b>Días 8-14</b>Camote, papa amarilla, zanahoria, naranja, mandarina, granada, kion, rocoto</div>
+      <div class="tl"><b>Días 15-28</b>Arroz, fideos, tallarines, quinua, lenteja, atún, leche, café, chorizo, queso, mantequilla, huevos + compras</div>
+    </div>
+  </div>
+
+  <div class="strat">
+    <h3>Recomendaciones operativas</h3>
+    <ul>
+      <li><b>Día 1:</b> Cortar el bonito en 4 porciones, congelar 3.</li>
+      <li><b>Día 1:</b> Cortar piña y melón, guardar en taper hermético en refri (dura 4 días).</li>
+      <li><b>Día 2:</b> Sancochar 2 kg de papa amarilla y camote (rinde para 3 días).</li>
+      <li><b>Día 3:</b> Hacer pesto con toda la albahaca, conservar en aceite (dura 2 semanas).</li>
+      <li><b>Día 5:</b> Cocinar lenteja en olla grande (rinde almuerzo + cena).</li>
+      <li><b>Día 7:</b> Hacer caldo con huesos/restos de bonito si guardaste, base para sopas semana 2.</li>
+      <li><b>Semana 2:</b> Comprar refuerzo de verduras frescas y proteína (ver tab "Compras").</li>
+    </ul>
+  </div>
+
+  <div class="strat">
+    <h3>Balance nutricional aproximado</h3>
+    <ul>
+      <li><b>Carbohidratos:</b> Bien cubierto (arroz, fideos, tallarines, quinua, papa, camote).</li>
+      <li><b>Proteína animal:</b> Limitada (huevos, atún, chorizo, bonito). <span style="color:#dc2626;font-weight:600">Comprar pollo/pescado en semana 2.</span></li>
+      <li><b>Proteína vegetal:</b> Lentejas, quinua. Buena base.</li>
+      <li><b>Verduras:</b> Buena variedad inicial, requiere reposición en semana 2.</li>
+      <li><b>Frutas:</b> Excelente cobertura semana 1, requiere reposición en semana 2.</li>
+      <li><b>Grasas:</b> Aceite, palta, mantequilla, queso. Cubierto.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== COMPRAS ===================== -->
+<div class="panel" id="p-compras">
+  <div class="info">Lo que falta comprar para completar el mes (28 días). Marca lo que vayas comprando.</div>
+  <div class="shop" id="shop"></div>
+</div>
+
+<!-- Modal de receta -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal">
+    <div class="modal-hero" id="modal-hero">
+      <button class="modal-close" onclick="cerrarReceta()">×</button>
+      <h2 id="modal-title"></h2>
+    </div>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div class="footer">Plan generado el 27 abr 2026 · Imágenes referenciales de Unsplash · Editable y persistente vía localStorage</div>
+
+<script>
+// =================== IMÁGENES (extraídas con Playwright desde Unsplash) ===================
+const IMG = {
+  "ceviche":"https://plus.unsplash.com/premium_photo-1669261881745-1b59cb9adcfb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "arroz_pollo":"https://plus.unsplash.com/premium_photo-1667389723440-dbbde959df52?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "lomo":"https://plus.unsplash.com/premium_photo-1727294768307-99c8c8852683?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "aji_gallina":"https://plus.unsplash.com/premium_photo-1675864532625-60efd11cde54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "pesto":"https://plus.unsplash.com/premium_photo-1663851517359-b687a6fe761b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "causa":"https://plus.unsplash.com/premium_photo-1764764016719-d881a0f89689?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "chaufa":"https://plus.unsplash.com/premium_photo-1695029504689-2b27606c05fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "lentejas":"https://plus.unsplash.com/premium_photo-1699316113656-24659cab5344?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "sopa_pollo":"https://plus.unsplash.com/premium_photo-1664472752075-d5b2b3de0a88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "tortilla":"https://plus.unsplash.com/premium_photo-1696835870634-e6484e8ed4d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "pollo_horno":"https://plus.unsplash.com/premium_photo-1669557208969-737d6ab1c9fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "crema_zanahoria":"https://plus.unsplash.com/premium_photo-1724849305127-de1dd991b37b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "wantan_frito":"https://plus.unsplash.com/premium_photo-1661265967105-f8afb13a8135?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "estofado":"https://plus.unsplash.com/premium_photo-1678074057896-eee996d4a23e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "quinoa":"https://plus.unsplash.com/premium_photo-1705003210245-41b4773b5bb5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "ensalada_palta":"https://plus.unsplash.com/premium_photo-1701616945620-4050d4a60475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "fruta":"https://plus.unsplash.com/premium_photo-1723294500633-f187117f9533?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "pan_palta":"https://plus.unsplash.com/premium_photo-1693156020282-3fe0b7136ae9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "yogurt":"https://plus.unsplash.com/premium_photo-1674482019320-fd73c31f001d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "huevo_revuelto":"https://plus.unsplash.com/premium_photo-1700004500841-58c93123cf05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "crema_brocoli":"https://plus.unsplash.com/premium_photo-1711125003537-5a3565c7b7a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "sopa_wantan":"https://plus.unsplash.com/premium_photo-1664391950572-bc4b1bdd1268?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "pescado_horno":"https://plus.unsplash.com/premium_photo-1701015785997-30de0ba44aa0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "tallarines_rojos":"https://plus.unsplash.com/premium_photo-1661432817159-4ff7bab96116?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "papaya":"https://plus.unsplash.com/premium_photo-1722938907181-08d806f7b9a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "pina":"https://plus.unsplash.com/premium_photo-1675237625806-d6258a9bb40e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "mandarina":"https://plus.unsplash.com/premium_photo-1675862970367-aa988917c117?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "platano":"https://plus.unsplash.com/premium_photo-1724250081102-cab0e5cb314c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "palta":"https://plus.unsplash.com/premium_photo-1675715402461-9ac75a5b400e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "melon":"https://plus.unsplash.com/premium_photo-1675040830254-1d5148d9d0dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "papa":"https://plus.unsplash.com/premium_photo-1724256032011-4f9e9548fe34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "camote":"https://plus.unsplash.com/premium_photo-1675365780148-a00379c54123?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "brocoli":"https://plus.unsplash.com/premium_photo-1702403157830-9df749dc6c1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "lechuga":"https://plus.unsplash.com/premium_photo-1701964643904-ed5788b634d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "tomate":"https://plus.unsplash.com/premium_photo-1671395501275-630ae5ea02c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "huevo":"https://plus.unsplash.com/premium_photo-1677674543337-42e647e24316?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "queso":"https://plus.unsplash.com/premium_photo-1703260100355-7a592dfdb899?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "atun":"https://plus.unsplash.com/premium_photo-1695304030270-ec988d7b267e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "arroz":"https://plus.unsplash.com/premium_photo-1658527064466-df8ed3bbe6e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "cafe":"https://plus.unsplash.com/premium_photo-1674327105280-b86494dfc690?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "leche":"https://plus.unsplash.com/premium_photo-1695042865183-b1404f655820?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "lenteja":"https://plus.unsplash.com/premium_photo-1671130295987-13d3b3b4e9dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "quinua":"https://plus.unsplash.com/premium_photo-1705207702015-0c1f567a14df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "tallarin":"https://plus.unsplash.com/premium_photo-1674511582428-58ce834ce172?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "fideos":"https://plus.unsplash.com/premium_photo-1694670234085-4f38b261ce5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "pollo":"https://plus.unsplash.com/premium_photo-1661499139086-6a45bf056f43?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400",
+  "bonito":"https://plus.unsplash.com/premium_photo-1663102826591-d00246b64a80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+};
+
+// Detector: dado el texto de la comida, devuelve la mejor URL de imagen
+function pickImg(text){
+  const t = text.toLowerCase();
+  const rules = [
+    [/cevich/,"ceviche"],
+    [/arroz con pollo|arroz.* a la criolla/,"arroz_pollo"],
+    [/lomo saltado/,"lomo"],
+    [/aji de gallina|ají de gallina|cau cau/,"aji_gallina"],
+    [/pesto/,"pesto"],
+    [/causa/,"causa"],
+    [/chaufa/,"chaufa"],
+    [/lenteja|menestra|frijol/,"lentejas"],
+    [/sopa de pollo|caldo de pollo/,"sopa_pollo"],
+    [/tortilla/,"tortilla"],
+    [/pollo (al horno|broaster|a la brasa)|pollo guisado|estofado de pollo|pollo a la criolla/,"pollo_horno"],
+    [/crema de zanahoria|crema de zapallo/,"crema_zanahoria"],
+    [/wantán fri|wantan fri/,"wantan_frito"],
+    [/sopa de wantán|sopa de wantan|sopa wantan/,"sopa_wantan"],
+    [/estofado|seco/,"estofado"],
+    [/quinua|quinoa/,"quinua"],
+    [/ensalada/,"ensalada_palta"],
+    [/pan con palta|sándwich|sandwich/,"pan_palta"],
+    [/yogurt/,"yogurt"],
+    [/huevo revuelto|huevo a la palta/,"huevo_revuelto"],
+    [/huevo|tortilla/,"huevo"],
+    [/crema de bró|crema de bro/,"crema_brocoli"],
+    [/pescado (al horno|frito)|bistec/,"pescado_horno"],
+    [/bonito/,"bonito"],
+    [/tallarines? rojos|tallarines a la huan|tallarines verdes/,"tallarines_rojos"],
+    [/tallarin|fideos|pizza/,"tallarin"],
+    [/papaya/,"papaya"],
+    [/piña|pina/,"pina"],
+    [/mandarina|naranja/,"mandarina"],
+    [/plátano|platano/,"platano"],
+    [/palta/,"palta"],
+    [/melón|melon/,"melon"],
+    [/granada|fruta/,"fruta"],
+    [/papa amarilla|papa al horno/,"papa"],
+    [/camote/,"camote"],
+    [/brócoli|brocoli/,"brocoli"],
+    [/lechuga/,"lechuga"],
+    [/tomate/,"tomate"],
+    [/queso/,"queso"],
+    [/atún|atun/,"atun"],
+    [/arroz/,"arroz"],
+    [/café|cafe/,"cafe"],
+    [/leche|avena/,"leche"],
+    [/sopa/,"sopa_pollo"]
+  ];
+  for(const [rx,k] of rules){
+    if(rx.test(t)) return IMG[k];
+  }
+  return IMG.fruta;
+}
+
+// =================== INVENTARIO ===================
+const inventario = {
+  "Frutas":{cls:"fruta",items:[
+    {n:"Palta",v:"4-6 días",b:"urgent",img:IMG.palta},
+    {n:"Piña",v:"4-5 días",b:"soon",img:IMG.pina},
+    {n:"Naranja",v:"2 sem",b:"ok",img:IMG.mandarina},
+    {n:"Mandarina",v:"1-2 sem",b:"ok",img:IMG.mandarina},
+    {n:"Papaya",v:"3-4 días",b:"urgent",img:IMG.papaya},
+    {n:"Granada",v:"2 sem",b:"ok",img:IMG.fruta},
+    {n:"Plátano freír",v:"5-7 días",b:"soon",img:IMG.platano},
+    {n:"Plátano consumo",v:"3-5 días",b:"urgent",img:IMG.platano},
+    {n:"Melón",v:"3-5 días",b:"urgent",img:IMG.melon}
+  ]},
+  "Verduras":{cls:"verdura",items:[
+    {n:"Papa amarilla",v:"2-3 sem",b:"ok",img:IMG.papa},
+    {n:"Choclo",v:"3-5 días",b:"soon",img:IMG.papa},
+    {n:"Camote",v:"2-3 sem",b:"ok",img:IMG.camote},
+    {n:"Coliflor",v:"5-7 días",b:"soon",img:IMG.brocoli},
+    {n:"Tomate",v:"5-7 días",b:"urgent",img:IMG.tomate},
+    {n:"Zanahoria",v:"2-3 sem",b:"ok",img:IMG.crema_zanahoria},
+    {n:"Lechuga",v:"5-7 días",b:"urgent",img:IMG.lechuga},
+    {n:"Albahaca",v:"3-5 días",b:"urgent",img:IMG.pesto},
+    {n:"Kion",v:"3 sem",b:"ok",img:IMG.fruta},
+    {n:"Rocoto",v:"2 sem",b:"ok",img:IMG.tomate},
+    {n:"Brócoli",v:"5-7 días",b:"soon",img:IMG.brocoli}
+  ]},
+  "Proteínas":{cls:"proteina",items:[
+    {n:"Bonito 1 kg",v:"1-2 días refri",b:"urgent",img:IMG.bonito},
+    {n:"Atún (lata)",v:"meses",b:"ok",img:IMG.atun},
+    {n:"Chorizo",v:"1-2 sem",b:"soon",img:IMG.pollo},
+    {n:"Huevo",v:"3 sem",b:"ok",img:IMG.huevo}
+  ]},
+  "Lácteos":{cls:"lacteo",items:[
+    {n:"Mantequilla",v:"3-4 sem",b:"ok",img:IMG.queso},
+    {n:"Queso",v:"1-2 sem",b:"soon",img:IMG.queso},
+    {n:"Leche",v:"según envase",b:"ok",img:IMG.leche}
+  ]},
+  "Granos y carbohidratos":{cls:"carb",items:[
+    {n:"Arroz (4 sobres)",v:"meses",b:"ok",img:IMG.arroz},
+    {n:"Arroz (bolsa)",v:"meses",b:"ok",img:IMG.arroz},
+    {n:"Quinua",v:"meses",b:"ok",img:IMG.quinua},
+    {n:"Lenteja",v:"meses",b:"ok",img:IMG.lenteja},
+    {n:"Maíz/Canchita",v:"meses",b:"ok",img:IMG.fruta},
+    {n:"Fideos (4 sobres)",v:"meses",b:"ok",img:IMG.fideos},
+    {n:"Tallarines",v:"meses",b:"ok",img:IMG.tallarin},
+    {n:"Papita (sobre)",v:"meses",b:"ok",img:IMG.papa},
+    {n:"Wantán (sobre)",v:"meses",b:"ok",img:IMG.wantan_frito},
+    {n:"Gelatina",v:"meses",b:"ok",img:IMG.fruta}
+  ]},
+  "Otros":{cls:"otro",items:[
+    {n:"Aceite",v:"meses",b:"ok",img:IMG.fruta},
+    {n:"Café",v:"meses",b:"ok",img:IMG.cafe},
+    {n:"Sachets",v:"meses",b:"ok",img:IMG.fruta}
+  ]}
+};
+
+const cats = document.getElementById('cats');
+let totalItems = 0;
+for(const [k,v] of Object.entries(inventario)){
+  const div = document.createElement('div');
+  div.className = 'cat ' + v.cls;
+  let html = `<h3>${k} <span class="count">${v.items.length}</span></h3><div class="inv-grid">`;
+  v.items.forEach(it=>{
+    totalItems++;
+    const lbl = it.b==='urgent'?'usar ya':it.b==='soon'?'pronto':'estable';
+    html += `<div class="inv-item">
+      <img src="${it.img}" alt="${it.n}" loading="lazy">
+      <div class="inv-info">
+        <div class="inv-name">${it.n}</div>
+        <div class="inv-life">${it.v}</div>
+        <span class="badge ${it.b}">${lbl}</span>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  div.innerHTML = html;
+  cats.appendChild(div);
+}
+document.getElementById('s-items').textContent = totalItems;
+
+// =================== CALENDARIO 4 SEMANAS ===================
+const planOriginal = [
+  {d:'Día 1 Lun',D:'Pan con palta + huevo + café con leche',A:'Arroz con bonito (porción 1) + ensalada lechuga/tomate',C:'Sopa de coliflor + pan'},
+  {d:'Día 2 Mar',D:'Papaya + queso + café',A:'Tallarines con bonito (porción 2) y brócoli al ajo',C:'Crema de zanahoria + pan con palta'},
+  {d:'Día 3 Mié',D:'Piña + huevo revuelto + café',A:'Causa de papa amarilla con atún + lechuga',C:'Sopa de wantán'},
+  {d:'Día 4 Jue',D:'Plátano + leche + café',A:'Bonito sudado (porción 3) con arroz y choclo',C:'Tortilla de coliflor + ensalada'},
+  {d:'Día 5 Vie',D:'Mandarina + pan con queso + café',A:'Lentejas con arroz + chorizo',C:'Crema de brócoli'},
+  {d:'Día 6 Sáb',D:'Naranja + huevo a la palta + café',A:'Tallarines al pesto (albahaca) + camote frito',C:'Sopa de fideos con verduras'},
+  {d:'Día 7 Dom',D:'Melón + pan con palta + café',A:'Bonito al horno (porción 4) con papa al horno',C:'Wantán frito + ensalada'},
+
+  {d:'Día 8 Lun',D:'Naranja + huevo duro + café',A:'Arroz con atún a la jardinera (zanahoria, choclo)',C:'Quinua salteada con verduras'},
+  {d:'Día 9 Mar',D:'Mandarina + pan con queso',A:'Lentejas restantes + arroz',C:'Crema de papa amarilla'},
+  {d:'Día 10 Mié',D:'Plátano + leche + café',A:'Fideos con chorizo y tomate',C:'Tortilla de papa + ensalada'},
+  {d:'Día 11 Jue',D:'Granada + huevo revuelto',A:'Pollo guisado con arroz',C:'Sopa de fideos'},
+  {d:'Día 12 Vie',D:'Pan con palta + café',A:'Estofado de pollo con papa',C:'Quinua con verduras'},
+  {d:'Día 13 Sáb',D:'Papaya o piña + queso',A:'Arroz chaufa con huevo y verduras',C:'Sopa de wantán'},
+  {d:'Día 14 Dom',D:'Mandarina + huevo + café',A:'Pollo al horno con camote y ensalada',C:'Tallarines rojos + queso'},
+
+  {d:'Día 15 Lun',D:'Avena con plátano + café',A:'Arroz con menestra (frijol o lenteja)',C:'Sopa de verduras'},
+  {d:'Día 16 Mar',D:'Yogurt con fruta + pan',A:'Pescado frito con arroz y ensalada',C:'Tortilla de verduras'},
+  {d:'Día 17 Mié',D:'Pan con palta + huevo + café',A:'Tallarines a la huancaína',C:'Caldo de pollo'},
+  {d:'Día 18 Jue',D:'Fruta + queso',A:'Arroz con pollo a la criolla',C:'Sopa de quinua'},
+  {d:'Día 19 Vie',D:'Plátano + leche',A:'Lomo saltado con arroz',C:'Crema de zapallo'},
+  {d:'Día 20 Sáb',D:'Sándwich de huevo + café',A:'Cau cau o ají de gallina',C:'Pizza casera o tallarines'},
+  {d:'Día 21 Dom',D:'Desayuno completo (huevos, pan, palta)',A:'Ceviche o pescado al horno',C:'Sopa criolla'},
+
+  {d:'Día 22 Lun',D:'Avena + fruta + café',A:'Arroz con atún o pollo',C:'Sopa de fideos'},
+  {d:'Día 23 Mar',D:'Pan con queso + café',A:'Estofado de carne',C:'Tortilla + ensalada'},
+  {d:'Día 24 Mié',D:'Yogurt con frutas',A:'Tallarines verdes + bistec',C:'Crema de verduras'},
+  {d:'Día 25 Jue',D:'Huevo + pan con palta',A:'Arroz con menestra + ensalada',C:'Sopa de quinua'},
+  {d:'Día 26 Vie',D:'Fruta + queso + café',A:'Pollo broaster con papa',C:'Wantán o tallarines'},
+  {d:'Día 27 Sáb',D:'Sándwich + café',A:'Ají de gallina o seco',C:'Pizza o sopa criolla'},
+  {d:'Día 28 Dom',D:'Desayuno completo',A:'Pollo a la brasa con papas',C:'Sopa ligera + gelatina'}
+];
+
+// =================== TURNOS DE COCINA ===================
+const PERSONAS = ['emanuel','william','geordano','diego'];
+const NOMBRES = {emanuel:'Emanuel',william:'William',geordano:'Geordano',diego:'Diego',libre:'Libre'};
+
+// Genera turnos rotativos: 4 personas × 3 comidas/día × 28 días = 84 turnos
+// Cada persona cocina 21 veces. Rotación: cada día corre un offset por comida.
+function generarTurnos(){
+  const t = [];
+  for(let d=0;d<28;d++){
+    const dow = d % 7; // 0=Lun ... 6=Dom
+    if(dow === 6){ // Domingos: desayuno libre, almuerzo y cena rotando
+      t.push({
+        D: 'libre',
+        A: PERSONAS[(d+1) % 4],
+        C: PERSONAS[(d+2) % 4]
+      });
+    } else {
+      // Día normal: rotación pura por offset
+      t.push({
+        D: PERSONAS[d % 4],
+        A: PERSONAS[(d+1) % 4],
+        C: PERSONAS[(d+2) % 4]
+      });
+    }
+  }
+  return t;
+}
+
+function loadPlan(){
+  const saved = localStorage.getItem('plancomidas_v2');
+  return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(planOriginal));
+}
+function savePlan(p){ localStorage.setItem('plancomidas_v2', JSON.stringify(p)); }
+function loadTurnos(){
+  const saved = localStorage.getItem('planturnos_v1');
+  return saved ? JSON.parse(saved) : generarTurnos();
+}
+function saveTurnos(t){ localStorage.setItem('planturnos_v1', JSON.stringify(t)); }
+let plan = loadPlan();
+let turnos = loadTurnos();
+
+function renderCal(){
+  const cal = document.getElementById('calendar');
+  cal.innerHTML = '';
+  const tags = ['Perecederos primero','Mid-term + reposición','Con compras complementarias','Cierre del mes'];
+  for(let w=0;w<4;w++){
+    const wkDiv = document.createElement('div');
+    wkDiv.className = 'week';
+    wkDiv.innerHTML = `<div class="week-h"><h3>Semana ${w+1}</h3><span class="week-tag">${tags[w]}</span></div><div class="grid"></div>`;
+    const grid = wkDiv.querySelector('.grid');
+    for(let d=0;d<7;d++){
+      const idx = w*7+d;
+      const day = plan[idx];
+      const dayEl = document.createElement('div');
+      dayEl.className = 'day';
+      const tD = turnos[idx].D, tA = turnos[idx].A, tC = turnos[idx].C;
+      dayEl.innerHTML = `
+        <div class="day-h">${day.d}</div>
+        <div class="meal" data-idx="${idx}" data-slot="D" title="Click para ver la receta">
+          <img class="meal-img" src="${pickImg(day.D)}" alt="" loading="lazy">
+          <div class="meal-body">
+            <div class="meal-l des"><span class="dot"></span>Desayuno</div>
+            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="D">${day.D}</div>
+            <span class="chef ${tD}" data-idx="${idx}" data-k="D">${NOMBRES[tD]}</span>
+          </div>
+        </div>
+        <div class="meal" data-idx="${idx}" data-slot="A" title="Click para ver la receta">
+          <img class="meal-img" src="${pickImg(day.A)}" alt="" loading="lazy">
+          <div class="meal-body">
+            <div class="meal-l alm"><span class="dot"></span>Almuerzo</div>
+            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="A">${day.A}</div>
+            <span class="chef ${tA}" data-idx="${idx}" data-k="A">${NOMBRES[tA]}</span>
+          </div>
+        </div>
+        <div class="meal" data-idx="${idx}" data-slot="C" title="Click para ver la receta">
+          <img class="meal-img" src="${pickImg(day.C)}" alt="" loading="lazy">
+          <div class="meal-body">
+            <div class="meal-l cen"><span class="dot"></span>Cena</div>
+            <div class="meal-c" contenteditable="true" data-idx="${idx}" data-k="C">${day.C}</div>
+            <span class="chef ${tC}" data-idx="${idx}" data-k="C">${NOMBRES[tC]}</span>
+          </div>
+        </div>`;
+      grid.appendChild(dayEl);
+    }
+    cal.appendChild(wkDiv);
+  }
+  document.querySelectorAll('.meal-c[contenteditable]').forEach(el=>{
+    el.addEventListener('blur',e=>{
+      const i = +e.target.dataset.idx, k = e.target.dataset.k;
+      plan[i][k] = e.target.textContent.trim();
+      savePlan(plan);
+      const newImg = pickImg(plan[i][k]);
+      const img = e.target.closest('.meal').querySelector('.meal-img');
+      if(img && img.src !== newImg) img.src = newImg;
+    });
+  });
+  document.querySelectorAll('.chef').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      abrirMenuChef(el);
+    });
+  });
+  document.querySelectorAll('.meal').forEach(el=>{
+    el.addEventListener('click', e=>{
+      // No abrir receta si se está editando texto o clickeando el chef
+      if(e.target.classList.contains('chef')) return;
+      if(e.target.classList.contains('meal-c')) return;
+      if(e.target.isContentEditable) return;
+      const idx = +el.dataset.idx;
+      const slot = el.dataset.slot;
+      abrirReceta(idx, slot);
+    });
+  });
+  actualizarStats();
+  renderTablaTurnos();
+}
+
+function abrirMenuChef(el){
+  cerrarMenusChef();
+  const i = +el.dataset.idx, k = el.dataset.k;
+  const menu = document.createElement('div');
+  menu.className = 'chef-menu';
+  ['emanuel','william','geordano','diego','libre'].forEach(p=>{
+    const b = document.createElement('button');
+    b.className = p;
+    b.textContent = NOMBRES[p];
+    b.onclick = ()=>{
+      turnos[i][k] = p;
+      saveTurnos(turnos);
+      el.className = 'chef ' + p;
+      el.textContent = NOMBRES[p];
+      el.dataset.idx = i; el.dataset.k = k;
+      cerrarMenusChef();
+      actualizarStats();
+      renderTablaTurnos();
+    };
+    menu.appendChild(b);
+  });
+  document.body.appendChild(menu);
+  const r = el.getBoundingClientRect();
+  menu.style.left = (window.scrollX + r.left) + 'px';
+  menu.style.top = (window.scrollY + r.bottom + 4) + 'px';
+}
+function cerrarMenusChef(){
+  document.querySelectorAll('.chef-menu').forEach(m=>m.remove());
+}
+document.addEventListener('click', cerrarMenusChef);
+
+function actualizarStats(){
+  const cnt = {emanuel:0,william:0,geordano:0,diego:0,libre:0};
+  turnos.forEach(t=>{ cnt[t.D]++; cnt[t.A]++; cnt[t.C]++; });
+  ['emanuel','william','geordano','diego'].forEach(p=>{
+    const el = document.getElementById('st-'+p);
+    if(el) el.textContent = `${cnt[p]} turnos en el mes`;
+  });
+}
+
+function renderTablaTurnos(){
+  const tbody = document.querySelector('#tabla-turnos tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+  for(let i=0;i<28;i++){
+    const t = turnos[i];
+    const d = plan[i].d;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><b>${d}</b></td>
+      <td><span class="chef ${t.D}">${NOMBRES[t.D]}</span></td>
+      <td><span class="chef ${t.A}">${NOMBRES[t.A]}</span></td>
+      <td><span class="chef ${t.C}">${NOMBRES[t.C]}</span></td>`;
+    tbody.appendChild(tr);
+  }
+}
+function resetCal(){
+  if(confirm('¿Restaurar el plan original (comidas + turnos)? Perderás tus ediciones.')){
+    plan = JSON.parse(JSON.stringify(planOriginal));
+    turnos = generarTurnos();
+    savePlan(plan);
+    saveTurnos(turnos);
+    renderCal();
+  }
+}
+renderCal();
+
+// =================== COMPRAS ===================
+const compras = {
+  "Proteínas (alta prioridad)":[
+    {n:"Pollo entero o trozado (2 kg)",p:"alta"},
+    {n:"Pescado fresco (jurel/perico) 1 kg",p:"alta"},
+    {n:"Carne de res para guiso (½ kg)",p:"media"},
+    {n:"Frijol o garbanzo (½ kg)",p:"media"},
+    {n:"Más huevos (2 docenas)",p:"alta"}
+  ],
+  "Verduras frescas (semana 2-4)":[
+    {n:"Lechuga × 2",p:"alta"},
+    {n:"Tomate (1 kg)",p:"alta"},
+    {n:"Cebolla (1 kg)",p:"alta"},
+    {n:"Ajo (2 cabezas)",p:"alta"},
+    {n:"Zapallo (½ kg)",p:"media"},
+    {n:"Apio + poro (atado)",p:"media"},
+    {n:"Pimiento (2)",p:"baja"},
+    {n:"Culantro + perejil",p:"baja"}
+  ],
+  "Frutas (semana 2-4)":[
+    {n:"Plátanos (1 kg)",p:"alta"},
+    {n:"Manzanas o peras (1 kg)",p:"media"},
+    {n:"Limones (½ kg)",p:"alta"}
+  ],
+  "Lácteos / desayuno":[
+    {n:"Yogurt (1 L)",p:"media"},
+    {n:"Avena (1 bolsa)",p:"media"},
+    {n:"Pan (compra semanal)",p:"alta"}
+  ],
+  "Despensa / refuerzos":[
+    {n:"Sal y pimienta",p:"alta"},
+    {n:"Comino, ají panca, ají amarillo",p:"media"},
+    {n:"Vinagre",p:"baja"},
+    {n:"Salsa de soya",p:"baja"},
+    {n:"Mostaza / mayonesa",p:"baja"}
+  ]
+};
+
+const shop = document.getElementById('shop');
+const shopState = JSON.parse(localStorage.getItem('plancomidas_shop_v2')||'{}');
+for(const [k,arr] of Object.entries(compras)){
+  const sec = document.createElement('div');
+  sec.className='shop-cat';
+  sec.innerHTML = `<h4>${k}</h4><ul></ul>`;
+  const ul = sec.querySelector('ul');
+  arr.forEach((it,i)=>{
+    const id = `s-${k}-${i}`.replace(/\s/g,'_').replace(/[^\w-]/g,'');
+    const checked = shopState[id] ? 'checked' : '';
+    const li = document.createElement('li');
+    li.innerHTML = `<input type="checkbox" id="${id}" ${checked}><label for="${id}" class="${checked?'done':''}">${it.n}</label><span class="priority ${it.p}">${it.p}</span>`;
+    const cb = li.querySelector('input');
+    cb.addEventListener('change',e=>{
+      shopState[id]=e.target.checked;
+      localStorage.setItem('plancomidas_shop_v2',JSON.stringify(shopState));
+      li.querySelector('label').classList.toggle('done',e.target.checked);
+    });
+    ul.appendChild(li);
+  });
+  shop.appendChild(sec);
+}
+
+// =================== BANCO DE RECETAS ===================
+// Cada receta: {nombre, tiempo, porciones, ingredientes[], pasos[], tips}
+const RECETAS = {
+  ceviche: {
+    nombre:"Ceviche de pescado",
+    tiempo:"20 min",porciones:"4 personas",
+    ing:["1 kg pescado fresco (perico, lenguado o bonito)","12 limones","2 cebollas rojas en pluma","1 ají limo picado","Culantro","Sal y pimienta","Camote sancochado","Choclo desgranado","Lechuga"],
+    pasos:["Cortar el pescado en cubos de 2 cm.","Sazonar con sal, pimienta y ají limo.","Exprimir los limones y agregar sobre el pescado.","Incorporar la cebolla en pluma y culantro picado.","Mezclar suavemente y dejar reposar 3-5 min.","Servir con camote, choclo y lechuga."],
+    tips:"El pescado debe estar muy fresco. La 'leche de tigre' (jugo) se sirve aparte como cortesía."
+  },
+  arroz_pollo: {
+    nombre:"Arroz con pollo",
+    tiempo:"45 min",porciones:"4 personas",
+    ing:["4 piezas de pollo","2 tazas de arroz","1 atado de culantro licuado","1 cebolla picada","3 dientes de ajo","1 ají amarillo","½ taza arvejas + zanahoria","1 cerveza pequeña (opcional)","2½ tazas caldo de pollo","Aceite, sal, comino"],
+    pasos:["Sellar el pollo en aceite caliente, retirar.","En la misma olla, sofreír cebolla, ajo y ají amarillo.","Agregar el culantro licuado y cocinar 2 min.","Incorporar arroz, dorar ligeramente.","Agregar caldo, cerveza, arvejas y zanahoria.","Colocar el pollo encima, tapar y cocinar 18-20 min a fuego bajo."],
+    tips:"El secreto está en el culantro licuado: usa abundante. Acompañar con salsa criolla."
+  },
+  lomo: {
+    nombre:"Lomo saltado",
+    tiempo:"25 min",porciones:"4 personas",
+    ing:["600 g lomo de res en tiras","2 cebollas rojas en gajos","2 tomates en gajos","1 ají amarillo en tiras","2 cdas sillao","2 cdas vinagre tinto","Culantro picado","Papas fritas en bastón","Arroz blanco","Aceite, sal, pimienta, comino"],
+    pasos:["Cortar la carne en tiras finas y sazonar con sal, pimienta, comino.","Calentar wok o sartén grande a fuego muy alto.","Saltear la carne 1-2 min, retirar.","En el mismo wok, saltear cebolla y ají 1 min.","Volver la carne, agregar tomate, sillao y vinagre.","Mezclar 30 seg, espolvorear culantro.","Servir con papas fritas y arroz blanco."],
+    tips:"Fuego ALTO siempre — sin esto pierde el sabor a sartén caliente. No tapar nunca."
+  },
+  aji_gallina: {
+    nombre:"Ají de gallina",
+    tiempo:"50 min",porciones:"4 personas",
+    ing:["1 pechuga de pollo cocida y deshilachada","6 ajíes amarillos sin venas","1 taza pan remojado en leche","1 cebolla picada","3 dientes de ajo","½ taza nueces o pecanas","½ taza queso parmesano","1 taza caldo de pollo","Aceite, sal","Papas y huevos sancochados, aceitunas"],
+    pasos:["Licuar los ajíes amarillos blanqueados.","Sofreír cebolla y ajo, agregar el ají licuado y cocinar 5 min.","Agregar el pan remojado y nueces, mezclar.","Incorporar el pollo deshilachado.","Agregar caldo poco a poco hasta cremoso.","Finalizar con queso parmesano.","Servir con papa y huevo sancochado, aceitunas."],
+    tips:"Si está muy picante, agrega más pan o leche evaporada. La textura debe ser cremosa."
+  },
+  pesto: {
+    nombre:"Tallarines al pesto a la peruana",
+    tiempo:"25 min",porciones:"4 personas",
+    ing:["500 g tallarines","2 atados de albahaca","½ taza espinaca (opcional)","½ taza queso fresco","½ taza queso parmesano","2 dientes de ajo","½ taza aceite","1 taza leche evaporada","Bistec o huevo frito (opcional)"],
+    pasos:["Cocinar el tallarín al dente en agua con sal.","Licuar albahaca, espinaca, ajo, quesos, aceite y leche.","Calentar la salsa en olla 2-3 min sin que hierva.","Mezclar con el tallarín escurrido.","Servir con bistec apanado o huevo frito encima."],
+    tips:"Reserva ½ taza del agua del tallarín por si la salsa queda espesa."
+  },
+  causa: {
+    nombre:"Causa limeña con atún",
+    tiempo:"40 min",porciones:"4 personas",
+    ing:["1 kg papa amarilla","3 cdas pasta de ají amarillo","Jugo de 3 limones","½ taza aceite","2 latas de atún","½ taza mayonesa","½ cebolla picada","1 palta","Lechuga, aceitunas, huevo duro"],
+    pasos:["Sancochar y prensar la papa amarilla.","Mezclar la papa con ají amarillo, limón, aceite, sal.","Mezclar atún con mayonesa y cebolla.","Armar capas: papa, atún, palta, papa.","Refrigerar 30 min para compactar.","Decorar con huevo, aceitunas y lechuga."],
+    tips:"La masa de papa debe estar fría antes de armar. Ajusta el ají al gusto."
+  },
+  chaufa: {
+    nombre:"Arroz chaufa",
+    tiempo:"20 min",porciones:"4 personas",
+    ing:["4 tazas arroz cocido del día anterior","2 huevos","200 g pollo o carne en cubos","½ taza kion picado fino","Cebollita china picada","3 cdas sillao","1 cda aceite de ajonjolí","2 dientes de ajo","Aceite, sal"],
+    pasos:["Hacer una tortilla con los huevos batidos, picar en tiras.","Saltear el pollo a fuego alto hasta dorar.","Agregar ajo y kion, saltear 30 seg.","Incorporar el arroz frío, mezclar bien.","Agregar sillao, aceite de ajonjolí, cebollita china.","Incorporar la tortilla, saltear 1 min más."],
+    tips:"Usa arroz del día anterior, frío. Si está caliente queda apelmazado."
+  },
+  lentejas: {
+    nombre:"Lentejas con arroz",
+    tiempo:"60 min",porciones:"4 personas",
+    ing:["2 tazas lentejas","1 cebolla picada","3 dientes de ajo","2 cdas pasta de tomate o 1 tomate","1 zanahoria en cubos","1 hoja de laurel","Comino, sal, pimienta","Arroz blanco para acompañar","Chorizo o salchicha (opcional)"],
+    pasos:["Remojar lentejas 1 hora si es posible.","Sofreír cebolla, ajo y comino.","Agregar pasta de tomate, cocinar 2 min.","Incorporar lentejas, zanahoria, laurel y agua (3 tazas).","Cocinar 35-40 min hasta tiernas.","Si usas chorizo, freírlo aparte y agregar al final.","Servir sobre arroz blanco."],
+    tips:"Sazona la sal al final — si la pones al inicio las lentejas no ablandan."
+  },
+  sopa_pollo: {
+    nombre:"Sopa de pollo casera",
+    tiempo:"45 min",porciones:"4 personas",
+    ing:["4 piezas de pollo (alas o muslos)","1 zanahoria en rodajas","½ taza fideos cabello de ángel","1 papa en cubos","½ taza apio picado","1 poro picado","Culantro, sal, pimienta","2 L de agua"],
+    pasos:["Hervir el pollo en 2 L de agua con sal 25 min.","Retirar espuma con cuchara.","Agregar zanahoria, papa, apio, poro.","Cocinar 10 min más.","Agregar fideos y cocinar 4 min.","Espolvorear culantro al servir."],
+    tips:"Si tienes huesos de pollo guardados en el freezer, úsalos para más sabor."
+  },
+  tortilla: {
+    nombre:"Tortilla de papa o verduras",
+    tiempo:"25 min",porciones:"4 personas",
+    ing:["4 papas medianas","6 huevos","1 cebolla picada","Verduras al gusto (espinaca, brócoli, zapallito)","Aceite, sal, pimienta"],
+    pasos:["Pelar y cortar las papas en láminas finas.","Freír las papas en abundante aceite 10 min, escurrir.","Sofreír cebolla y verduras hasta blandas.","Batir los huevos con sal y pimienta.","Mezclar huevos con papa y verduras.","Cocinar en sartén 5 min por lado a fuego medio."],
+    tips:"Para voltear sin romper, usa un plato grande encima del sartén."
+  },
+  pollo_horno: {
+    nombre:"Pollo al horno con papas",
+    tiempo:"75 min",porciones:"4 personas",
+    ing:["1 pollo entero o presas","4 papas grandes en cuartos","1 limón","4 dientes de ajo","Romero o tomillo","Mostaza, sillao, aceite","Sal, pimienta, comino"],
+    pasos:["Marinar el pollo con ajo licuado, mostaza, sillao, limón, comino, sal (mínimo 30 min).","Precalentar horno a 200°C.","Colocar pollo en bandeja con papas alrededor.","Rociar con aceite, sal, romero.","Hornear 60-70 min volteando a la mitad.","Si tienes camote, hornearlo junto."],
+    tips:"Si la piel no dora, sube a 220°C los últimos 10 min. Reposar 5 min antes de cortar."
+  },
+  crema_zanahoria: {
+    nombre:"Crema de zanahoria",
+    tiempo:"30 min",porciones:"4 personas",
+    ing:["6 zanahorias grandes","1 papa","1 cebolla","2 dientes de ajo","2 cdas mantequilla","½ taza leche evaporada","Caldo de pollo o agua","Pan tostado en cubos","Sal, pimienta, nuez moscada"],
+    pasos:["Sofreír cebolla y ajo en mantequilla.","Agregar zanahoria y papa en cubos.","Cubrir con caldo y cocinar 20 min.","Licuar todo hasta cremoso.","Volver a olla, agregar leche evaporada y nuez moscada.","Servir con cubos de pan tostado."],
+    tips:"Una pizca de azúcar realza el sabor de la zanahoria."
+  },
+  wantan_frito: {
+    nombre:"Wantán frito con tamarindo",
+    tiempo:"25 min",porciones:"4 personas",
+    ing:["1 paquete masa de wantán","250 g carne molida o pollo","1 cebolla china","Kion rallado","Sillao","Aceite para freír","Salsa de tamarindo (compra hecha)","Ensalada de col"],
+    pasos:["Mezclar carne molida con cebolla china, kion, sillao.","Colocar 1 cdita en cada masa de wantán.","Doblar en triángulo y sellar bordes con agua.","Freír en aceite a 180°C hasta dorar (2-3 min).","Servir con salsa de tamarindo y ensalada de col."],
+    tips:"No sobrellenes — explotan al freír. Sella bien con dedo mojado."
+  },
+  estofado: {
+    nombre:"Estofado de pollo",
+    tiempo:"50 min",porciones:"4 personas",
+    ing:["4 piezas de pollo","2 zanahorias en cubos","2 papas en cubos","1 taza arvejas","1 cebolla picada","3 dientes de ajo","2 tomates rallados","½ taza vino tinto (opcional)","Laurel, comino, sal, pimienta"],
+    pasos:["Sellar el pollo, retirar.","Sofreír cebolla, ajo, tomate.","Volver el pollo, agregar vino, laurel, comino.","Incorporar zanahoria y papa.","Cubrir con agua, cocinar 30 min tapado.","Agregar arvejas los últimos 5 min."],
+    tips:"Acompañar con arroz blanco y rocoto picado."
+  },
+  quinua: {
+    nombre:"Quinua salteada con verduras",
+    tiempo:"30 min",porciones:"4 personas",
+    ing:["2 tazas quinua","1 zapallito o calabacín","1 zanahoria en cubos","½ taza brócoli","1 cebolla","2 dientes de ajo","Sillao","Aceite, sal, pimienta"],
+    pasos:["Lavar la quinua con agua hasta que el agua salga clara.","Cocinar 15 min en 4 tazas de agua con sal.","En sartén, saltear cebolla, ajo, verduras.","Incorporar la quinua cocida, agregar sillao.","Saltear 3 min más, servir caliente."],
+    tips:"Lavar la quinua es CRÍTICO — sino queda amarga (saponinas)."
+  },
+  ensalada_palta: {
+    nombre:"Ensalada con palta",
+    tiempo:"10 min",porciones:"4 personas",
+    ing:["2 paltas","1 lechuga","2 tomates","½ cebolla","Limón","Aceite de oliva","Sal, pimienta"],
+    pasos:["Lavar y cortar la lechuga en trozos.","Cortar tomate, palta, cebolla en gajos finos.","Mezclar todo en un bowl.","Aderezar con aceite, limón, sal y pimienta."],
+    tips:"Agregar la palta al final para que no se oxide."
+  },
+  pan_palta: {
+    nombre:"Pan con palta y huevo",
+    tiempo:"10 min",porciones:"4 personas",
+    ing:["8 panes (francés o ciabatta)","2 paltas maduras","4 huevos","1 tomate (opcional)","Limón","Sal, pimienta","Café con leche para acompañar"],
+    pasos:["Pisar las paltas con tenedor, sazonar con limón, sal, pimienta.","Tostar el pan ligeramente.","Cocinar los huevos a gusto (revueltos o pochados).","Untar palta sobre el pan.","Colocar huevo encima y rodaja de tomate."],
+    tips:"Un toque de ají molido o orégano realza muchísimo."
+  },
+  yogurt: {
+    nombre:"Bowl de yogurt con frutas",
+    tiempo:"5 min",porciones:"4 personas",
+    ing:["1 L yogurt natural o griego","2 plátanos","1 papaya o piña","Granola","Miel o azúcar rubia","Frutos secos al gusto"],
+    pasos:["Servir el yogurt en bowls.","Cortar frutas en cubos pequeños.","Agregar frutas sobre el yogurt.","Espolvorear granola y frutos secos.","Endulzar con miel."],
+    tips:"Si el yogurt está muy ácido, mezcla con un toque de leche evaporada."
+  },
+  huevo_revuelto: {
+    nombre:"Huevos revueltos",
+    tiempo:"10 min",porciones:"4 personas",
+    ing:["8 huevos","2 cdas mantequilla","¼ taza leche","Cebollita china picada","Sal, pimienta","Pan tostado para acompañar"],
+    pasos:["Batir los huevos con leche, sal y pimienta.","Calentar mantequilla en sartén a fuego BAJO.","Agregar los huevos, mover constantemente con espátula.","Cuando empiecen a cuajar (cremosos pero no secos), retirar.","Espolvorear cebollita china."],
+    tips:"Fuego BAJO es la clave — fuego alto = huevos secos y duros."
+  },
+  crema_brocoli: {
+    nombre:"Crema de brócoli",
+    tiempo:"30 min",porciones:"4 personas",
+    ing:["1 brócoli grande","1 papa","1 cebolla","2 dientes de ajo","2 cdas mantequilla","½ taza leche evaporada","Caldo de verduras","Queso parmesano para servir","Sal, pimienta"],
+    pasos:["Separar brócoli en floretes pequeños.","Sofreír cebolla y ajo en mantequilla.","Agregar papa en cubos y brócoli.","Cubrir con caldo, cocinar 15 min.","Licuar hasta cremoso.","Volver a olla, agregar leche evaporada.","Servir con queso parmesano rallado."],
+    tips:"Reserva algunos floretes para decorar encima."
+  },
+  sopa_wantan: {
+    nombre:"Sopa wantán",
+    tiempo:"30 min",porciones:"4 personas",
+    ing:["1 paquete wantán (relleno o vacío)","Pollo deshilachado","Verduras chinas (col china, cebolla china)","Kion rallado","Sillao","Aceite de ajonjolí","2 L caldo de pollo","Sal, pimienta"],
+    pasos:["Hervir el caldo con kion 5 min.","Agregar las verduras chinas y pollo deshilachado.","Cocinar wantán aparte 3 min, escurrir.","Servir wantán en bowl, cubrir con caldo y verduras.","Aderezar con sillao y aceite de ajonjolí."],
+    tips:"No cocines el wantán dentro del caldo — se rompen."
+  },
+  pescado_horno: {
+    nombre:"Pescado al horno",
+    tiempo:"35 min",porciones:"4 personas",
+    ing:["4 filetes de pescado (perico, jurel o bonito)","2 limones","3 dientes de ajo","Mantequilla","Tomates cherry o tomate en rodajas","Cebolla en aros","Vino blanco (opcional)","Hierbas (perejil, tomillo)","Sal, pimienta"],
+    pasos:["Precalentar horno a 200°C.","Marinar el pescado con ajo, limón, sal, pimienta 15 min.","Colocar en bandeja sobre cama de cebolla y tomate.","Rociar con mantequilla derretida y vino.","Hornear 18-22 min (depende del grosor).","Servir con arroz blanco y ensalada."],
+    tips:"El pescado está listo cuando se desmenuza con tenedor pero aún jugoso."
+  },
+  bonito: {
+    nombre:"Sudado de bonito",
+    tiempo:"30 min",porciones:"4 personas",
+    ing:["1 kg bonito en rodajas","2 tomates en rodajas","1 cebolla en pluma","2 ajíes amarillos en tiras","Culantro","Vinagre, chicha de jora o cerveza","Aceite, sal","Yuca o papa sancochada"],
+    pasos:["Sazonar el bonito con sal y pimienta.","En olla, sofreír cebolla y ají amarillo.","Colocar el pescado encima.","Agregar tomate, vinagre, chicha (½ taza).","Tapar y cocinar 12-15 min a fuego medio.","Espolvorear culantro y servir con yuca."],
+    tips:"NO destapes mientras se cocina — el vapor cocina el pescado."
+  },
+  tallarines_rojos: {
+    nombre:"Tallarines rojos",
+    tiempo:"30 min",porciones:"4 personas",
+    ing:["500 g tallarines","500 g carne molida","1 lata pasta de tomate (200 g)","1 cebolla","3 dientes de ajo","1 zanahoria rallada","Orégano, laurel","Queso parmesano","Aceite, sal, azúcar"],
+    pasos:["Cocinar tallarines al dente.","Sofreír cebolla, ajo, zanahoria.","Agregar carne molida, dorar.","Incorporar pasta de tomate, 1 taza agua, orégano, laurel.","Cocinar 15 min hasta espesar.","Mezclar con tallarines y servir con parmesano."],
+    tips:"Una pizca de azúcar (½ cdita) corta la acidez del tomate."
+  },
+  arroz: {
+    nombre:"Arroz blanco graneado",
+    tiempo:"25 min",porciones:"4 personas",
+    ing:["2 tazas arroz","2½ tazas agua hirviendo","2 cdas aceite","2 dientes de ajo aplastados","1 cdita sal"],
+    pasos:["Calentar aceite con ajo hasta que dore, retirar el ajo.","Agregar el arroz, freír 1 min sin que se queme.","Añadir agua hirviendo y sal.","Cocinar a fuego medio sin tapar hasta que se evapore el agua superficial.","Tapar, bajar al mínimo y cocinar 15 min más.","Soltar con tenedor antes de servir."],
+    tips:"El truco está en el agua HIRVIENDO al echarla — granea perfecto."
+  },
+  fideos: {
+    nombre:"Sopa de fideos con verduras",
+    tiempo:"25 min",porciones:"4 personas",
+    ing:["½ taza fideos cabello de ángel","1 zanahoria en cubos","1 papa en cubos","½ taza apio picado","1 cebolla picada","2 dientes de ajo","Caldo de pollo o agua","Huevo (opcional, batido al final)","Sal, pimienta, culantro"],
+    pasos:["Sofreír cebolla y ajo.","Agregar verduras, sofreír 2 min.","Cubrir con 1.5 L de caldo, hervir 12 min.","Agregar fideos, cocinar 4 min.","Si quieres, batir 1 huevo y agregar revolviendo.","Servir con culantro picado."],
+    tips:"Los fideos se cocinan rápido — vigilar para que no se pasen."
+  },
+  arroz_atun: {
+    nombre:"Arroz con atún a la jardinera",
+    tiempo:"35 min",porciones:"4 personas",
+    ing:["2 tazas arroz","2 latas atún","1 zanahoria en cubos","½ taza arvejas","½ taza choclo","1 cebolla picada","2 dientes de ajo","Pasta de tomate (2 cdas)","Aceite, sal, pimienta, comino"],
+    pasos:["Sofreír cebolla, ajo, comino.","Agregar pasta de tomate, cocinar 2 min.","Incorporar zanahoria, arvejas, choclo.","Agregar arroz, mezclar bien.","Cubrir con 2½ tazas agua, sal.","Cocinar tapado 18 min.","Mezclar el atún al final."],
+    tips:"Si tienes culantro picado, agrégalo al final — transforma el plato."
+  }
+};
+
+// Mapeo: keyword en la comida → ID de receta
+function buscarReceta(text){
+  const t = text.toLowerCase();
+  const reglas = [
+    [/cevich/,"ceviche"],
+    [/arroz con pollo|pollo a la criolla/,"arroz_pollo"],
+    [/lomo saltado/,"lomo"],
+    [/aji de gallina|ají de gallina|cau cau/,"aji_gallina"],
+    [/pesto/,"pesto"],
+    [/causa/,"causa"],
+    [/chaufa/,"chaufa"],
+    [/lenteja|menestra|frijol/,"lentejas"],
+    [/sopa de pollo|caldo de pollo/,"sopa_pollo"],
+    [/tortilla/,"tortilla"],
+    [/pollo (al horno|broaster|a la brasa|guisado)/,"pollo_horno"],
+    [/estofado/,"estofado"],
+    [/crema de zanahoria|crema de zapallo/,"crema_zanahoria"],
+    [/wantán fri|wantan fri/,"wantan_frito"],
+    [/sopa de wantán|sopa de wantan|sopa wantan/,"sopa_wantan"],
+    [/quinua|quinoa/,"quinua"],
+    [/ensalada/,"ensalada_palta"],
+    [/pan con palta|sándwich|sandwich|desayuno completo/,"pan_palta"],
+    [/yogurt|avena/,"yogurt"],
+    [/huevo revuelto|huevo a la palta|huevo \+/,"huevo_revuelto"],
+    [/crema de bró|crema de bro|crema de verduras/,"crema_brocoli"],
+    [/bonito/,"bonito"],
+    [/pescado (al horno|frito)|bistec/,"pescado_horno"],
+    [/tallarines? rojos|tallarines a la huan|tallarines verdes|pizza/,"tallarines_rojos"],
+    [/arroz con atún|arroz con atun|atún a la jardinera/,"arroz_atun"],
+    [/sopa de fideos|sopa de verduras|sopa criolla|sopa ligera|sopa de quinua/,"fideos"],
+    [/arroz blanco|arroz/,"arroz"],
+    [/tallarin|fideos/,"pesto"]
+  ];
+  for(const [rx,k] of reglas){
+    if(rx.test(t)) return RECETAS[k];
+  }
+  return null;
+}
+
+function abrirReceta(idx, slot){
+  const day = plan[idx];
+  const comida = day[slot];
+  const turno = turnos[idx][slot];
+  const receta = buscarReceta(comida);
+  const slotName = {D:'Desayuno',A:'Almuerzo',C:'Cena'}[slot];
+
+  document.getElementById('modal-hero').style.backgroundImage = `url('${pickImg(comida)}')`;
+  document.getElementById('modal-title').textContent = comida;
+  document.getElementById('modal-meta').innerHTML = `
+    <span class="pill">${day.d}</span>
+    <span class="pill">${slotName}</span>
+    <span class="pill chef ${turno}">Cocinero: ${NOMBRES[turno]}</span>
+    ${receta ? `<span class="pill">⏱ ${receta.tiempo}</span><span class="pill">${receta.porciones}</span>` : ''}
+  `;
+
+  let body = '';
+  if(receta){
+    body = `
+      <h3>Ingredientes</h3>
+      <ul>${receta.ing.map(i=>`<li>${i}</li>`).join('')}</ul>
+      <h3>Preparación</h3>
+      <ol>${receta.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>
+      <div class="modal-tips"><b>Tip del chef:</b> ${receta.tips}</div>
+    `;
+  } else {
+    body = `
+      <h3>Sin receta detallada</h3>
+      <p style="font-size:.92rem;color:var(--mut)">Esta comida no tiene una receta específica en el banco — es probablemente una preparación simple o una combinación de ingredientes que no requiere instrucciones. Puedes editar la comida en el calendario para ajustarla a algo más concreto.</p>
+      <h3>Sugerencia</h3>
+      <p style="font-size:.92rem">Si quieres convertir "${comida}" en algo más elaborado, prueba con:</p>
+      <ul>
+        <li>Agregar una proteína (huevo, atún, queso)</li>
+        <li>Acompañar con arroz, pan o ensalada</li>
+        <li>Sumar una guarnición de verdura salteada</li>
+      </ul>
+    `;
+  }
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-bg').classList.add('show');
+}
+function cerrarReceta(){
+  document.getElementById('modal-bg').classList.remove('show');
+}
+document.getElementById('modal-bg').addEventListener('click', e=>{
+  if(e.target.id === 'modal-bg') cerrarReceta();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') cerrarReceta();
+});
+
+// =================== TABS ===================
+document.querySelectorAll('.tab').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('p-'+b.dataset.t).classList.add('active');
+  };
+});
+</script>
+</body>
+</html>
